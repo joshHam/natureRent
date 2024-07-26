@@ -41,6 +41,8 @@ public class SampleController {
 
     }
 
+
+    //로그인한 사용자중에 user95@zerock.org만 접근가능하도록//
     @PreAuthorize("#clubAuthMember != null && #clubAuthMember.username eq \"user95@zerock.org\"")
     @GetMapping("/exOnly")
     public String exMemberOnly(@AuthenticationPrincipal ClubAuthMemberDTO clubAuthMember){
