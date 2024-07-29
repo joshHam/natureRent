@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -15,6 +16,18 @@
     <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
+<!--    <style>
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .product-grid .product-item {
+            flex: 1 1 calc(20% - 10px); /* 5 columns layout */
+            box-sizing: border-box;
+            margin: 5px;
+        }
+    </style>-->
 
 </head>
 
@@ -421,7 +434,7 @@
     <!-- End Hero Area -->
 
     <!-- Start Trending Product Area -->
-    <section class="trending-product section" style="margin-top: 12px;">
+    <!--<section class="trending-product section" style="margin-top: 12px;">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -434,7 +447,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-1.jpg" alt="#">
@@ -460,10 +473,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-2.jpg" alt="#">
@@ -491,10 +504,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-3.jpg" alt="#">
@@ -520,10 +533,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-4.jpg" alt="#">
@@ -550,10 +563,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-5.jpg" alt="#">
@@ -579,10 +592,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-6.jpg" alt="#">
@@ -608,10 +621,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-7.jpg" alt="#">
@@ -639,10 +652,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
+                    &lt;!&ndash; Start Single Product &ndash;&gt;
                     <div class="single-product">
                         <div class="product-image">
                             <img src="/assets/images/products/product-8.jpg" alt="#">
@@ -668,34 +681,63 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Single Product -->
+                    &lt;!&ndash; End Single Product &ndash;&gt;
                 </div>
             </div>
         </div>
-    </section>
+    </section>-->
     <!-- End Trending Product Area -->
 
-    <!-- Start Call Action Area -->
-    <section class="call-action section">
+    <!-- Start Trending Product Area -->
+    <section class="trending-product section" style="margin-top: 12px;">
         <div class="container">
-            <div class="row ">
-                <div class="col-lg-8 offset-lg-2 col-12">
-                    <div class="inner">
-                        <div class="content">
-                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Currently You are using free<br>
-                                Lite version of ShopGrids</h2>
-                            <p class="wow fadeInUp" data-wow-delay=".6s">Please, purchase full version of the template
-                                to get all pages,<br> features and commercial license.</p>
-                            <div class="button wow fadeInUp" data-wow-delay=".8s">
-                                <a href="javascript:void(0)" class="btn">Purchase Now</a>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>Trending Product</h2>
+                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
                     </div>
                 </div>
             </div>
+            <div class="row" >
+                    <div class="col-lg-3 col-md-6 col-12" th:each="dto : ${result.dtoList}">
+                        <!-- Start Single Product -->
+                        <div class="single-product">
+                            <div class="product-image">
+<!--                                <img th:src="@{/display?fileName=${dto.imageDTOList[0].thumbnailURL}}" alt="#"  />-->
+                                <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>
+
+                                <div class="button">
+                                    <a th:href="@{/movie/read(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Movie</span>
+                                <h4 class="title">
+                                    <a th:href="@{/movie/read(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>
+                                </h4>
+                                <ul class="review">
+                                    <li><i class="lni lni-star-filled"></i></li>
+                                    <li><i class="lni lni-star-filled"></i></li>
+                                    <li><i class="lni lni-star-filled"></i></li>
+                                    <li><i class="lni lni-star-filled"></i></li>
+                                    <li><i class="lni lni-star"></i></li>
+                                    <li><span>[[${dto.avg}]] Rating</span></li>
+                                </ul>
+                                <div class="price">
+                                    <span>Review Count: [[${dto.reviewCnt}]]</span>
+                                </div>
+                                <div class="price">
+                                    <span>Regdate: [[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Product -->
+                    </div>
+        </div>
         </div>
     </section>
-    <!-- End Call Action Area -->
+    <!-- Start Trending Product Area -->
 
     <!-- Start Banner Area -->
     <section class="banner section">

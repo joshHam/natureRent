@@ -31,7 +31,7 @@
             <tbody>
 
             <tr th:each="dto : ${result.dtoList}" >
-                <th scope="row">
+                <th scope="row" >
                     <a th:href="@{/movie/read(mno = ${dto.mno}, page= ${result.page})}">
                         [[${dto.mno}]]
                     </a>
@@ -45,6 +45,8 @@
 
             </tbody>
         </table>
+
+
 
         <ul class="pagination h-100 justify-content-center align-items-center">
 

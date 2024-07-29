@@ -5,18 +5,35 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
+import org.zerock.natureRent.dto.MovieDTO;
+import org.zerock.natureRent.dto.PageRequestDTO;
+import org.zerock.natureRent.dto.PageResultDTO;
+import org.zerock.natureRent.service.MovieService;
+
+import java.util.List;
 
 @Controller
 @Log4j2
 @RequestMapping("/sample/")
 public class SampleController {
 
+    private final MovieService movieService;
+
+    public SampleController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
     @GetMapping("/all")
-    public void exAll(){
+    public String exAll(Model model, PageRequestDTO pageRequestDTO){
         log.info("exAll..........");
+        PageResultDTO<MovieDTO, Object[]> result = movieService.getList(pageRequestDTO);
+        model.addAttribute("result", result);
+
+        return "sample/all";
     }
 
 //    @GetMapping("/member")
