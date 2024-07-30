@@ -3,7 +3,6 @@ package org.zerock.natureRent.entity;
 import lombok.*;
 
 import jakarta.persistence.*;
-import java.util.*;
 
 @Entity
 @Builder
@@ -11,7 +10,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @ToString
-public class Movie extends BaseEntity {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,19 +9,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.natureRent.dto.MovieDTO;
+import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
-import org.zerock.natureRent.service.MovieService;
-
-import java.util.List;
+import org.zerock.natureRent.service.ProductService;
 
 @Controller
-@RequestMapping("/movie")
+@RequestMapping("/product")
 @Log4j2
 @RequiredArgsConstructor
-public class MovieController {
+public class ProductController {
 
-    private final MovieService movieService; //final
+    private final ProductService productService; //final
 
     @GetMapping("/register")
     public void register(){
@@ -29,14 +27,14 @@ public class MovieController {
     }
 
     @PostMapping("/register")
-    public String register(MovieDTO movieDTO, RedirectAttributes redirectAttributes){
-        log.info("movieDTO: " + movieDTO);
+    public String register(ProductDTO productDTO, RedirectAttributes redirectAttributes){
+        log.info("productDTO: " + productDTO);
 
-        Long mno = movieService.register(movieDTO);
+        Long mno = productService.register(productDTO);
 
         redirectAttributes.addFlashAttribute("msg", mno);
 
-        return "redirect:/movie/list";
+        return "redirect:/product/list";
     }
 
     @GetMapping("/list")
@@ -45,7 +43,7 @@ public class MovieController {
         log.info("pageRequestDTO: " + pageRequestDTO);
 
 
-        model.addAttribute("result", movieService.getList(pageRequestDTO));
+        model.addAttribute("result", productService.getList(pageRequestDTO));
 
     }
 
@@ -54,9 +52,9 @@ public class MovieController {
 
         log.info("mno: " + mno);
 
-        MovieDTO movieDTO = movieService.getMovie(mno);
+        ProductDTO productDTO = productService.getProduct(mno);
 
-        model.addAttribute("dto", movieDTO);
+        model.addAttribute("dto", productDTO);
 
     }
 

@@ -5,7 +5,7 @@
 
     <th:block th:fragment="content">
 
-        <h1 class="mt-4">Movie Read Page</h1>
+        <h1 class="mt-4">Product Read Page</h1>
 
 
         <div class="form-group">
@@ -54,8 +54,8 @@
 
         <div class="uploadResult">
             <ul >
-                <li th:each="movieImage: ${dto.imageDTOList}" th:data-file="${movieImage.getThumbnailURL()}">
-                    <img  th:if="${movieImage.path != null}" th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
+                <li th:each="productImage: ${dto.imageDTOList}" th:data-file="${productImage.getThumbnailURL()}">
+                    <img  th:if="${productImage.path != null}" th:src="|/display?fileName=${productImage.getThumbnailURL()}|">
                 </li>
             </ul>
         </div>
@@ -79,7 +79,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Movie Review</h5>
+                        <h5 class="modal-title">Product Review</h5>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="form-group">
                             <label >Review Text</label>
-                            <input type="text" class="form-control" name="text" placeholder="Good Movie!" >
+                            <input type="text" class="form-control" name="text" placeholder="Good Product!" >
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -194,7 +194,7 @@
 
 
                 //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
-                function getMovieReviews() {
+                function getProductReviews() {
 
                     function formatTime(str){
                         var date = new Date(str);
@@ -224,7 +224,7 @@
                     });
                 }
 
-                getMovieReviews();
+                getProductReviews();
 
 
                 //modify reveiw

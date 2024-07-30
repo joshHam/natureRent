@@ -16,7 +16,7 @@ import java.io.IOException;
 @Log4j2
 public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private RedirectStrategy redirectStratgy = new DefaultRedirectStrategy();
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     private PasswordEncoder passwordEncoder;
 
@@ -42,8 +42,11 @@ public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
         boolean passwordResult = passwordEncoder.matches("1111", authMember.getPassword());
 
         if(fromSocial && passwordResult) {
-            redirectStratgy.sendRedirect(request, response, "/member/modify?from=social");
+            redirectStrategy.sendRedirect(request, response, "/member/modify?from=social");
         }
+//        else {
+//            redirectStrategy.sendRedirect(request, response, "/sample/admin");
+//        }
     }
 
 }

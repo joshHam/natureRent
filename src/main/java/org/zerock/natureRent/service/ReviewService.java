@@ -2,7 +2,7 @@ package org.zerock.natureRent.service;
 
 import org.zerock.natureRent.dto.ReviewDTO;
 import org.zerock.natureRent.entity.Member;
-import org.zerock.natureRent.entity.Movie;
+import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.Review;
 
 import java.util.List;
@@ -10,44 +10,44 @@ import java.util.List;
 public interface ReviewService {
 
     //영화의 모든 영화리뷰를 가져온다.
-    List<ReviewDTO> getListOfMovie(Long mno);
+    List<ReviewDTO> getListOfProduct(Long mno);
 
     //영화 리뷰를 추가
-    Long register(ReviewDTO movieReviewDTO);
+    Long register(ReviewDTO productReviewDTO);
 
     //특정한 영화리뷰 수정
-    void modify(ReviewDTO movieReviewDTO);
+    void modify(ReviewDTO productReviewDTO);
 
     //영화 리뷰 삭제
     void remove(Long reviewnum);
 
-    default Review dtoToEntity(ReviewDTO movieReviewDTO){
+    default Review dtoToEntity(ReviewDTO productReviewDTO){
 
-        Review movieReview = Review.builder()
-                .reviewnum(movieReviewDTO.getReviewnum())
-                .movie(Movie.builder().mno(movieReviewDTO.getMno()).build())
-                .member(Member.builder().mid(movieReviewDTO.getMid()).build())
-                .grade(movieReviewDTO.getGrade())
-                .text(movieReviewDTO.getText())
+        Review productReview = Review.builder()
+                .reviewnum(productReviewDTO.getReviewnum())
+                .product(Product.builder().mno(productReviewDTO.getMno()).build())
+                .member(Member.builder().mid(productReviewDTO.getMid()).build())
+                .grade(productReviewDTO.getGrade())
+                .text(productReviewDTO.getText())
                 .build();
 
-        return movieReview;
+        return productReview;
     }
 
-    default ReviewDTO entityToDto(Review movieReview){
+    default ReviewDTO entityToDto(Review productReview){
 
-        ReviewDTO movieReviewDTO = ReviewDTO.builder()
-                .reviewnum(movieReview.getReviewnum())
-                .mno(movieReview.getMovie().getMno())
-                .mid(movieReview.getMember().getMid())
-                .nickname(movieReview.getMember().getNickname())
-                .email(movieReview.getMember().getEmail())
-                .grade(movieReview.getGrade())
-                .text(movieReview.getText())
-                .regDate(movieReview.getRegDate())
-                .modDate(movieReview.getModDate())
+        ReviewDTO productReviewDTO = ReviewDTO.builder()
+                .reviewnum(productReview.getReviewnum())
+                .mno(productReview.getProduct().getMno())
+                .mid(productReview.getMember().getMid())
+                .nickname(productReview.getMember().getNickname())
+                .email(productReview.getMember().getEmail())
+                .grade(productReview.getGrade())
+                .text(productReview.getText())
+                .regDate(productReview.getRegDate())
+                .modDate(productReview.getModDate())
                 .build();
 
-        return movieReviewDTO;
+        return productReviewDTO;
     }
 }

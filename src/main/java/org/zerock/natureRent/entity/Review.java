@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = {"movie","member"})
+@ToString(exclude = {"product","member"})
 public class Review extends BaseEntity {
 
     @Id
@@ -17,7 +17,7 @@ public class Review extends BaseEntity {
     private Long reviewnum;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Movie movie;
+    private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;

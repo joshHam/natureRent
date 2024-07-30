@@ -14,14 +14,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovieDTO {
+public class ProductDTO {
 
     private Long mno;
 
     private String title;
 
     @Builder.Default
-    private List<MovieImageDTO> imageDTOList = new ArrayList<>();
+    private List<ProductImageDTO> imageDTOList = new ArrayList<>();
 
     //영화의 평균 평점
     private double avg;

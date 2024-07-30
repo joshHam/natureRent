@@ -9,10 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
-import org.zerock.natureRent.dto.MovieDTO;
+import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.dto.PageResultDTO;
-import org.zerock.natureRent.service.MovieService;
+import org.zerock.natureRent.service.ProductService;
 
 import java.util.List;
 
@@ -21,17 +21,17 @@ import java.util.List;
 @RequestMapping("/sample/")
 public class SampleController2 {
 
-    private final MovieService movieService;
+    private final ProductService productService;
 
-    public SampleController(MovieService movieService) {
-        this.movieService = movieService;
+    public SampleController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/all")
     public String exAll(Model model, PageRequestDTO pageRequestDTO){
         log.info("exAll..........");
 
-        PageResultDTO<MovieDTO, Object[]> result = movieService.getList(pageRequestDTO);
+        PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
         model.addAttribute("result", result);
 
         return "sample/all";

@@ -17,7 +17,7 @@ public class ReviewDTO {
     //review num
     private Long reviewnum;
 
-    //Movie mno
+    //Product mno
     private Long mno;
 
     //Membmer id

@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.natureRent.entity.Member;
-import org.zerock.natureRent.entity.Movie;
+import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.Review;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class ReviewRepositoryTests {
 
 
     @Test
-    public void insertMoviewReviews() {
+    public void insertProductwReviews() {
 
         //200개의 리뷰를 등록
         IntStream.rangeClosed(1,30).forEach(i -> {
@@ -33,31 +33,31 @@ public class ReviewRepositoryTests {
             Long mid  =  ((long)(Math.random()*100) + 1 );
             Member member = Member.builder().mid(mid).build();
 
-            Review movieReview = Review.builder()
+            Review productReview = Review.builder()
                     .member(member)
-                    .movie(Movie.builder().mno(mno).build())
+                    .product(Product.builder().mno(mno).build())
                     .grade((int)(Math.random()* 5) + 1)
                     .text("이 영화에 대한 느낌..."+i)
                     .build();
 
-            reviewRepository.save(movieReview);
+            reviewRepository.save(productReview);
         });
     }
 
 
     @Test
-    public void testGetMovieReviews() {
+    public void testGetProductReviews() {
 
-        Movie movie = Movie.builder().mno(93L).build();
+        Product product = Product.builder().mno(93L).build();
 
-        List<Review> result = reviewRepository.findByMovie(movie);
+        List<Review> result = reviewRepository.findByProduct(product);
 
-        result.forEach(movieReview -> {
+        result.forEach(productReview -> {
 
-            System.out.print(movieReview.getReviewnum());
-            System.out.print("\t"+movieReview.getGrade());
-            System.out.print("\t"+movieReview.getText());
-            System.out.print("\t"+movieReview.getMember().getEmail());
+            System.out.print(productReview.getReviewnum());
+            System.out.print("\t"+productReview.getGrade());
+            System.out.print("\t"+productReview.getText());
+            System.out.print("\t"+productReview.getMember().getEmail());
             System.out.println("---------------------------");
         });
     }

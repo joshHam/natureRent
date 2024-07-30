@@ -13,7 +13,7 @@ import java.net.URLEncoder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MovieImageDTO {
+public class ProductImageDTO {
 
     private String uuid;
 

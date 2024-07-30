@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -78,7 +79,7 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="all.html">Home</a></li>
+                                <li><a href="all">Home</a></li>
                                 <li><a href="about-us.html">About Us</a></li>
                                 <li><a href="contact.html">Contact Us</a></li>
                             </ul>
@@ -92,7 +93,7 @@
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="login.html">Sign In</a>
+                                    <a href="../login">Sign In</a>
                                 </li>
                                 <li>
                                     <a href="register.html">Register</a>
@@ -110,7 +111,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
-                        <a class="navbar-brand" href="all.html">
+                        <a class="navbar-brand" href="all">
                             <img src="/assets/images/logo/logo.svg" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
@@ -265,7 +266,7 @@
                             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                                 <ul id="nav" class="navbar-nav ms-auto">
                                     <li class="nav-item">
-                                        <a href="all.html" aria-label="Toggle navigation">Home</a>
+                                        <a href="all" aria-label="Toggle navigation">Home</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
@@ -274,7 +275,7 @@
                                         <ul class="sub-menu collapse" id="submenu-1-2">
                                             <li class="nav-item"><a href="about-us.html">About Us</a></li>
                                             <li class="nav-item"><a href="faq.html">Faq</a></li>
-                                            <li class="nav-item"><a href="login.html">Login</a></li>
+                                            <li class="nav-item"><a href="../login">Login</a></li>
                                             <li class="nav-item"><a href="register.html">Register</a></li>
                                             <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
                                             <li class="nav-item"><a href="404.html">404 Error</a></li>
@@ -353,8 +354,8 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="all.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="all.html">Shop</a></li>
+                        <li><a href="all"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="all">Shop</a></li>
                         <li>Single Product</li>
                     </ul>
                 </div>
@@ -372,14 +373,27 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="/assets/images/product-details/01.jpg" id="current" alt="#">
+<!--                                    <img src="/assets/images/product-details/01.jpg" id="current" alt="#">-->
+<!--                                    <img  th:if="${productImage.path != null}" th:src="|/display?fileName=${productImage.getThumbnailURL()}|">-->
+                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getImageURL()}|}" alt="#"
+                                         id="current" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>
                                 </div>
                                 <div class="images">
-                                    <img src="/assets/images/product-details/01.jpg" class="img" alt="#">
+<!--                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>-->
+<!--                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>-->
+
+<!--                                    <li th:each="productImage: ${dto.imageDTOList}" th:data-file="${productImage.getThumbnailURL()}">-->
+<!--                                        <img  th:if="${productImage.path != null}" th:src="|/display?fileName=${productImage.getThumbnailURL()}|">-->
+                                        <img th:each="image : ${dto.imageDTOList}" class="img"
+                                             th:src="@{|/display?fileName=${image.getImageURL()}|}" alt="#" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>
+
+<!--                                    </li>-->
+
+                                   <!-- <img src="/assets/images/product-details/01.jpg" class="img" alt="#">
                                     <img src="/assets/images/product-details/02.jpg" class="img" alt="#">
                                     <img src="/assets/images/product-details/03.jpg" class="img" alt="#">
                                     <img src="/assets/images/product-details/04.jpg" class="img" alt="#">
-                                    <img src="/assets/images/product-details/05.jpg" class="img" alt="#">
+                                    <img src="/assets/images/product-details/05.jpg" class="img" alt="#">-->
                                 </div>
                             </main>
                         </div>
@@ -573,7 +587,7 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-12">
                             <div class="footer-logo">
-                                <a href="all.html">
+                                <a href="all">
                                     <img src="/assets/images/logo/white-logo.svg" alt="#">
                                 </a>
                             </div>
@@ -737,6 +751,184 @@
                 //opacity
                 e.target.style.opacity = opacity;
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function(e) {
+
+            var grade = 0;
+            var mno = [[${dto.mno}]];
+
+            $('.starrr').starrr({
+                rating: grade,
+                change: function(e, value){
+                    if (value) {
+                        console.log(value);
+                        grade = value;
+                    }
+                }
+            });
+
+            //$(".reviewModal").modal("show"); 미리 보기용
+
+            var reviewModal = $(".reviewModal");
+            var inputMid = $('input[name="mid"]');
+            var inputText = $('input[name="text"]');
+
+
+            $(".addReviewBtn").click(function () {
+                inputMid.val("");
+                inputText.val("");
+
+                $(".removeBtn ,  .modifyBtn").hide();
+                $(".reviewSaveBtn").show();
+
+                reviewModal.modal('show');
+            });
+
+
+            $('.reviewSaveBtn').click(function() {
+
+                var data = {mno:mno, grade:grade, text:inputText.val(), mid: inputMid.val() };
+
+                console.log(data);
+
+                $.ajax({
+                    url:'/reviews/'+mno,
+                    type:"POST",
+                    data:JSON.stringify(data),
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"text",
+                    success: function(result){
+
+                        console.log("result: " + result);
+
+                        self.location.reload();
+
+                    }
+                })
+                reviewModal.modal('hide');
+
+            });
+
+
+            //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
+            function getProductReviews() {
+
+                function formatTime(str){
+                    var date = new Date(str);
+
+                    return date.getFullYear() + '/' +
+                        (date.getMonth() + 1) + '/' +
+                        date.getDate() + ' ' +
+                        date.getHours() + ':' +
+                        date.getMinutes();
+                }
+
+                $.getJSON("/reviews/"+ mno +"/all", function(arr){
+                    var str ="";
+
+                    $.each(arr, function(idx, review){
+
+                        console.log(review);
+
+                        str += '    <div class="card-body" data-reviewnum='+review.reviewnum+' data-mid='+review.mid+'>';
+                        str += '    <h5 class="card-title">'+review.text+' <span>'+ review.grade+'</span></h5>';
+                        str += '    <h6 class="card-subtitle mb-2 text-muted">'+review.nickname+'</h6>';
+                        str += '    <p class="card-text">'+ formatTime(review.regDate) +'</p>';
+                        str += '    </div>';
+                    });
+
+                    $(".reviewList").html(str);
+                });
+            }
+
+            getProductReviews();
+
+
+            //modify reveiw
+
+            var reviewnum;
+
+            $(".reviewList").on("click", ".card-body", function() {
+
+                $(".reviewSaveBtn").hide();
+                $(".removeBtn , .modifyBtn").show();
+
+
+                var targetReview = $(this);
+
+                reviewnum = targetReview.data("reviewnum");
+                console.log("reviewnum: "+ reviewnum);
+                inputMid.val(targetReview.data("mid"));
+                inputText.val(targetReview.find('.card-title').clone().children().remove().end().text());
+
+                var grade = targetReview.find('.card-title span').html();
+                $(".starrr a:nth-child("+grade+")").trigger('click');
+
+                $('.reviewModal').modal('show');
+            });
+
+
+            $(".modifyBtn").on("click", function(){
+
+                var data = {reviewnum: reviewnum, mno:mno, grade:grade, text:inputText.val(), mid: inputMid.val() };
+
+                console.log(data);
+
+                $.ajax({
+                    url:'/reviews/'+mno +"/"+ reviewnum ,
+                    type:"PUT",
+                    data:JSON.stringify(data),
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"text",
+                    success: function(result){
+
+                        console.log("result: " + result);
+
+                        self.location.reload();
+
+                    }
+                })
+                reviewModal.modal('hide');
+            });
+
+            $(".removeBtn").on("click", function(){
+
+                var data = {reviewnum: reviewnum};
+
+                console.log(data);
+
+                $.ajax({
+                    url:'/reviews/'+mno +"/"+ reviewnum ,
+                    type:"DELETE",
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"text",
+                    success: function(result){
+
+                        console.log("result: " + result);
+
+                        self.location.reload();
+
+                    }
+                })
+                reviewModal.modal('hide');
+            });
+
+            $(".product-images li").click(function() {
+
+                var file = $(this).data('file');
+
+                console.log(file);
+
+                $('.imageModal .modal-body').html("<img style='width:100%' src='/display?fileName="+file+"&size=1' >")
+
+                $(".imageModal").modal("show");
+
+            });
+
+
+
         });
     </script>
 </body>

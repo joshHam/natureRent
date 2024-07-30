@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Movie List</title>
+    <title>Product List</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
@@ -26,13 +26,13 @@
                             <div class="product-image">
                                 <img th:src="@{/display?fileName=${dto.imageDTOList[0].thumbnailURL}}" alt="#" th:if="${dto.imageDTOList.size() > 0}" />
                                 <div class="button">
-                                    <a th:href="@{/movie/read(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>
+                                    <a th:href="@{/product/read(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>
                                 </div>
                             </div>
                             <div class="product-info">
-                                <span class="category">Movie</span>
+                                <span class="category">Product</span>
                                 <h4 class="title">
-                                    <a th:href="@{/movie/read(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>
+                                    <a th:href="@{/product/read(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>
                                 </h4>
                                 <ul class="review">
                                     <li><i class="lni lni-star-filled"></i></li>
