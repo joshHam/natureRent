@@ -48,17 +48,32 @@ public class SecurityConfig {
 //                .requestMatchers("/sample/admin").hasRole("ADMIN");
 
 
-        http.formLogin();
+//        http.formLogin();
         http.csrf().disable();
+
+//      http.formLogin();
+        http.formLogin()
+                .loginPage("/login");  // 커스텀 로그인 페이지 경로
+//                .permitAll();  // 로그인 페이지 접근은 누구나 가능하게 설정
         http.logout();
 
-        http.oauth2Login().successHandler(clubLoginSuccessHandler());
+//      http.oauth2Login().successHandler(clubLoginSuccessHandler());
+        http.oauth2Login()
+                .successHandler(clubLoginSuccessHandler())
+                .loginPage("/login");  // 커스텀 로그인 페이지 경로
 
         http.rememberMe().tokenValiditySeconds(60*60*24*7);
 
         //add Filter
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
+        // 권한 설정
+//        http.authorizeHttpRequests((authz) -> authz
+//                .requestMatchers("/sample/all").permitAll()
+//                .requestMatchers("/sample/member").hasAnyAuthority("USER", "OAUTH2_USER")
+//                .requestMatchers("/sample/admin").hasRole("ADMIN")
+//                .anyRequest().authenticated()
+//        );
 
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         //authenticationManagerBuilder.userDetailsService(apiUserDetailsService).passwordEncoder(passwordEncoder());

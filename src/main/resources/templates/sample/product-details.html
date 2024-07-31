@@ -560,7 +560,244 @@
                                     <option>4 Stars</option>
                                     <option>3 Stars</option>
                                     <option>2 Stars</option>
-                                    <option>1 Star</option>
+
+                                    /* Product Details Info */
+                                    .product-details-info .single-block {
+                                    background-color: #fff;
+                                    padding: 30px;
+                                    border: 1px solid #eee;
+                                    border-radius: 4px;
+                                    margin-top: 30px;
+                                    }
+
+                                    @media only screen and (min-width: 768px) and (max-width: 991px),
+                                    (max-width: 767px) {
+                                    .product-details-info .info-body.custom-responsive-margin {
+                                    margin-bottom: 30px;
+                                    }
+                                    }
+
+                                    .product-details-info .info-body h4 {
+                                    font-size: 18px;
+                                    font-weight: 500;
+                                    margin-bottom: 20px;
+                                    }
+
+                                    .product-details-info .info-body p {
+                                    margin: 20px 0;
+                                    }
+
+                                    .product-details-info .info-body .features li {
+                                    display: block;
+                                    margin-bottom: 12px;
+                                    position: relative;
+                                    padding-left: 15px;
+                                    }
+
+                                    .product-details-info .info-body .features li::before {
+                                    position: absolute;
+                                    content: "";
+                                    left: 0;
+                                    top: 8px;
+                                    height: 6px;
+                                    width: 6px;
+                                    background-color: #0167F3;
+                                    border-radius: 6px;
+                                    }
+
+                                    .product-details-info .info-body .features li:last-child {
+                                    margin: 0;
+                                    }
+
+                                    .product-details-info .info-body .normal-list {
+                                    margin-bottom: 30px;
+                                    }
+
+                                    .product-details-info .info-body .normal-list:last-child {
+                                    margin-bottom: 0;
+                                    }
+
+                                    .product-details-info .info-body .normal-list li {
+                                    display: block;
+                                    margin-bottom: 12px;
+                                    position: relative;
+                                    }
+
+                                    .product-details-info .info-body .normal-list li span {
+                                    font-weight: 500;
+                                    color: #555;
+                                    }
+
+                                    .product-details-info .info-body .normal-list li:last-child {
+                                    margin: 0;
+                                    }
+
+                                    .product-details-info .single-block .give-review h4 {
+                                    font-size: 20px;
+                                    font-weight: 500;
+                                    margin-bottom: 30px;
+                                    }
+
+                                    .product-details-info .single-block .give-review ul li {
+                                    display: block;
+                                    margin-bottom: 12px;
+                                    }
+
+                                    .product-details-info .single-block .give-review ul li span {
+                                    color: #666;
+                                    display: inline-block;
+                                    margin-right: 8px;
+                                    min-width: 80px;
+                                    }
+
+                                    .product-details-info .single-block .give-review ul li i {
+                                    display: inline-block;
+                                    color: #ffa000;
+                                    font-size: 12px;
+                                    }
+
+                                    .product-details-info .single-block .give-review .review-btn {
+                                    margin-top: 30px;
+                                    padding: 12px 30px;
+                                    width: 100%;
+                                    background-color: #ffa000;
+                                    color: #fff;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    border-radius: 4px;
+                                    -webkit-transition: all 0.4s ease;
+                                    transition: all 0.4s ease;
+                                    }
+
+                                    .product-details-info .single-block .give-review .review-btn:hover {
+                                    color: #fff;
+                                    background-color: #081828;
+                                    }
+
+                                    .product-details-info .single-block .reviews .title {
+                                    font-size: 20px;
+                                    font-weight: 500;
+                                    margin-bottom: 30px;
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review {
+                                    position: relative;
+                                    padding-left: 80px;
+                                    margin-bottom: 30px;
+                                    }
+
+                                    @media (max-width: 767px) {
+                                    .product-details-info .single-block .reviews .single-review {
+                                    padding-left: 60px;
+                                    }
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review:last-child {
+                                    margin-bottom: 0;
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review img {
+                                    height: 60px;
+                                    width: 60px;
+                                    border-radius: 50%;
+                                    position: absolute;
+                                    left: 0;
+                                    top: 0;
+                                    }
+
+                                    @media (max-width: 767px) {
+                                    .product-details-info .single-block .reviews .single-review img {
+                                    height: 40px;
+                                    width: 40px;
+                                    }
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info {
+                                    position: relative;
+                                    border: 1px solid #eee;
+                                    border-radius: 4px;
+                                    padding: 25px;
+                                    }
+
+                                    @media (max-width: 767px) {
+                                    .product-details-info .single-block .reviews .single-review .review-info {
+                                    padding: 20px;
+                                    }
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info::before {
+                                    position: absolute;
+                                    top: 12px;
+                                    right: 100%;
+                                    width: 0;
+                                    height: 0;
+                                    border: solid transparent;
+                                    content: '';
+                                    pointer-events: none;
+                                    margin-top: 9px;
+                                    border-width: 10px;
+                                    border-color: transparent;
+                                    border-right-color: #e5e5e5;
+                                    }
+
+                                    @media (max-width: 767px) {
+                                    .product-details-info .single-block .reviews .single-review .review-info::before {
+                                    top: 5px;
+                                    }
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info::after {
+                                    position: absolute;
+                                    top: 12px;
+                                    right: 100%;
+                                    width: 0;
+                                    height: 0;
+                                    border: solid transparent;
+                                    content: '';
+                                    pointer-events: none;
+                                    margin-top: 10px;
+                                    border-width: 9px;
+                                    border-color: transparent;
+                                    border-right-color: #fff;
+                                    }
+
+                                    @media (max-width: 767px) {
+                                    .product-details-info .single-block .reviews .single-review .review-info::after {
+                                    top: 5px;
+                                    }
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info h4 {
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    }
+
+                                    @media (max-width: 767px) {
+                                    .product-details-info .single-block .reviews .single-review .review-info h4 {
+                                    font-size: 14px;
+                                    }
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info h4 span {
+                                    font-size: 14px;
+                                    display: block;
+                                    color: #888;
+                                    margin-top: 7px;
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info .stars {
+                                    margin-top: 8px;
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info .stars li {
+                                    display: inline-block;
+                                    color: #ffa000;
+                                    font-size: 12px;
+                                    }
+
+                                    .product-details-info .single-block .reviews .single-review .review-info p {
+                                    margin-top: 15px;
+                                    }                         <option>1 Star</option>
                                 </select>
                             </div>
                         </div>

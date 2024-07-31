@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Getter
 @ToString
-@Table(name = "m_member")
+@Table(name = "member")
 public class Member extends BaseEntity{
 
     @Id

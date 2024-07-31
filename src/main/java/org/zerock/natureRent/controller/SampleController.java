@@ -69,9 +69,12 @@ public class SampleController {
 //    model.addAttribute("dto", productDTO);
 //    return "sample/product-details";
 
+    }
 
-
-
+    @GetMapping("faq")
+    public String exFaq(){
+        log.info("exFaq..........");
+        return "/sample/faq"; // 명시적으로 뷰 이름을 반환
 
     }
 

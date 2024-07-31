@@ -43,6 +43,7 @@ public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         if(fromSocial && passwordResult) {
             redirectStrategy.sendRedirect(request, response, "/member/modify?from=social");
+//            redirectStrategy.sendRedirect(request, response, "/sample/member/modify?from=social");
         }
 //        else {
 //            redirectStrategy.sendRedirect(request, response, "/sample/admin");

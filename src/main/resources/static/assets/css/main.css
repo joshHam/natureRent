@@ -4166,31 +4166,31 @@ top: 2px;
   margin: 0;
 }
 
-.product-details-info .give-review h4 {
+.product-details-info .single-block .give-review h4 {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 30px;
 }
 
-.product-details-info .give-review ul li {
+.product-details-info .single-block .give-review ul li {
   display: block;
   margin-bottom: 12px;
 }
 
-.product-details-info .give-review ul li span {
+.product-details-info .single-block .give-review ul li span {
   color: #666;
   display: inline-block;
   margin-right: 8px;
   min-width: 80px;
 }
 
-.product-details-info .give-review ul li i {
+.product-details-info .single-block .give-review ul li i {
   display: inline-block;
   color: #ffa000;
   font-size: 12px;
 }
 
-.product-details-info .give-review .review-btn {
+.product-details-info .single-block .give-review .review-btn {
   margin-top: 30px;
   padding: 12px 30px;
   width: 100%;
@@ -4203,7 +4203,7 @@ top: 2px;
   transition: all 0.4s ease;
 }
 
-.product-details-info .give-review .review-btn:hover {
+.product-details-info .single-block .give-review .review-btn:hover {
   color: #fff;
   background-color: #081828;
 }

@@ -1,0 +1,97 @@
+/*======================================
+    Reviews Section CSS
+========================================*/
+.product-details-info .reviews {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 30px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.product-details-info .reviews .title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #081828;
+  margin-bottom: 20px;
+}
+
+.product-details-info .reviews .single-review {
+  position: relative;
+  padding-left: 80px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 767px) {
+  .product-details-info .reviews .single-review {
+    padding-left: 60px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.product-details-info .reviews .single-review img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  .product-details-info .reviews .single-review img {
+    height: 40px;
+    width: 40px;
+    position: static;
+    margin-bottom: 10px;
+  }
+}
+
+.product-details-info .reviews .single-review .review-info {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 20px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.product-details-info .reviews .single-review .review-info h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #081828;
+}
+
+@media (max-width: 767px) {
+  .product-details-info .reviews .single-review .review-info h4 {
+    font-size: 16px;
+  }
+}
+
+.product-details-info .reviews .single-review .review-info .stars {
+  margin-bottom: 10px;
+}
+
+.product-details-info .reviews .single-review .review-info .stars li {
+  display: inline-block;
+  color: #ffa000;
+  font-size: 14px;
+}
+
+.product-details-info .reviews .single-review .review-info p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  margin-top: 10px;
+}
+
+@media (max-width: 767px) {
+  .product-details-info .reviews .single-review .review-info p {
+    font-size: 13px;
+  }
+}
