@@ -43,9 +43,9 @@ public class SecurityConfig {
 
 
 //        http.authorizeHttpRequests()
-//                .requestMatchers("/sample/all").permitAll()
-//                .requestMatchers("/sample/member").hasAnyAuthority("USER","OAUTH2_USER")
-//                .requestMatchers("/sample/admin").hasRole("ADMIN");
+//                .requestMatchers("/main/all").permitAll()
+//                .requestMatchers("/main/member").hasAnyAuthority("USER","OAUTH2_USER")
+//                .requestMatchers("/main/admin").hasRole("ADMIN");
 
 
 //        http.formLogin();
@@ -69,9 +69,9 @@ public class SecurityConfig {
 
         // 권한 설정
 //        http.authorizeHttpRequests((authz) -> authz
-//                .requestMatchers("/sample/all").permitAll()
-//                .requestMatchers("/sample/member").hasAnyAuthority("USER", "OAUTH2_USER")
-//                .requestMatchers("/sample/admin").hasRole("ADMIN")
+//                .requestMatchers("/main/all").permitAll()
+//                .requestMatchers("/main/member").hasAnyAuthority("USER", "OAUTH2_USER")
+//                .requestMatchers("/main/admin").hasRole("ADMIN")
 //                .anyRequest().authenticated()
 //        );
 

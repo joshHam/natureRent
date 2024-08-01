@@ -34,7 +34,7 @@ public class NoteController {
     }
 
     @GetMapping(value = "/{num}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NoteDTO> read(@PathVariable("num") Long num){
+    public ResponseEntity<NoteDTO> readM(@PathVariable("num") Long num){
 
         log.info("-----------read-------------------------------");
         log.info(num);

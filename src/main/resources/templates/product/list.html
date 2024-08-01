@@ -32,7 +32,7 @@
 
             <tr th:each="dto : ${result.dtoList}" >
                 <th scope="row" >
-                    <a th:href="@{/product/read(mno = ${dto.mno}, page= ${result.page})}">
+                    <a th:href="@{/product/readM(mno = ${dto.mno}, page= ${result.page})}">
                         [[${dto.mno}]]
                     </a>
                 </th>

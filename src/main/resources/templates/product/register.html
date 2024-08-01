@@ -83,7 +83,7 @@
         $(".custom-file-input").on("change", function() {
 
             var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            $(this).siblings(".custom-file-label").addClass("selected")(fileName);
 
             var formData = new FormData();
 
@@ -191,7 +191,7 @@
             });
 
             //태그들이 추가된 것을 확인한 후에 comment를 제거
-            $(".box").html(str);
+            $(".box")(str);
 
             $("form").submit();
 

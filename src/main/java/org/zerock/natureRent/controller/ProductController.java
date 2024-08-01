@@ -34,7 +34,7 @@ public class ProductController {
 
         redirectAttributes.addFlashAttribute("msg", mno);
 
-        return "redirect:/product/list";
+        return "redirect:/product/register";
     }
 
     @GetMapping("/list")
@@ -47,8 +47,8 @@ public class ProductController {
 
     }
 
-    @GetMapping({"/read", "/modify"})
-    public void read(long mno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
+    @GetMapping({"/readM", "/modify"})
+    public void readM(long mno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
 
         log.info("mno: " + mno);
 
@@ -58,5 +58,55 @@ public class ProductController {
 
     }
 
+    /*============================================================================*/
+    @GetMapping("/product-details")
+    public void read(long mno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
+
+        log.info("mno: " + mno);
+
+        ProductDTO productDTO = productService.getProduct(mno);
+
+        model.addAttribute("dto", productDTO);
+
+//    log.info("exProductDetails..........");
+//    if (mno == null) {
+//        log.warn("mno parameter is missing");
+//        return "redirect:/error"; // 매개변수가 없을 때 예외 처리
+//    }
+//
+//    ProductDTO productDTO = productService.getProduct(mno);
+//    if (productDTO == null) {
+//        log.warn("Product not found with mno: " + mno);
+//        return "redirect:/error"; // 예외 처리
+//    }
+//    log.info("ProductDTO: " + productDTO);
+//    model.addAttribute("dto", productDTO);
+//    return "main/product-details";
+
+    }
+
+    @GetMapping("/product-list")
+    public String ProductList(PageRequestDTO pageRequestDTO, Model model) {
+
+        log.info("pageRequestDTO: " + pageRequestDTO);
+
+
+        model.addAttribute("result", productService.getList(pageRequestDTO));
+
+
+        return "/product/product-list"; // 명시적으로 뷰 이름을 반환
+    }
+
+    @GetMapping("/product-grids")
+    public String ProductGrids(PageRequestDTO pageRequestDTO, Model model) {
+
+        log.info("pageRequestDTO: " + pageRequestDTO);
+
+
+        model.addAttribute("result", productService.getList(pageRequestDTO));
+
+
+        return "/product/product-grids"; // 명시적으로 뷰 이름을 반환
+    }
 
 }

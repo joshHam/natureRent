@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @Log4j2
-@RequestMapping("/sample/")
+@RequestMapping("/main/")
 public class SampleController2 {
 
     private final ProductService productService;
@@ -34,7 +34,7 @@ public class SampleController2 {
         PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
         model.addAttribute("result", result);
 
-        return "sample/all";
+        return "main/all";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -61,7 +61,7 @@ public class SampleController2 {
         log.info("exMemberOnly.............");
         log.info(clubAuthMember);
 
-        return "/sample/admin";
+        return "/main/admin";
     }
 
 }
