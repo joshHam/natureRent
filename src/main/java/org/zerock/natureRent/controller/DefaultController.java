@@ -2,17 +2,8 @@ package org.zerock.natureRent.controller;
 
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
-import org.zerock.natureRent.dto.ProductDTO;
-import org.zerock.natureRent.dto.PageRequestDTO;
-import org.zerock.natureRent.dto.PageResultDTO;
-import org.zerock.natureRent.service.ProductService;
 
 @Controller
 @Log4j2

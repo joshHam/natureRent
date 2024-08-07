@@ -1,6 +1,12 @@
 <!DOCTYPE html>
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
+</head>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+
+<body>
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
     <th:block th:fragment="content">
@@ -21,9 +27,7 @@
                 </div>
             </div>
 
-            <div class="box">
-
-            </div>
+            <div class="box"></div>
 
             <style>
                 .uploadResult {
@@ -53,15 +57,20 @@
             </style>
 
             <div class="uploadResult">
-                <ul>
-
-                </ul>
+                <ul></ul>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
-            <script>
-    $(document).ready(function(e) {
+        <script>
+            var $j = jQuery.noConflict();
+        $j(document).ready(function() {
+<!--        $(document).ready(function() {-->
+
+        console.log(typeof jQuery);
+        console.log($);
+        console.log(jQuery);
+
 
         var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
         var maxSize = 10485760; //10MB
@@ -80,14 +89,14 @@
             return true;
         }
 
-        $(".custom-file-input").on("change", function() {
+        $j(".custom-file-input").on("change", function() {
 
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected")(fileName);
+            var fileName = $j(this).val().split("\\").pop();
 
+                $j(this).siblings(".custom-file-label").addClass("selected").text(fileName);
             var formData = new FormData();
 
-            var inputFile = $(this);
+            var inputFile = $j(this);
 
             var files = inputFile[0].files;
 
@@ -104,8 +113,10 @@
                 appended = true;
             }
 
-            //upload를 하지 않는다.
-            if (!appended) {return;}
+                    // 업로드를 하지 않는다.
+                    if (!appended) {
+                        return;
+                    }
 
             for (var value of formData.values()) {
                 console.log(value);
@@ -113,7 +124,7 @@
 
             //실제 업로드 부분
             //upload ajax
-            $.ajax({
+            $j.ajax({
                 url: '/uploadAjax',
                 processData: false,
                 contentType: false,
@@ -127,39 +138,34 @@
                 error: function(jqXHR, textStatus, errorThrown){
                     console.log(textStatus);
                 }
-            }); //$.ajax
+            }); //$j.ajax
         }); //end change event
 
+                function showResult(uploadResultArr) {
+                    var uploadUL = $j(".uploadResult ul");
+                    var str = "";
 
-        function showResult(uploadResultArr){
-
-            var uploadUL = $(".uploadResult ul");
-
-            var str ="";
-
-            $(uploadResultArr).each(function(i, obj) {
-
-                str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
-                str + " <div>";
-                str += "<button type='button' data-file=\'" + obj.imageURL + "\' "
-                str += "class='btn-warning btn-sm'>X</button><br>";
-                str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
-                str += "</div>";
-                str + "</li>";
-            });
+                    $j(uploadResultArr).each(function(i, obj) {
+                        str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
+                        str += " <div>";
+                        str += "<button type='button' data-file='" + obj.imageURL + "' "
+                        str += "class='btn-warning btn-sm'>X</button><br>";
+                        str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+                        str += "</div>";
+                        str += "</li>";
+                    });
 
             uploadUL.append(str);
         }
 
-        $(".uploadResult ").on("click", "li button", function(e){
+                $j(".uploadResult").on("click", "li button", function(e) {
+                    console.log("delete file");
 
-            console.log("delete file");
+            var targetFile = $j(this).data("file");
 
-            var targetFile = $(this).data("file");
+            var targetLi = $j(this).closest("li");
 
-            var targetLi = $(this).closest("li");
-
-            $.ajax({
+            $j.ajax({
                 url: '/removeFile',
                 data: {fileName: targetFile},
                 dataType:'text',
@@ -169,18 +175,18 @@
 
                     targetLi.remove();
                 }
-            }); //$.ajax
+            }); //$j.ajax
         });
 
 
         //prevent submit
-        $(".btn-primary").on("click", function(e) {
+        $j(".btn-primary").on("click", function(e) {
             e.preventDefault();
 
             var str = "";
 
-            $(".uploadResult li").each(function(i,obj){
-                var target = $(obj);
+            $j(".uploadResult li").each(function(i,obj){
+                var target = $j(obj);
 
                 str += "<input type='hidden' name='imageDTOList["+i+"].imgName' value='"+target.data('name') +"'>";
 
@@ -190,18 +196,16 @@
 
             });
 
-            //태그들이 추가된 것을 확인한 후에 comment를 제거
-            $(".box")(str);
-
-            $("form").submit();
-
-        });
-
-
-
-    }); //document ready
-</script>
-
+                    // 태그들이 추가된 것을 확인한 후에 comment를 제거
+                    $j(".box").html(str);
+                    $j("form").submit();
+                });
+            }); // document ready
+        </script>
     </th:block>
 
 </th:block>
+
+</body>
+</html>
+

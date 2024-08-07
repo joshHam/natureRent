@@ -25,6 +25,11 @@ public class ProductController {
     public void register(){
 
     }
+    @GetMapping("/test")
+    public void test(){
+
+    }
+
 
     @PostMapping("/register")
     public String register(ProductDTO productDTO, RedirectAttributes redirectAttributes){

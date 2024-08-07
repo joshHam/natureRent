@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
-import org.zerock.natureRent.entity.Member;
+import org.zerock.natureRent.entity.MemberOriginal;
 
 import java.util.stream.IntStream;
 
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class MemberRepositoryTests {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberOriginalRepository memberRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -23,7 +23,7 @@ public class MemberRepositoryTests {
     public void insertMembers() {
 
         IntStream.rangeClosed(1,100).forEach(i -> {
-            Member member = Member.builder()
+            MemberOriginal member = MemberOriginal.builder()
                     .email("r"+i +"@zerock.org")
                     .pw("1111")
                     .nickname("reviewer"+i).build();
@@ -38,7 +38,7 @@ public class MemberRepositoryTests {
 
         Long mid = 1L; //Member의 mid
 
-        Member member = Member.builder().mid(mid).build();
+        MemberOriginal member = MemberOriginal.builder().mid(mid).build();
 
         //기존
         //memberRepository.deleteById(mid);
@@ -48,6 +48,14 @@ public class MemberRepositoryTests {
         reviewRepository.deleteByMember(member);
         memberRepository.deleteById(mid);
     }
+
+
+
+
+
+
+
+
 
 
 }

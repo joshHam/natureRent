@@ -2,6 +2,7 @@ package org.zerock.natureRent.service;
 
 import org.zerock.natureRent.dto.ReviewDTO;
 import org.zerock.natureRent.entity.Member;
+import org.zerock.natureRent.entity.MemberOriginal;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.Review;
 
@@ -26,7 +27,9 @@ public interface ReviewService {
         Review productReview = Review.builder()
                 .reviewnum(productReviewDTO.getReviewnum())
                 .product(Product.builder().mno(productReviewDTO.getMno()).build())
-                .member(Member.builder().mid(productReviewDTO.getMid()).build())
+//                .member(Member.builder().email(productReviewDTO.getMid()).build())
+                .member(Member.builder().email(productReviewDTO.getMember_email()).build())
+
                 .grade(productReviewDTO.getGrade())
                 .text(productReviewDTO.getText())
                 .build();
@@ -39,9 +42,11 @@ public interface ReviewService {
         ReviewDTO productReviewDTO = ReviewDTO.builder()
                 .reviewnum(productReview.getReviewnum())
                 .mno(productReview.getProduct().getMno())
-                .mid(productReview.getMember().getMid())
-                .nickname(productReview.getMember().getNickname())
-                .email(productReview.getMember().getEmail())
+//                .mid(productReview.getMember().getMid())
+//                .mid(productReview.getMember().getEmail())
+//                .nickname(productReview.getMember().getNickname())
+                .name(productReview.getMember().getName())
+                .member_email(productReview.getMember().getEmail())
                 .grade(productReview.getGrade())
                 .text(productReview.getText())
                 .regDate(productReview.getRegDate())

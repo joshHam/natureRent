@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.zerock.natureRent.entity.Member;
+import org.zerock.natureRent.entity.MemberOriginal;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.Review;
 
@@ -18,5 +18,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Modifying
     @Query("delete from Review mr where mr.member = :member")
-    void deleteByMember(Member member);
+    void deleteByMember(MemberOriginal member);
 }

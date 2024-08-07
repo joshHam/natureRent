@@ -20,7 +20,7 @@ public class Review extends BaseEntity {
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private Member/*Original*/ member;
 
     private int grade;
 

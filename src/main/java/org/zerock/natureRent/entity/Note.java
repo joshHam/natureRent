@@ -21,7 +21,7 @@ public class Note extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ClubMember writer;
+    private Member writer;
 
     public void changeTitle(String title){
         this.title = title;

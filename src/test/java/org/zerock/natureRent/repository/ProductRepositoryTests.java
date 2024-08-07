@@ -30,7 +30,7 @@ public class ProductRepositoryTests {
     @Test
     public void insertProducts() {
 
-        IntStream.rangeClosed(1,20).forEach(i -> {
+        IntStream.rangeClosed(1,5).forEach(i -> {
 
             Product product = Product.builder().title("Product...." +i).build();
 

@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
+import org.zerock.natureRent.security.dto.MemberDTO;
 import org.zerock.natureRent.security.util.JWTUtil;
 
 import jakarta.servlet.*;
@@ -54,7 +54,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info(authResult.getPrincipal());
 
         //email address
-        String email = ((ClubAuthMemberDTO)authResult.getPrincipal()).getUsername();
+        String email = ((MemberDTO)authResult.getPrincipal()).getUsername();
 
         String token = null;
         try {
