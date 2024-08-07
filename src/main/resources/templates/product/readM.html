@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}" rel="stylesheet">
 
+    <!-- Font Awesome for star icons -->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+    <title>readM</title>
+</head>
+
+<body>
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
     <th:block th:fragment="content">
@@ -14,13 +23,13 @@
         </div>
 
         <div class="form-group">
-            <label >Review Count </label>
-            <input type="text" class="form-control" name="title" th:value="${dto.reviewCnt}" readonly>
+            <label>Review Count</label>
+            <input type="text" class="form-control" name="reviewCnt" th:value="${dto.reviewCnt}" readonly>
         </div>
 
         <div class="form-group">
-            <label >Avg </label>
-            <input type="text" class="form-control" name="title" th:value="${dto.avg}" readonly>
+            <label>Avg</label>
+            <input type="text" class="form-control" name="avg" th:value="${dto.avg}" readonly>
         </div>
 
         <style>
@@ -70,11 +79,9 @@
             Review Register
         </button>
 
-        <div class="list-group reviewList">
+        <div class="list-group reviewList"></div>
 
-        </div>
-
-
+        <!-- Review Modal -->
         <div class="reviewModal modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -88,7 +95,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label >Reviewer ID</label>
-                            <input type="text" class="form-control" name="mid" >
+                            <input type="text" class="form-control" name="email" >
                         </div>
                         <div class="form-group">
                             <label >Grade <span class="grade"></span></label>
@@ -109,7 +116,8 @@
             </div>
         </div>
 
-        <div class="imageModal modal " tabindex="-2" role="dialog">
+        <!-- Image Modal -->
+        <div class="imageModal modal" tabindex="-2" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -119,9 +127,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-
-                    </div>
+                    <div class="modal-body"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
@@ -130,67 +136,75 @@
         </div>
 
 
+
+        <!-- jQuery 및 Bootstrap JS 로드 -->
+        <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js}"></script>
+        <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+
+        <!-- 기타 스크립트 로드 -->
         <script th:src="@{/starrr.js}"></script>
         <link th:href="@{/css/starrr.css}" rel="stylesheet">
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 
         <script>
-            $(document).ready(function(e) {
-
+            $(document).ready(function() {
                 var grade = 0;
                 var mno = [[${dto.mno}]];
 
-                $('.starrr').starrr({
-                    rating: grade,
-                    change: function(e, value){
-                        if (value) {
-                            console.log(value);
-                            grade = value;
-                        }
-                    }
-                });
+        // Star rating 초기화
+        $('.starrr').starrr({
+            rating: grade,
+            change: function(e, value){
+                if (value) {
+                    console.log(value);
+                    grade = value;
+                }
+            }
+        });
 
                 //$(".reviewModal").modal("show"); 미리 보기용
 
                 var reviewModal = $(".reviewModal");
-                var inputMid = $('input[name="mid"]');
+                var inputEmail = $('input[name="email"]');
                 var inputText = $('input[name="text"]');
 
+        // Review 등록 버튼 클릭 이벤트
+        $(".addReviewBtn").click(function () {
+            inputEmail.val("");
+            inputText.val("");
 
-                $(".addReviewBtn").click(function () {
-                    inputMid.val("");
-                    inputText.val("");
-
-                    $(".removeBtn ,  .modifyBtn").hide();
+                    $(".removeBtn, .modifyBtn").hide();
                     $(".reviewSaveBtn").show();
 
                     reviewModal.modal('show');
                 });
 
-
+                // Review 저장 버튼 클릭 이벤트
                 $('.reviewSaveBtn').click(function() {
+                    var data = {
+                        mno: mno,
+                        grade: grade,
+                        text: inputText.val(),
+                        member_email: inputEmail.val()
+                    };
 
-                    var data = {mno:mno, grade:grade, text:inputText.val(), mid: inputMid.val() };
+                    console.log("Data being sent:", data);
 
-                    console.log(data);
 
-                    $.ajax({
-                        url:'/reviews/'+mno,
-                        type:"POST",
-                        data:JSON.stringify(data),
-                        contentType:"application/json; charset=utf-8",
-                        dataType:"text",
-                        success: function(result){
-
-                            console.log("result: " + result);
-
-                            self.location.reload();
-
-                        }
-                    })
-                    reviewModal.modal('hide');
-
-                });
+            $.ajax({
+                url: '/reviews/' + mno,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function(result){
+                    console.log("result: " + result);
+                    self.location.reload();
+                }
+            });
+            reviewModal.modal('hide');
+        });
 
 
                 //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
@@ -213,22 +227,20 @@
 
                             console.log(review);
 
-                            str += '    <div class="card-body" data-reviewnum='+review.reviewnum+' data-mid='+review.mid+'>';
+                            str += '    <div class="card-body" data-reviewnum='+review.reviewnum+' data-email='+review.member_email+'>';
                             str += '    <h5 class="card-title">'+review.text+' <span>'+ review.grade+'</span></h5>';
-                            str += '    <h6 class="card-subtitle mb-2 text-muted">'+review.nickname+'</h6>';
+                            str += '    <h6 class="card-subtitle mb-2 text-muted">'+review.member_email+'</h6>';
                             str += '    <p class="card-text">'+ formatTime(review.regDate) +'</p>';
                             str += '    </div>';
                         });
 
-                        $(".reviewList")(str);
+                        $(".reviewList").html(str); // 리뷰 리스트 업데이트
                     });
                 }
 
                 getProductReviews();
 
-
-                //modify reveiw
-
+                // Review 수정 클릭 이벤트
                 var reviewnum;
 
                 $(".reviewList").on("click", ".card-body", function() {
@@ -241,19 +253,24 @@
 
                     reviewnum = targetReview.data("reviewnum");
                     console.log("reviewnum: "+ reviewnum);
-                    inputMid.val(targetReview.data("mid"));
+                    inputEmail.val(targetReview.data("email"));
                     inputText.val(targetReview.find('.card-title').clone().children().remove().end().text());
 
-                    var grade = targetReview.find('.card-title span')();
+                    var grade = targetReview.find('.card-title span').text();
                     $(".starrr a:nth-child("+grade+")").trigger('click');
 
-                    $('.reviewModal').modal('show');
+                    reviewModal.modal('show');
                 });
 
-
+                // Review 수정 버튼 클릭 이벤트
                 $(".modifyBtn").on("click", function(){
-
-                    var data = {reviewnum: reviewnum, mno:mno, grade:grade, text:inputText.val(), mid: inputMid.val() };
+                    var data = {
+                        reviewnum: reviewnum,
+                        mno: mno,
+                        grade: grade,
+                        text: inputText.val(),
+                        member_email: inputEmail.val()
+                    };
 
                     console.log(data);
 
@@ -274,6 +291,7 @@
                     reviewModal.modal('hide');
                 });
 
+                // Review 삭제 버튼 클릭 이벤트
                 $(".removeBtn").on("click", function(){
 
                     var data = {reviewnum: reviewnum};
@@ -296,14 +314,13 @@
                     reviewModal.modal('hide');
                 });
 
+                // 이미지 클릭 이벤트
                 $(".uploadResult li").click(function() {
 
                     var file = $(this).data('file');
 
                     console.log(file);
-
-                    $('.imageModal .modal-body')("<img style='width:100%' src='/display?fileName="+file+"&size=1' >")
-
+                    $('.imageModal .modal-body').html("<img style='width:100%' src='/display?fileName="+file+"&size=1' >");
                     $(".imageModal").modal("show");
 
                 });

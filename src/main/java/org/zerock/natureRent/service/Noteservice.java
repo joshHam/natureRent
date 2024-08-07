@@ -1,7 +1,7 @@
 package org.zerock.natureRent.service;
 
 import org.zerock.natureRent.dto.NoteDTO;
-import org.zerock.natureRent.entity.ClubMember;
+import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.entity.Note;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public interface Noteservice {
                 .num(noteDTO.getNum())
                 .title(noteDTO.getTitle())
                 .content(noteDTO.getContent())
-                .writer(ClubMember.builder().email(noteDTO.getWriterEmail()).build())
+                .writer(Member.builder().email(noteDTO.getWriterEmail()).build())
                 .build();
 
         return note;

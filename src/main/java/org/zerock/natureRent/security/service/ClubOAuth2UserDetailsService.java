@@ -9,10 +9,10 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.zerock.natureRent.entity.ClubMember;
+import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.entity.ClubMemberRole;
-import org.zerock.natureRent.repository.ClubMemberRepository;
-import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
+import org.zerock.natureRent.repository.MemberRepository;
+import org.zerock.natureRent.security.dto.MemberDTO;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ClubOAuth2UserDetailsService extends DefaultOAuth2UserService {
 
-    private final ClubMemberRepository repository;
+    private final MemberRepository repository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -54,9 +54,9 @@ public class ClubOAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         log.info("EMAIL: " + email);
 
-        ClubMember member = saveSocialMember(email); //조금 뒤에 사용
+        Member member = saveSocialMember(email); //조금 뒤에 사용
 
-        ClubAuthMemberDTO clubAuthMember = new ClubAuthMemberDTO(
+        MemberDTO clubAuthMember = new MemberDTO(
                 member.getEmail(),
                 member.getPassword(),
                 true,   //fromSocial
@@ -71,27 +71,27 @@ public class ClubOAuth2UserDetailsService extends DefaultOAuth2UserService {
         return clubAuthMember;
     }
 
-    private ClubMember saveSocialMember(String email){
+    private Member saveSocialMember(String email){
 
         //기존에 동일한 이메일로 가입한 회원이 있는 경우에는 그대로 조회만
-        Optional<ClubMember> result = repository.findByEmail(email, true);
+        Optional<Member> result = repository.findByEmail(email, true);
 
         if(result.isPresent()){
             return result.get();
         }
 
         //없다면 회원 추가 패스워드는 1111 이름은 그냥 이메일 주소로
-        ClubMember clubMember = ClubMember.builder().email(email)
+        Member member = Member.builder().email(email)
                 .name(email)
                 .password( passwordEncoder.encode("1111") )
                 .fromSocial(true)
                 .build();
 
-        clubMember.addMemberRole(ClubMemberRole.USER);
+        member.addMemberRole(ClubMemberRole.USER);
 
 
-        repository.save(clubMember);
+        repository.save(member);
 
-        return clubMember;
+        return member;
     }
 }

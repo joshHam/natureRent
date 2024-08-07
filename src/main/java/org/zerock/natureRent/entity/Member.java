@@ -1,8 +1,12 @@
 package org.zerock.natureRent.entity;
 
+
 import lombok.*;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -10,17 +14,25 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Getter
 @ToString
-@Table(name = "member")
-public class Member extends BaseEntity{
+/*@Table(name = "member")  // 테이블 이름을 명시적으로 지정*/
+public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mid;
-
     private String email;
 
-    private String pw;
+    private String password;
 
-    private String nickname;
+    private String name;
+
+    private boolean fromSocial;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<ClubMemberRole> roleSet = new HashSet<>();
+
+    public void addMemberRole(ClubMemberRole clubMemberRole){
+
+        roleSet.add(clubMemberRole);
+    }
 
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
+import org.zerock.natureRent.security.dto.MemberDTO;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.dto.PageResultDTO;
@@ -97,7 +97,7 @@ public class MainController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("member")
-    public String exMember(@AuthenticationPrincipal ClubAuthMemberDTO clubAuthMember){
+    public String exMember(@AuthenticationPrincipal MemberDTO clubAuthMember){
 
         log.info("exMember..........");
 
@@ -110,7 +110,7 @@ public class MainController {
     //로그인한 사용자중에 user95@zerock.org만 접근가능하도록//
     @PreAuthorize("#clubAuthMember != null && #clubAuthMember.username eq \"user95@zerock.org\"")
     @GetMapping("/exOnly")
-    public String exMemberOnly(@AuthenticationPrincipal ClubAuthMemberDTO clubAuthMember){
+    public String exMemberOnly(@AuthenticationPrincipal MemberDTO clubAuthMember){
 
         log.info("exMemberOnly.............");
         log.info(clubAuthMember);

@@ -3,8 +3,6 @@ package org.zerock.natureRent.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
-import org.springframework.transaction.annotation.Transactional;
 import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.Review;
@@ -24,14 +22,15 @@ public class ReviewRepositoryTests {
     public void insertProductwReviews() {
 
         //200개의 리뷰를 등록
-        IntStream.rangeClosed(1,30).forEach(i -> {
+        IntStream.rangeClosed(1,250).forEach(i -> {
 
             //영화 번호
             Long mno = (long)(Math.random()*100) + 1;
 
             //리뷰어 번호
-            Long mid  =  ((long)(Math.random()*100) + 1 );
-            Member member = Member.builder().mid(mid).build();
+            long mid  =  ((long)(Math.random()*100) + 1 );
+            String email = "user"+mid+"@zerock.org";
+            Member member = Member.builder().email(email).build();
 
             Review productReview = Review.builder()
                     .member(member)

@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
+import org.zerock.natureRent.security.dto.MemberDTO;
 
 import jakarta.servlet.*;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("--------------------------------------");
         log.info("onAuthenticationSuccess");
 
-        ClubAuthMemberDTO authMember = (ClubAuthMemberDTO)authentication.getPrincipal();
+        MemberDTO authMember = (MemberDTO)authentication.getPrincipal();
 
         boolean fromSocial = authMember.isFromSocial();
 
