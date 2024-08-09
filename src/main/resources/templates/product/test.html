@@ -1,22 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test jQuery</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
+document.addEventListener('DOMContentLoaded', function() {
+const urlParams = new URLSearchParams(window.location.search);
+const mno = urlParams.get('mno');
 
-<h1>Test Page</h1>
-<button id="testBtn">Test</button>
+const fetchReviews = async () => {
+try {
+const response = await fetch(`/reviews/${mno}/all`);
+const data = await response.json();
 
-<script>
-    $(document).ready(function() {
-        $('#testBtn').click(function() {
-            alert('jQuery is working!');
-        });
-    });
-</script>
+if (data && data.length > 0) {
+let overallRatingValue = 0;
+let ratingCount = [0, 0, 0, 0, 0];
 
-</body>
-</html>
+data.forEach(review => {
+overallRatingValue += review.grade;
+ratingCount[review.grade - 1]++;
+});
+
+const averageRating = (overallRatingValue / data.length).toFixed(1);
+document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
+
+// 평점 요약 업데이트
+let summaryHTML = '';
+for (let i = 4; i >= 0; i--) {
+summaryHTML += `
+<li>
+    <span>${i + 1} stars - ${ratingCount[i]}</span>
+    ${generateStars(i + 1)}
+</li>`;
+}
+document.getElementById('rating-summary').innerHTML = summaryHTML;
+
+// 최신 리뷰 업데이트
+let reviewsHTML = '';
+data.forEach(review => {
+reviewsHTML += `
+<div class="single-review">
+    <img src="https://via.placeholder.com/50" alt="#">
+    <div class="review-info">
+        <h4>${review.text} <span>${review.nickname}</span></h4>
+        <ul class="stars">${generateStars(review.grade)}</ul>
+        <p>${review.text}</p>
+    </div>
+</div>`;
+});
+document.getElementById('latest-reviews').innerHTML = reviewsHTML;
+} else {
+document.getElementById('overall-rating').textContent = 'No reviews yet';
+document.getElementById('rating-summary').innerHTML = '';
+document.getElementById('latest-reviews').innerHTML = 'No reviews available';
+}
+} catch (error) {
+console.error('Error fetching reviews:', error);
+document.getElementById('overall-rating').textContent = 'Error loading reviews';
+document.getElementById('rating-summary').innerHTML = '';
+document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
+}
+};
+
+const generateStars = (rating) => {
+let stars = '';
+for (let i = 1; i <= 5; i++) {
+stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;
+}
+return stars;
+};
+
+fetchReviews();
+
+document.getElementById('submit-review').addEventListener('click', async () => {
+const name = document.getElementById('review-name').value;
+const email = document.getElementById('review-email').value;
+const subject = document.getElementById('review-subject').value;
+const rating = document.getElementById('review-rating').value;
+const message = document.getElementById('review-message').value;
+
+if (!mno) {
+console.error('mno is not defined');
+alert('Failed to submit review. Product ID is missing.');
+return;
+}
+
+const reviewData = {
+mno: mno,
+nickname: name,
+grade: rating,
+text: message,
+member_email: email
+};
+
+try {
+const response = await fetch(`/reviews/${mno}`, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify(reviewData),
+});
+
+if (response.ok) {
+fetchReviews();
+alert('Review submitted successfully!');
+const modal = document.getElementById('exampleModal');
+const bootstrapModal = new bootstrap.Modal(modal);
+bootstrapModal.hide();
+} else {
+alert('Failed to submit review.');
+}
+} catch (error) {
+console.error('Error submitting review:', error);
+alert('Error submitting review.');
+}
+});
+});

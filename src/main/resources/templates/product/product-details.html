@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
@@ -400,7 +401,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
-                            <h2 class="title" th:value="${dto.title}" readonly></h2>
+                            <h2 class="title">[[${dto.title}]]</h2>
                             <p class="category"><i class="lni lni-tag"></i> Drones:<a href="javascript:void(0)">Action
                                     cameras</a></p>
                             <h3 class="price">$850<span>$945</span></h3>
@@ -519,101 +520,21 @@
             </div>
         </div>
     </section>
-    <!-- End Item Details -->
+
 
     <!-- Start Item Details -->
     <section class="item-details section">
         <div class="container">
             <div class="product-details-info">
-                <!--<div class="single-block">
-                    <div class="row">
-                        <div class="col-lg-6 col-12">
-                            <div class="info-body custom-responsive-margin">
-                                <h4>Details</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
-                                <h4>Features</h4>
-                                <ul class="features">
-                                    <li>Capture 4K30 Video and 12MP Photos</li>
-                                    <li>Game-Style Controller with Touchscreen</li>
-                                    <li>View Live Camera Feed</li>
-                                    <li>Full Control of HERO6 Black</li>
-                                    <li>Use App for Dedicated Camera Operation</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-12">
-                            <div class="info-body">
-                                <h4>Specifications</h4>
-                                <ul class="normal-list">
-                                    <li><span>Weight:</span> 35.5oz (1006g)</li>
-                                    <li><span>Maximum Speed:</span> 35 mph (15 m/s)</li>
-                                    <li><span>Maximum Distance:</span> Up to 9,840ft (3,000m)</li>
-                                    <li><span>Operating Frequency:</span> 2.4GHz</li>
-                                    <li><span>Manufacturer:</span> GoPro, USA</li>
-                                </ul>
-                                <h4>Shipping Options:</h4>
-                                <ul class="normal-list">
-                                    <li><span>Courier:</span> 2 - 4 days, $22.50</li>
-                                    <li><span>Local Shipping:</span> up to one week, $10.00</li>
-                                    <li><span>UPS Ground Shipping:</span> 4 - 6 days, $18.00</li>
-                                    <li><span>Unishop Global Export:</span> 3 - 4 days, $25.00</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
                 <div class="row">
                     <div class="col-lg-4 col-12">
                         <div class="single-block give-review">
-                            <h4>4.5 (Overall)</h4>
-                            <ul>
-                                <li>
-                                    <span>5 stars - 38</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                </li>
-                                <li>
-                                    <span>4 stars - 10</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>3 stars - 3</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>2 stars - 1</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>1 star - 0</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
+                            <h4 id="overall-rating">Loading...</h4>
+                            <ul id="rating-summary">
+                                <li><span>Loading...</span></li>
                             </ul>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn review-btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
+                            <button type="button" class="btn review-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Leave a Review
                             </button>
                         </div>
@@ -622,66 +543,8 @@
                         <div class="single-block">
                             <div class="reviews">
                                 <h4 class="title">Latest Reviews</h4>
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="/assets/images/blog/comment1.jpg" alt="#">
-                                    <div class="review-info">
-                                        <h4>Awesome quality for the price
-                                            <span>Jacob Hammond
-                                            </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
-                                    </div>
-                                </div>
-                                <!-- End Single Review -->
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="/assets/images/blog/comment2.jpg" alt="#">
-                                    <div class="review-info">
-                                        <h4>My husband love his new...
-                                            <span>Alex Jaza
-                                            </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
-                                    </div>
-                                </div>
-                                <!-- End Single Review -->
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="/assets/images/blog/comment3.jpg" alt="#">
-                                    <div class="review-info">
-                                        <h4>I love the built quality...
-                                            <span>Jacob Hammond
-                                            </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
-                                    </div>
-                                </div>
-                                <!-- End Single Review -->
+                                <!-- Reviews will be dynamically loaded here -->
+                                <div id="latest-reviews">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -693,19 +556,19 @@
 
     <!-- Review Modal -->
     <div class="modal fade review-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="review-name">Your Name</label>
-                                                        <input class="form-control" type="text" id="review-name" required>
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="review-name">Your Name</label>
+                                <input class="form-control" type="text" id="review-name" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -726,11 +589,11 @@
                             <div class="form-group">
                                 <label for="review-rating">Rating</label>
                                 <select class="form-control" id="review-rating">
-                                    <option>5 Stars</option>
-                                    <option>4 Stars</option>
-                                    <option>3 Stars</option>
-                                    <option>2 Stars</option>
-                                    <option>1 Star</option>
+                                    <option value="5">5 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="1">1 Star</option>
                                 </select>
                             </div>
                         </div>
@@ -741,12 +604,13 @@
                     </div>
                 </div>
                 <div class="modal-footer button">
-                    <button type="button" class="btn">Submit Review</button>
+                    <button type="button" class="btn" id="submit-review">Submit Review</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- End Review Modal -->
+
 
     <!-- Start Footer Area -->
     <footer class="footer">
@@ -923,64 +787,62 @@
             });
         });
     </script>
-    <script>
+    <!--<script>
         $(document).ready(function(e) {
 
             var grade = 0;
             var mno = [[${dto.mno}]];
 
-            $('.starrr').starrr({
-                rating: grade,
-                change: function(e, value){
-                    if (value) {
-                        console.log(value);
-                        grade = value;
-                    }
+        // Star rating 초기화
+        $('.starrr').starrr({
+            rating: grade,
+            change: function(e, value){
+                if (value) {
+                    console.log(value);
+                    grade = value;
+                }
+            }
+        });
+
+        var reviewModal = $(".reviewModal");
+        var inputEmail = $('input[name="email"]');
+        var inputText = $('input[name="text"]');
+
+        // Review 등록 버튼 클릭 이벤트
+        $(".addReviewBtn").click(function () {
+            inputEmail.val("");
+            inputText.val("");
+
+            $(".removeBtn, .modifyBtn").hide();
+            $(".reviewSaveBtn").show();
+
+            reviewModal.modal('show');
+        });
+
+        // Review 저장 버튼 클릭 이벤트
+        $('.reviewSaveBtn').click(function() {
+            var data = {
+                mno: mno,
+                grade: grade,
+                text: inputText.val(),
+                member_email: inputEmail.val()
+            };
+
+            console.log("Data being sent:", data);
+
+            $.ajax({
+                url: '/reviews/' + mno,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function(result){
+                    console.log("result: " + result);
+                    self.location.reload();
                 }
             });
-
-            //$(".reviewModal").modal("show"); 미리 보기용
-
-            var reviewModal = $(".reviewModal");
-            var inputMid = $('input[name="mid"]');
-            var inputText = $('input[name="text"]');
-
-
-            $(".addReviewBtn").click(function () {
-                inputMid.val("");
-                inputText.val("");
-
-                $(".removeBtn ,  .modifyBtn").hide();
-                $(".reviewSaveBtn").show();
-
-                reviewModal.modal('show');
-            });
-
-
-            $('.reviewSaveBtn').click(function() {
-
-                var data = {mno:mno, grade:grade, text:inputText.val(), mid: inputMid.val() };
-
-                console.log(data);
-
-                $.ajax({
-                    url:'/reviews/'+mno,
-                    type:"POST",
-                    data:JSON.stringify(data),
-                    contentType:"application/json; charset=utf-8",
-                    dataType:"text",
-                    success: function(result){
-
-                        console.log("result: " + result);
-
-                        self.location.reload();
-
-                    }
-                })
-                reviewModal.modal('hide');
-
-            });
-
+            reviewModal.modal('hide');
+        });
 
             //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
             function getProductReviews() {
@@ -1002,25 +864,36 @@
 
                         console.log(review);
 
-                        str += '    <div class="card-body" data-reviewnum='+review.reviewnum+' data-mid='+review.mid+'>';
-                        str += '    <h5 class="card-title">'+review.text+' <span>'+ review.grade+'</span></h5>';
-                        str += '    <h6 class="card-subtitle mb-2 text-muted">'+review.nickname+'</h6>';
-                        str += '    <p class="card-text">'+ formatTime(review.regDate) +'</p>';
-                        str += '    </div>';
-                    });
+                    str += '<div class="single-review">';
+                    str += '<img src="/assets/images/blog/comment1.jpg" alt="#">';
+                    str += '<div class="review-info">';
+                    str += '<h4>' + review.text + '<span>' + review.member_email + '</span></h4>';
+                    str += '<ul class="stars">';
 
-                    $(".reviewList")(str);
+                    for (var i = 0; i < review.grade; i++) {
+                        str += '<li><i class="lni lni-star-filled"></i></li>';
+                    }
+
+                    for (var i = review.grade; i < 5; i++) {
+                        str += '<li><i class="lni lni-star"></i></li>';
+                    }
+
+                    str += '</ul>';
+                    str += '<p>' + formatTime(review.regDate) + '</p>';
+                    str += '</div>';
+                    str += '</div>';
                 });
-            }
+
+                $(".reviewList").html(str); // 리뷰 리스트 업데이트
+            });
+        }
 
             getProductReviews();
 
+        // Review 수정 클릭 이벤트
+        var reviewnum;
 
-            //modify reveiw
-
-            var reviewnum;
-
-            $(".reviewList").on("click", ".card-body", function() {
+        $(".reviewList").on("click", ".single-review", function() {
 
                 $(".reviewSaveBtn").hide();
                 $(".removeBtn , .modifyBtn").show();
@@ -1028,21 +901,26 @@
 
                 var targetReview = $(this);
 
-                reviewnum = targetReview.data("reviewnum");
-                console.log("reviewnum: "+ reviewnum);
-                inputMid.val(targetReview.data("mid"));
-                inputText.val(targetReview.find('.card-title').clone().children().remove().end().text());
+            reviewnum = targetReview.data("reviewnum");
+            console.log("reviewnum: "+ reviewnum);
+            inputEmail.val(targetReview.data("email"));
+            inputText.val(targetReview.find('.review-info h4').clone().children().remove().end().text());
 
-                var grade = targetReview.find('.card-title span')();
-                $(".starrr a:nth-child("+grade+")").trigger('click');
+            var grade = targetReview.find('.stars li i.lni-star-filled').length;
+            $(".starrr a:nth-child("+grade+")").trigger('click');
 
-                $('.reviewModal').modal('show');
-            });
+            reviewModal.modal('show');
+        });
 
-
-            $(".modifyBtn").on("click", function(){
-
-                var data = {reviewnum: reviewnum, mno:mno, grade:grade, text:inputText.val(), mid: inputMid.val() };
+        // Review 수정 버튼 클릭 이벤트
+        $(".modifyBtn").on("click", function(){
+            var data = {
+                reviewnum: reviewnum,
+                mno: mno,
+                grade: grade,
+                text: inputText.val(),
+                member_email: inputEmail.val()
+            };
 
                 console.log(data);
 
@@ -1063,7 +941,8 @@
                 reviewModal.modal('hide');
             });
 
-            $(".removeBtn").on("click", function(){
+        // Review 삭제 버튼 클릭 이벤트
+        $(".removeBtn").on("click", function(){
 
                 var data = {reviewnum: reviewnum};
 
@@ -1085,22 +964,414 @@
                 reviewModal.modal('hide');
             });
 
-            $(".product-images li").click(function() {
+        // 이미지 클릭 이벤트
+        $(".uploadResult li").click(function() {
 
                 var file = $(this).data('file');
 
-                console.log(file);
-
-                $('.imageModal .modal-body')("<img style='width:100%' src='/display?fileName="+file+"&size=1' >")
-
-                $(".imageModal").modal("show");
+            console.log(file);
+            $('.imageModal .modal-body').html("<img style='width:100%' src='/display?fileName="+file+"&size=1' >");
+            $(".imageModal").modal("show");
 
             });
 
 
 
         });
-    </script>
+    </script>-->
+    <!-- JavaScript for fetching and displaying reviews -->
+
+
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--            const overallRating = document.getElementById('overall-rating');-->
+<!--            const ratingSummary = document.getElementById('rating-summary');-->
+<!--            const latestReviews = document.getElementById('latest-reviews');-->
+
+<!--            const fetchReviews = async () => {-->
+<!--                try {-->
+<!--                    const mno = 1; // 특정 제품의 MNO를 설정-->
+<!--                    const response = await fetch(`/reviews/${mno}/all`);-->
+<!--                    const data = await response.json();-->
+
+<!--                    if (data && data.length > 0) {-->
+<!--                        let overallRatingValue = 0;-->
+<!--                        let ratingCount = [0, 0, 0, 0, 0];-->
+
+<!--                        data.forEach(review => {-->
+<!--                            overallRatingValue += review.grade;-->
+<!--                            ratingCount[review.grade - 1]++;-->
+<!--                        });-->
+
+<!--                        const averageRating = (overallRatingValue / data.length).toFixed(1);-->
+<!--                        overallRating.textContent = `${averageRating} (Overall)`;-->
+
+<!--                        // 평점 요약 업데이트-->
+<!--                        let summaryHTML = '';-->
+<!--                        ratingCount.forEach((count, index) => {-->
+<!--                            summaryHTML += `-->
+<!--                                <li>-->
+<!--                                    <span>${5 - index} stars - ${count}</span>-->
+<!--                                    ${generateStars(5 - index)}-->
+<!--                                </li>`;-->
+<!--                        });-->
+<!--                        ratingSummary.innerHTML = summaryHTML;-->
+
+<!--                        // 최신 리뷰 업데이트-->
+<!--                        let reviewsHTML = '';-->
+<!--                        data.forEach(review => {-->
+<!--                            reviewsHTML += `-->
+<!--                                <div class="single-review">-->
+<!--                                    <img src="https://via.placeholder.com/50" alt="#">-->
+<!--                                    <div class="review-info">-->
+<!--                                        <h4>${review.text} <span>${review.nickname}</span></h4>-->
+<!--                                        <ul class="stars">${generateStars(review.grade)}</ul>-->
+<!--                                        <p>${review.text}</p>-->
+<!--                                    </div>-->
+<!--                                </div>`;-->
+<!--                        });-->
+<!--                        latestReviews.innerHTML = reviewsHTML;-->
+<!--                    } else {-->
+<!--                        overallRating.textContent = 'No reviews yet';-->
+<!--                        ratingSummary.innerHTML = '';-->
+<!--                        latestReviews.innerHTML = 'No reviews available';-->
+<!--                    }-->
+<!--                } catch (error) {-->
+<!--                    console.error('Error fetching reviews:', error);-->
+<!--                    overallRating.textContent = 'Error loading reviews';-->
+<!--                    ratingSummary.innerHTML = '';-->
+<!--                    latestReviews.innerHTML = 'Failed to load reviews';-->
+<!--                }-->
+<!--            };-->
+
+<!--            const generateStars = (rating) => {-->
+<!--                let stars = '';-->
+<!--                for (let i = 1; i <= 5; i++) {-->
+<!--                    stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;-->
+<!--                }-->
+<!--                return stars;-->
+<!--            };-->
+
+<!--            fetchReviews();-->
+
+<!--            // 리뷰 제출 버튼 클릭 이벤트 처리-->
+<!--            document.getElementById('submit-review').addEventListener('click', async () => {-->
+<!--                const name = document.getElementById('review-name').value;-->
+<!--                const email = document.getElementById('review-email').value;-->
+<!--                const subject = document.getElementById('review-subject').value;-->
+<!--                const rating = document.getElementById('review-rating').value;-->
+<!--                const message = document.getElementById('review-message').value;-->
+
+<!--                const reviewData = {-->
+<!--                    mno: 1,  // 특정 제품의 MNO를 설정-->
+<!--                    nickname: name,-->
+<!--                    grade: rating,-->
+<!--                    text: message-->
+<!--                };-->
+
+<!--                try {-->
+<!--                    const response = await fetch(`/reviews/${reviewData.mno}`, {-->
+<!--                        method: 'POST',-->
+<!--                        headers: {-->
+<!--                            'Content-Type': 'application/json',-->
+<!--                        },-->
+<!--                        body: JSON.stringify(reviewData),-->
+<!--                    });-->
+
+<!--                    if (response.ok) {-->
+<!--                        fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트-->
+<!--                        alert('Review submitted successfully!');-->
+<!--                        // 모달 닫기 (Bootstrap 사용 시)-->
+<!--                        $('#exampleModal').modal('hide');-->
+<!--                    } else {-->
+<!--                        alert('Failed to submit review.');-->
+<!--                    }-->
+<!--                } catch (error) {-->
+<!--                    console.error('Error submitting review:', error);-->
+<!--                    alert('Error submitting review.');-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+
+
+<!--<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // URL에서 mno 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
+
+    // 리뷰 가져오기 함수
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`/reviews/${mno}/all`);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                let overallRatingValue = 0;
+                let ratingCount = [0, 0, 0, 0, 0];
+
+                // 리뷰 데이터를 순회하며 필요한 정보 계산
+                data.forEach(review => {
+                    overallRatingValue += review.grade;
+                    ratingCount[review.grade - 1]++;
+                });
+
+                const averageRating = (overallRatingValue / data.length).toFixed(1);
+                document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
+
+                // 평점 요약 업데이트
+                let summaryHTML = '';
+                ratingCount.forEach((count, index) => {
+                    summaryHTML += `
+                        <li>
+                            <span>${5 - index} stars - ${count}</span>
+                            ${generateStars(5 - index)}
+                        </li>`;
+                });
+                document.getElementById('rating-summary').innerHTML = summaryHTML;
+
+                // 최신 리뷰 업데이트
+                let reviewsHTML = '';
+                data.forEach(review => {
+                    reviewsHTML += `
+                        <div class="single-review">
+                            <img src="https://via.placeholder.com/50" alt="#">
+                            <div class="review-info">
+                                <h4>${review.text} <span>${review.nickname}</span></h4>
+                                <ul class="stars">${generateStars(review.grade)}</ul>
+                                <p>${review.text}</p>
+                            </div>
+                        </div>`;
+                });
+                document.getElementById('latest-reviews').innerHTML = reviewsHTML;
+            } else {
+                document.getElementById('overall-rating').textContent = 'No reviews yet';
+                document.getElementById('rating-summary').innerHTML = '';
+                document.getElementById('latest-reviews').innerHTML = 'No reviews available';
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+            document.getElementById('overall-rating').textContent = 'Error loading reviews';
+            document.getElementById('rating-summary').innerHTML = '';
+            document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
+        }
+    };
+
+    // 별점 생성 함수
+    const generateStars = (rating) => {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;
+        }
+        return stars;
+    };
+
+    fetchReviews();
+});
+
+
+let mno; // 전역 변수로 mno 선언
+
+document.addEventListener('DOMContentLoaded', function() {
+    // URL에서 mno 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
+
+    // 리뷰 가져오기 함수
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`/reviews/${mno}/all`);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                // 리뷰 데이터 처리 코드...
+            } else {
+                // 리뷰 없음 처리...
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+        }
+    };
+
+    fetchReviews(); // 페이지 로드 시 리뷰를 가져옵니다
+
+    // 리뷰 등록 버튼 클릭 이벤트 핸들러
+    document.getElementById('submit-review').addEventListener('click', async () => {
+        const name = document.getElementById('review-name').value;
+        const email = document.getElementById('review-email').value;
+        const subject = document.getElementById('review-subject').value;
+        const rating = document.getElementById('review-rating').value;
+        const message = document.getElementById('review-message').value;
+
+        if (!mno) {
+            console.error('mno is not defined');
+            alert('Failed to submit review. Product ID is missing.');
+            return;
+        }
+
+        const reviewData = {
+            mno: mno,  // 전역으로 선언된 mno 사용
+            nickname: name,
+            grade: rating,
+            text: message
+        };
+
+        try {
+            const response = await fetch(`/reviews/${mno}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData),
+            });
+
+            if (response.ok) {
+                fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
+                alert('Review submitted successfully!');
+                $('#exampleModal').modal('hide'); // 모달 닫기
+            } else {
+                alert('Failed to submit review.');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('Error submitting review.');
+        }
+    });
+});
+
+
+</script>-->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // URL에서 mno 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
+
+    // 리뷰 가져오기 함수
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`/reviews/${mno}/all`);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                let overallRatingValue = 0;
+                let ratingCount = [0, 0, 0, 0, 0];
+
+                // 리뷰 데이터를 순회하며 필요한 정보 계산
+                data.forEach(review => {
+                    overallRatingValue += review.grade;
+                    ratingCount[review.grade - 1]++;
+                });
+
+                const averageRating = (overallRatingValue / data.length).toFixed(1);
+                document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
+
+
+ // 평점 요약 업데이트
+let summaryHTML = '';
+for (let i = 4; i >= 0; i--) {
+summaryHTML += `
+<li>
+    <span>${i + 1} stars - ${ratingCount[i]}</span>
+    ${generateStars(i + 1)}
+</li>`;
+}
+document.getElementById('rating-summary').innerHTML = summaryHTML;
+
+
+
+                // 최신 리뷰 업데이트
+                let reviewsHTML = '';
+                data.forEach(review => {
+                    reviewsHTML += `
+                        <div class="single-review">
+                            <img src="https://via.placeholder.com/50" alt="#">
+                            <div class="review-info">
+                                <h4>${review.text} <span>${review.nickname}</span></h4>
+                                <ul class="stars">${generateStars(review.grade)}</ul>
+                                <p>${review.text}</p>
+                            </div>
+                        </div>`;
+                });
+                document.getElementById('latest-reviews').innerHTML = reviewsHTML;
+            } else {
+                document.getElementById('overall-rating').textContent = 'No reviews yet';
+                document.getElementById('rating-summary').innerHTML = '';
+                document.getElementById('latest-reviews').innerHTML = 'No reviews available';
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+            document.getElementById('overall-rating').textContent = 'Error loading reviews';
+            document.getElementById('rating-summary').innerHTML = '';
+            document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
+        }
+    };
+
+    // 별점 생성 함수
+    const generateStars = (rating) => {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+         const color = i <= rating ? '#FFD700' : '#d3d3d3'; // 채워진 별은 금색, 비어 있는 별은 회색
+        stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}" style="color: ${color};"></i>`;
+<!--            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;-->
+        }
+        return stars;
+    };
+
+    // 페이지 로드 시 리뷰를 가져옵니다
+    fetchReviews();
+
+    // 리뷰 등록 버튼 클릭 이벤트 핸들러
+    document.getElementById('submit-review').addEventListener('click', async () => {
+        const name = document.getElementById('review-name').value;
+        const email = document.getElementById('review-email').value;
+        const subject = document.getElementById('review-subject').value;
+        const rating = document.getElementById('review-rating').value;
+        const message = document.getElementById('review-message').value;
+
+        if (!mno) {
+            console.error('mno is not defined');
+            alert('Failed to submit review. Product ID is missing.');
+            return;
+        }
+
+        const reviewData = {
+            mno: mno,
+            nickname: name,
+            grade: rating,
+            text: message,
+            member_email: email
+        };
+
+        try {
+            const response = await fetch(`/reviews/${mno}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData),
+            });
+
+            if (response.ok) {
+                fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
+                alert('Review submitted successfully!');
+              /*  $('#exampleModal').modal('hide'); // 모달 닫기*/
+                  const modal = document.getElementById('exampleModal');
+                const bootstrapModal = new bootstrap.Modal(modal);
+                bootstrapModal.hide();
+            } else {
+                alert('Failed to submit review.');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('Error submitting review.');
+        }
+    });
+});
+</script>
+
 </body>
 
 </html>

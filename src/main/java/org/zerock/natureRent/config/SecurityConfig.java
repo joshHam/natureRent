@@ -51,16 +51,16 @@ public class SecurityConfig {
 //        http.formLogin();
         http.csrf().disable();
 
-//      http.formLogin();
+        // Form Login 설정
         http.formLogin()
-                .loginPage("/login");  // 커스텀 로그인 페이지 경로
-//                .permitAll();  // 로그인 페이지 접근은 누구나 가능하게 설정
-        http.logout();
+                .loginPage("/login")
+                .successHandler(clubLoginSuccessHandler());
 
-//      http.oauth2Login().successHandler(clubLoginSuccessHandler());
-        http.oauth2Login()
-                .successHandler(clubLoginSuccessHandler())
-                .loginPage("/login");  // 커스텀 로그인 페이지 경로
+
+        // OAuth2 Login 설정
+    http.oauth2Login()
+            .loginPage("/login")
+            .successHandler(clubLoginSuccessHandler());
 
         http.rememberMe().tokenValiditySeconds(60*60*24*7);
 

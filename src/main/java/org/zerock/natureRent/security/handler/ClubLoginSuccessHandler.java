@@ -61,6 +61,7 @@ public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = authMember.getAuthorities();
         for (GrantedAuthority authority : authorities) {
             log.info("Checking authority: " + authority.getAuthority());
+//            log.info("Authority: " + authority.getAuthority()); // 추가된 디버깅 로그
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 log.info("Redirecting to: /main/admin");
                 redirectStrategy.sendRedirect(request, response, "/main/admin");
