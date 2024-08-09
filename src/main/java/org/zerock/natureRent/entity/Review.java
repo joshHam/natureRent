@@ -17,13 +17,18 @@ public class Review extends BaseEntity {
     private Long reviewnum;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_mno")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member/*Original*/ member;
+    @JoinColumn(name = "member_email")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "blog_bno")
+    private Blog blog;
 
     private int grade;
-
     private String text;
 
     public void changeGrade(int grade){
@@ -33,5 +38,11 @@ public class Review extends BaseEntity {
     public void changeText(String text){
         this.text = text;
     }
+
+//    @ManyToOne 어노테이션과 @JoinColumn 어노테이션을 사용하여 외래 키를 정의합니다.
+//    @ManyToOne(fetch = FetchType.LAZY): 다대일 관계를 설정하며, 지연 로딩을 적용합니다.
+//    @JoinColumn(name = "blog_bno"): Review 테이블의 blog_bno 컬럼이 Blog 테이블의 기본 키(bno)를 참조하도록 설정합니다.
+
+
 
 }

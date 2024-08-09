@@ -362,6 +362,19 @@
     </div>
 </div>
 <!-- End Breadcrumbs -->
+<!---------------------------------------------------------------------------->
+<div class="container">
+    <div class="blog-single">
+        <h1 th:text="${blog.title}"></h1>
+        <p th:text="${blog.detail}"></p>
+        <p><strong>Tags:</strong> <span th:text="${blog.tags}"></span></p>
+        <p><strong>Author:</strong> <span th:text="${blog.member.name}"></span></p>
+        <p><strong>Published on:</strong> <span th:text="${#dates.format(blog.regDate, 'yyyy-MM-dd')}"></span></p>
+    </div>
+</div>
+
+
+
 
 <!-- Start Blog Singel Area -->
 <section class="section blog-single">

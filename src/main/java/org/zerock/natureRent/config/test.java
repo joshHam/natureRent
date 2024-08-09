@@ -1,34 +1,52 @@
-//@Bean
-//public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+//@Configuration
+//@EnableWebSecurity
+//@Log4j2
+//@EnableMethodSecurity(prePostEnabled = true)
+//public class SecurityConfig {
 //
-//    log.info("----------------------filterChain-------------------------");
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 //
-//    http.csrf().disable();
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        log.info("----------------------filterChain-------------------------");
 //
-//    // Form Login 설정
-//    http.formLogin()
-//            .loginPage("/login")
-//            .successHandler(clubLoginSuccessHandler());
+//        http.csrf().disable();  // CSRF 비활성화
+//        http.formLogin().loginPage("/login").successHandler(clubLoginSuccessHandler());  // 폼 로그인 설정
+//        http.oauth2Login().loginPage("/login").successHandler(clubLoginSuccessHandler());  // OAuth2 로그인 설정
+//        http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7);  // Remember me 설정
+//        http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);  // API 체크 필터 추가
+//        http.addFilterBefore(apiLoginFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))), UsernamePasswordAuthenticationFilter.class);  // API 로그인 필터 추가
 //
-//    // OAuth2 Login 설정
-//    http.oauth2Login()
-//            .loginPage("/login")
-//            .successHandler(clubLoginSuccessHandler());
+//        return http.build();
+//    }
 //
-//    http.rememberMe().tokenValiditySeconds(60*60*24*7);
+//    @Bean
+//    public ClubLoginSuccessHandler clubLoginSuccessHandler() {
+//        return new ClubLoginSuccessHandler(passwordEncoder());
+//    }
 //
-//    // 필터 추가
-//    http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+//    @Bean
+//    public ApiCheckFilter apiCheckFilter() {
+//        return new ApiCheckFilter("/notes/**/*", jwtUtil());
+//    }
 //
-//    // AuthenticationManager 설정
-//    AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//    AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-//    http.authenticationManager(authenticationManager);
+//    @Bean
+//    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) {
+//        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
+//        apiLoginFilter.setAuthenticationManager(authenticationManager);
+//        return apiLoginFilter;
+//    }
 //
-//    // APILoginFilter 설정
-//    ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login", jwtUtil());
-//    apiLoginFilter.setAuthenticationManager(authenticationManager);
-//    http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);
+//    @Bean
+//    public JWTUtil jwtUtil() {
+//        return new JWTUtil();
+//    }
 //
-//    return http.build();
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
 //}

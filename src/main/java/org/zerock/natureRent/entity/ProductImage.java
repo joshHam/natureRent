@@ -26,5 +26,6 @@ public class ProductImage  {
     @ManyToOne(fetch = FetchType.LAZY) //무조건 lazy로
     private Product product;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Blog blog;
 }

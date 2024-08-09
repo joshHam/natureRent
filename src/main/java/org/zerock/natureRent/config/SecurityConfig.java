@@ -58,9 +58,9 @@ public class SecurityConfig {
 
 
         // OAuth2 Login 설정
-    http.oauth2Login()
-            .loginPage("/login")
-            .successHandler(clubLoginSuccessHandler());
+        http.oauth2Login()
+                .loginPage("/login")
+                .successHandler(clubLoginSuccessHandler());
 
         http.rememberMe().tokenValiditySeconds(60*60*24*7);
 

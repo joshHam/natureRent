@@ -39,10 +39,10 @@ public class DefaultController {
         return "mail-success";
     }
 
-    @GetMapping("/register")
+/*    @GetMapping("/register")
     public String Register() {
         return "register";
-    }
+    }*/
 
 /*
     @GetMapping("/about-us")

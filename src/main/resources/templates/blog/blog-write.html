@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Write</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-5">Create a New Blog Post</h1>
+    <form action="/blog/write" method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="tags">Tags (comma separated)</label>
+            <input type="text" class="form-control" id="tags" name="tags">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Publish</button>
+    </form>
+</div>
+
+<script src="/assets/js/bootstrap.min.js"></script>
+</body>
+</html>

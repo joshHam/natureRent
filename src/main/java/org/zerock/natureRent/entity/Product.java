@@ -4,6 +4,8 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Builder
 @AllArgsConstructor
@@ -18,4 +20,7 @@ public class Product extends BaseEntity {
 
     private String title;
 
+    private LocalDateTime rentalStartDate;
+    private LocalDateTime rentalEndDate;
+    private boolean isAvailable;
 }

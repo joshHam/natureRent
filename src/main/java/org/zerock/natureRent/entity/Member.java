@@ -5,6 +5,7 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,15 +25,22 @@ public class Member extends BaseEntity {
 
     private String name;
 
+    private String nickname;
+
     private boolean fromSocial;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<ClubMemberRole> roleSet = new HashSet<>();
+    private Set<ClubMemberRole> roleSet = new HashSet<>(Collections.singleton(ClubMemberRole.USER)); // 기본값 추가
 
     public void addMemberRole(ClubMemberRole clubMemberRole){
 
         roleSet.add(clubMemberRole);
+    }
+
+    @PrePersist
+    public void addDefaultRole() {
+        this.addMemberRole(ClubMemberRole.USER); // 기본 역할 추가
     }
 
 }
