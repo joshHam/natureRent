@@ -26,6 +26,9 @@ public interface ProductService {
                 .title(product.getTitle())
                 .regDate(product.getRegDate())
                 .modDate(product.getModDate())
+                .rentalStartDate(product.getRentalStartDate())
+                .rentalEndDate(product.getRentalEndDate())
+                .isAvailable(product.isAvailable())
                 .build();
 
         List<ProductImageDTO> productImageDTOList = productImages.stream().map(productImage -> {
@@ -52,6 +55,9 @@ public interface ProductService {
         Product product = Product.builder()
                 .mno(productDTO.getMno())
                 .title(productDTO.getTitle())
+                .rentalStartDate(productDTO.getRentalStartDate())
+                .rentalEndDate(productDTO.getRentalEndDate())
+                .isAvailable(productDTO.isAvailable()) // boolean 필드 바로 사용
                 .build();
 
         entityMap.put("product", product);

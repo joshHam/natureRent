@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
-
 </head>
 
 <body>
@@ -363,16 +362,25 @@
 </div>
 <!-- End Breadcrumbs -->
 <!---------------------------------------------------------------------------->
-<div class="container">
-    <div class="blog-single">
+
+<!--<div class="container">
+    <div class="blog-single" th:if="${blog != null}">
         <h1 th:text="${blog.title}"></h1>
         <p th:text="${blog.detail}"></p>
         <p><strong>Tags:</strong> <span th:text="${blog.tags}"></span></p>
-        <p><strong>Author:</strong> <span th:text="${blog.member.name}"></span></p>
-        <p><strong>Published on:</strong> <span th:text="${#dates.format(blog.regDate, 'yyyy-MM-dd')}"></span></p>
-    </div>
-</div>
+&lt;!&ndash;        <p><strong>Author:</strong> <span th:text="${blog.member.name}"></span></p>&ndash;&gt;
+        <p><strong>Author:</strong> <span th:text="${blog.member != null && blog.member.name != null ? blog.member.name : 'Unknown Author'}">Unknown Author</span></p>
+        <p>
+            <strong>Published on:</strong>
+            <span th:text="${formattedRegDate}"></span>
+        </p>
 
+
+    </div>
+    <div th:if="${blog == null}">
+        <p>Blog not found.</p>
+    </div>
+</div>-->
 
 
 
@@ -388,19 +396,19 @@
                                 <img src="/assets/images/blog/blog_single.webp" alt="#">
                             </div>
                             <div class="meta-information">
-                                <h2 class="post-title">
-                                    <a href="/blog/blog-single">>일상 속의 스마트폰.</a>
+                                <h2  class="post-title">
+                                    <a th:text="${blog.title}"  href="/blog/blog-single"></a>
                                 </h2>
                                 <!-- End Meta Info -->
                                 <ul class="meta-info">
                                     <li>
-                                        <a href="javascript:void(0)"> <i class="lni lni-user"></i> 로엘 </a>
+                                        <a href="javascript:void(0)"> <i  th:text="${blog.member != null && blog.member.name != null ? blog.member.name : 'Unknown Author'}"  class="lni lni-user"></i></a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)"><i class="lni lni-calendar"></i>  2023년 2월 10일                                        </a>
+                                        <a href="javascript:void(0)"><i  th:text="${formattedRegDate}" class="lni lni-calendar"></i></a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)"><i class="lni lni-tag"></i> 마케팅</a>
+                                        <a href="javascript:void(0)"><i th:text="${blog.tags}"  class="lni lni-tag"></i></a>
                                     </li>
                                     <li>
                                         <a href="javascript:void(0)"><i class="lni lni-timer"></i> 읽는시간: 5분</a>
@@ -408,12 +416,13 @@
                                 </ul>
                                 <!-- End Meta Info -->
                             </div>
-                            <div class="detail-inner">
-                                <p>우리는 흔히 순간의 쾌락에 현혹되어 책임을 다하지 못하는 경우가 많습니다.
-                                    이러한 문제는 명확하고 쉽게 구분할 수 있지만, 그로 인해 발생하는 고통과 문제는 예측하기 어렵습니다.
-                                    이런 점에서 스마트폰은 우리 일상 속에 뗄 수 없는 존재가 되었습니다.</p>
+                            <div  class="detail-inner">
+                                <p th:text="${blog.detail}"></p>
+<!--                                <p>우리는 흔히 순간의 쾌락에 현혹되어 책임을 다하지 못하는 경우가 많습니다.-->
+<!--                                    이러한 문제는 명확하고 쉽게 구분할 수 있지만, 그로 인해 발생하는 고통과 문제는 예측하기 어렵습니다.-->
+<!--                                    이런 점에서 스마트폰은 우리 일상 속에 뗄 수 없는 존재가 되었습니다.</p>-->
                                 <!-- post image -->
-                                <ul class="list">
+                             <!--   <ul class="list">
                                     <li><i class="lni lni-checkmark-circle"></i> 일상 속에서 더 많은 것을 누리기를 원한다면</li>
                                     <li><i class="lni lni-checkmark-circle"></i> 삶의 모든 면에서 수많은 유혹이 있습니다</li>
                                     <li><i class="lni lni-checkmark-circle"></i> 대부분의 사람들은 자신이 진정으로 원하는 것이 무엇인지 모릅니다</li>
@@ -422,7 +431,7 @@
                                 </ul>
                                 <p>삶에서 고통과 쾌락은 우리에게 밀접하게 다가옵니다. 스마트폰은 우리의 선택에 큰 영향을 미치며,
                                     모든 결정을 자유롭게 내릴 수 있도록 도와줍니다. 이 순간, 우리에게 주어진 선택의 힘을 최대한 활용해보세요. </p>
-                                <!-- post quote -->
+                                &lt;!&ndash; post quote &ndash;&gt;
                                 <blockquote>
                                     <div class="icon">
                                         <i class="lni lni-quotation"></i>
@@ -434,7 +443,7 @@
                                 <p>우리의 통제 밖에 있는 모든 것에 대한 혐오감을 제거하고, 통제할 수 없는 것들에 대한 욕망을 억제하세요.
                                     그렇게 하면 실망할 일이 없습니다. 오직 적절한 행동만을 선택하고, 이를 신중하고 부드럽게 수행하세요.</p>
                                 <p>우리는 흔히 삶에서 많은 것을 얻기 위해 노력하지만, 그로 인해 고통을 감수해야 할 때가 있습니다.
-                                    스마트폰은 우리의 선택과 욕망을 더 쉽고 편리하게 만들어줍니다.</p>
+                                    스마트폰은 우리의 선택과 욕망을 더 쉽고 편리하게 만들어줍니다.</p>-->
                                 <div class="post-bottom-area">
                                     <!-- Start Post Tag -->
                                     <div class="post-tag">
@@ -484,8 +493,17 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Comments -->
+                        <!------------------------------------------------------------->
+
                         <div class="post-comments">
+                            <h3 class="comment-title"><span>Post comments</span></h3>
+                            <ul class="comments-list" id="comments-list">
+                                <!-- 리뷰 데이터를 여기 추가할 것입니다. -->
+                            </ul>
+                        </div>
+
+                        <!-- Comments -->
+                        <!--<div class="post-comments2">
                             <h3 class="comment-title"><span>Post comments</span></h3>
                             <ul class="comments-list">
                                 <li>
@@ -544,8 +562,10 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="comment-form">
+                        </div>-->
+
+
+                        <!--<div class="comment-form">
                             <h3 class="comment-reply-title">Leave a comment</h3>
                             <form action="#" method="POST">
                                 <div class="row">
@@ -586,7 +606,38 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>-->
+                        <div class="comment-form">
+                            <h3 class="comment-reply-title">Leave a comment</h3>
+                            <form action="/blog/reviews/add" method="POST">
+                                <div class="row">
+
+                                    <!-- 히든 필드를 사용하여 bno 값을 전송 -->
+                                    <input type="hidden" name="blogId" th:value ="${blog.bno}" />
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-box form-group">
+                                            <input type="text" name="name" class="form-control form-control-custom" placeholder="Your Name" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-box form-group">
+                                            <input type="email" name="email" class="form-control form-control-custom" placeholder="Your Email" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-box form-group">
+                                            <textarea name="text" class="form-control form-control-custom" placeholder="Your Comments"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="button">
+                                            <button type="submit" class="btn">Post Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -752,6 +803,45 @@
 <script src="/assets/js/tiny-slider.js"></script>
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const blogId = [[${blog.bno}]]; // Thymeleaf를 사용하여 블로그 ID를 삽입
+    fetch(`/blog/${blogId}/reviews`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // 데이터 확인을 위한 로그
+            if (Array.isArray(data)) {
+                const reviewsContainer = document.querySelector('.comments-list');
+                reviewsContainer.innerHTML = ""; // 기존 내용을 초기화
+                data.forEach(review => {
+                    const reviewItem = `
+                        <li>
+                            <div class="comment-img">
+                                <img src="/assets/images/blog/comment-placeholder.jpg" alt="img">
+                            </div>
+                            <div class="comment-desc">
+                                <div class="desc-top">
+                                    <h6>${review.name}</h6>
+                                    <span class="date">${review.regDate}</span>
+                                    <a href="javascript:void(0)" class="reply-link"><i class="lni lni-reply"></i>Reply</a>
+                                </div>
+                                <p>${review.text}</p>
+                            </div>
+                        </li>
+                    `;
+                    reviewsContainer.insertAdjacentHTML('beforeend', reviewItem);
+                });
+            } else {
+                console.error('Data is not an array:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching reviews:', error));
+});
+
+</script>
+
+
 </body>
 
 </html>

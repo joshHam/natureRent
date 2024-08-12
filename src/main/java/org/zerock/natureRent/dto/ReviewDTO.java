@@ -20,6 +20,9 @@ public class ReviewDTO {
     //Product mno
     private Long mno;
 
+    //Blog
+    private Long bno;
+
     //Membmer id
     private Long mid;
     //Member nickname
@@ -35,4 +38,6 @@ public class ReviewDTO {
     private LocalDateTime regDate, modDate;
 
 
+//    public Long getBno() {
+//    }
 }

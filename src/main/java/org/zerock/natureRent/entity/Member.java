@@ -43,4 +43,7 @@ public class Member extends BaseEntity {
         this.addMemberRole(ClubMemberRole.USER); // 기본 역할 추가
     }
 
+    public void setName(String johnDoe) {
+
+    }
 }

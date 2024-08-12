@@ -1,10 +1,7 @@
 package org.zerock.natureRent.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +11,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class ProductDTO {
 
     private Long mno;
@@ -33,4 +32,18 @@ public class ProductDTO {
 
     private LocalDateTime modDate;
 
+
+    // 렌탈 날짜 추가
+    private LocalDateTime rentalStartDate;
+    private LocalDateTime rentalEndDate;
+
+    private boolean isAvailable;
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
 }

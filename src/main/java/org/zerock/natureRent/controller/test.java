@@ -1,68 +1,61 @@
-/*
-package org.zerock.natureRent.controller;
-
-import lombok.extern.log4j.Log4j2;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.zerock.natureRent.security.dto.ClubAuthMemberDTO;
-import org.zerock.natureRent.dto.ProductDTO;
-import org.zerock.natureRent.dto.PageRequestDTO;
-import org.zerock.natureRent.dto.PageResultDTO;
-import org.zerock.natureRent.service.ProductService;
-
-import java.util.List;
-
-@Controller
-@Log4j2
-@RequestMapping("/main/")
-public class SampleController2 {
-
-    private final ProductService productService;
-
-    public SampleController(ProductService productService) {
-        this.productService = productService;
-    }
-
-    @GetMapping("/all")
-    public String exAll(Model model, PageRequestDTO pageRequestDTO){
-        log.info("exAll..........");
-
-        PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
-        model.addAttribute("result", result);
-
-        return "main/all";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin")
-    public void exAdmin(){
-        log.info("exAdmin..........");
-    }
-
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/member")
-    public void exMember(@AuthenticationPrincipal ClubAuthMemberDTO clubAuthMember){
-
-        log.info("exMember..........");
-
-        log.info("-------------------------------");
-        log.info(clubAuthMember);
-
-    }
-
-    @PreAuthorize("#clubAuthMember != null && #clubAuthMember.username eq \"user95@zerock.org\"")
-    @GetMapping("/exOnly")
-    public String exMemberOnly(@AuthenticationPrincipal ClubAuthMemberDTO clubAuthMember){
-
-        log.info("exMemberOnly.............");
-        log.info(clubAuthMember);
-
-        return "/main/admin";
-    }
-
-}
-*/
+//@Controller
+//@RequestMapping("/reviews")
+//@Log4j2
+//@RequiredArgsConstructor
+//public class ReviewController {
+//
+//    private final ReviewService reviewService;
+//
+//    @GetMapping("/{mno}/all")
+//    public ResponseEntity<List<ReviewDTO>> getList(@PathVariable("mno") Long mno){
+//        List<ReviewDTO> reviewDTOList = reviewService.getListOfProduct(mno);
+//        return new ResponseEntity<>(reviewDTOList, HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/{mno}")
+//    public ResponseEntity<Long> addReview(@RequestBody ReviewDTO productReviewDTO){
+//        Long reviewnum = reviewService.register(productReviewDTO);
+//        return new ResponseEntity<>( reviewnum, HttpStatus.OK);
+//    }
+//
+//    @PutMapping("/{mno}/{reviewnum}")
+//    public ResponseEntity<Long> modifyReview(@PathVariable Long reviewnum, @RequestBody ReviewDTO productReviewDTO){
+//        reviewService.modify(productReviewDTO);
+//        return new ResponseEntity<>( reviewnum, HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping("/{mno}/{reviewnum}")
+//    public ResponseEntity<Long> removeReview( @PathVariable Long reviewnum){
+//        reviewService.remove(reviewnum);
+//        return new ResponseEntity<>( reviewnum, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/blog/{blogId}")
+//    public ResponseEntity<List<ReviewDTO>> getReviewsByBlogId(@PathVariable Long blogId) {
+//        List<ReviewDTO> reviews = reviewService.getListOfBlog(blogId);
+//        return new ResponseEntity<>(reviews, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/product/{productId}")
+//    public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable Long productId) {
+//        List<ReviewDTO> reviews = reviewService.getListOfProduct(productId);
+//        return new ResponseEntity<>(reviews, HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/add")
+//    public String addReview(
+//            @RequestParam("name") String name,
+//            @RequestParam("email") String email,
+//            @RequestParam("text") String text,
+//            @RequestParam("blogId") Long blogId,
+//            RedirectAttributes redirectAttributes) {
+//        ReviewDTO reviewDTO = new ReviewDTO();
+//        reviewDTO.setName(name);
+//        reviewDTO.setMember_email(email);
+//        reviewDTO.setText(text);
+//        reviewDTO.setBno(blogId); // 블로그 ID 설정
+//        reviewService.register(reviewDTO);
+//        redirectAttributes.addFlashAttribute("message", "Review added successfully!");
+//        return "redirect:/blog/" + blogId;
+//    }
+//}
