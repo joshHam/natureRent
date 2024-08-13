@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.ProductImage;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -30,13 +31,16 @@ public class ProductRepositoryTests {
     @Test
     public void insertProducts() {
 
-        IntStream.rangeClosed(1,5).forEach(i -> {
+        IntStream.rangeClosed(1,20).forEach(i -> {
 
-            Product product = Product.builder().title("Product...." +i).build();
-
+            Product product = Product.builder()
+                                .title("Product...." +i)
+                                .price(BigDecimal.valueOf(100 + i * 10)) // 여기서 price 값을 설정해줘야 해
+                                .build();
             System.out.println("------------------------------------------");
 
             productRepository.save(product);
+//            productRepository.save(price);
 
             int count = (int)(Math.random() * 5) + 1; //1,2,3,4
 

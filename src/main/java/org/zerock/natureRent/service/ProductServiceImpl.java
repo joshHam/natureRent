@@ -15,6 +15,7 @@ import org.zerock.natureRent.entity.ProductImage;
 import org.zerock.natureRent.repository.ProductImageRepository;
 import org.zerock.natureRent.repository.ProductRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,6 +89,25 @@ public class ProductServiceImpl implements ProductService{
         Long reviewCnt = (Long) result.get(0)[3];
 
         return entitiesToDTO(product, productImageList, avg, reviewCnt);
+    }
+
+    @Override
+    public List<LocalDateTime> getRentedDates(Long mno) {
+        List<Object[]> rentalPeriods = productRepository.findRentalPeriodsByProductId(mno);
+        List<LocalDateTime> rentedDates = new ArrayList<>();
+
+        for (Object[] period : rentalPeriods) {
+            LocalDateTime startDate = (LocalDateTime) period[0];
+            LocalDateTime endDate = (LocalDateTime) period[1];
+
+            // startDate부터 endDate까지의 날짜를 모두 리스트에 추가
+            while (!startDate.isAfter(endDate)) {
+                rentedDates.add(startDate);
+                startDate = startDate.plusDays(1);
+            }
+        }
+
+        return rentedDates;
     }
 
 }

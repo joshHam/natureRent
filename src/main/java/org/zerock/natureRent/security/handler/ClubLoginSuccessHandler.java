@@ -62,17 +62,31 @@ public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
         for (GrantedAuthority authority : authorities) {
             log.info("Checking authority: " + authority.getAuthority());
 //            log.info("Authority: " + authority.getAuthority()); // 추가된 디버깅 로그
+
+//            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+//                log.info("Redirecting to: /main/admin");
+//                redirectStrategy.sendRedirect(request, response, "/main/admin");
+//                return;
+//            } else if (authority.getAuthority().equals("ROLE_USER")) {
+//                log.info("Redirecting to: /main/member");
+//                redirectStrategy.sendRedirect(request, response, "/main/member");
+//                return;
+//            } else if (authority.getAuthority().equals("ROLE_MANAGER")) {
+//                log.info("Redirecting to: /main/manager");
+//                redirectStrategy.sendRedirect(request, response, "/main/manager");
+//                return;
+//            }
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                log.info("Redirecting to: /main/admin");
-                redirectStrategy.sendRedirect(request, response, "/main/admin");
+                log.info("Redirecting to: /main/all");
+                redirectStrategy.sendRedirect(request, response, "/main/all");
                 return;
             } else if (authority.getAuthority().equals("ROLE_USER")) {
-                log.info("Redirecting to: /main/member");
-                redirectStrategy.sendRedirect(request, response, "/main/member");
+                log.info("Redirecting to: /main/all");
+                redirectStrategy.sendRedirect(request, response, "/main/all");
                 return;
             } else if (authority.getAuthority().equals("ROLE_MANAGER")) {
-                log.info("Redirecting to: /main/manager");
-                redirectStrategy.sendRedirect(request, response, "/main/manager");
+                log.info("Redirecting to: /main/all");
+                redirectStrategy.sendRedirect(request, response, "/main/all");
                 return;
             }
         }

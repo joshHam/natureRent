@@ -51,20 +51,48 @@ public class SecurityConfig {
 //        http.formLogin();
         http.csrf().disable();
 
+
+
+        // 권한 설정
+        http.authorizeHttpRequests(authz -> authz
+                .requestMatchers("/main/all", "/login", "/register", "/assets/**").permitAll()
+                .requestMatchers("/main/member").hasAnyAuthority("USER", "OAUTH2_USER")
+                .requestMatchers("/main/admin").hasRole("ADMIN")
+                .anyRequest().authenticated()
+        );
+
+
+
+
+
+
         // Form Login 설정
-        http.formLogin()
+//        http.formLogin()
+//                .loginPage("/login")
+//                .successHandler(clubLoginSuccessHandler());
+        // Form Login 설정
+        http.formLogin(formLogin -> formLogin
                 .loginPage("/login")
-                .successHandler(clubLoginSuccessHandler());
+                .successHandler(clubLoginSuccessHandler())
+        );
 
 
         // OAuth2 Login 설정
-        http.oauth2Login()
+//        http.oauth2Login()
+//                .loginPage("/login")
+//                .successHandler(clubLoginSuccessHandler());
+        // OAuth2 Login 설정
+        http.oauth2Login(oauth2Login -> oauth2Login
                 .loginPage("/login")
-                .successHandler(clubLoginSuccessHandler());
+                .successHandler(clubLoginSuccessHandler())
+        );
 
-        http.rememberMe().tokenValiditySeconds(60*60*24*7);
+        // RememberMe 설정
+//        http.rememberMe().tokenValiditySeconds(60*60*24*7);
+        http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7);
 
-        //add Filter
+
+        //// Custom Filter 설정
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 권한 설정
@@ -80,10 +108,10 @@ public class SecurityConfig {
         // Get AuthenticationManager
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
-        //반드시 필요
+        //반드시 필요 AuthenticationManager 설정
         http.authenticationManager(authenticationManager);
 
-        //APILoginFilter
+        //APILoginFilter 설정
         ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager);
 

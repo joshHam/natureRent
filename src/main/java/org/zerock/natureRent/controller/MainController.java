@@ -86,25 +86,28 @@ public class MainController {
 //    public void exMember(){
 //        log.info("exMember..........");
 //    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("admin")
+//    public String exAdmin(){
+//        log.info("exAdmin..........");
+//        return "/main/admin"; // 명시적으로 뷰 이름을 반환
+//
+//    }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("admin")
-    public String exAdmin(){
-        log.info("exAdmin..........");
-        return "/main/admin"; // 명시적으로 뷰 이름을 반환
 
-    }
 
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("member")
-    public String exMember(@AuthenticationPrincipal MemberDTO clubAuthMember){
 
-        log.info("exMember..........");
-
-        log.info("-------------------------------");
-        log.info(clubAuthMember);
-        return "/main/member"; // 명시적으로 뷰 이름을 반환
-    }
+//
+//    @PreAuthorize("hasRole('USER')")
+//    @GetMapping("member")
+//    public String exMember(@AuthenticationPrincipal MemberDTO clubAuthMember){
+//
+//        log.info("exMember..........");
+//
+//        log.info("-------------------------------");
+//        log.info(clubAuthMember);
+//        return "/main/member"; // 명시적으로 뷰 이름을 반환
+//    }
 
 
     //로그인한 사용자중에 user95@zerock.org만 접근가능하도록//

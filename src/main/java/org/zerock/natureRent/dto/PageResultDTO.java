@@ -15,6 +15,9 @@ public class PageResultDTO<DTO, EN> {
     //DTO리스트
     private List<DTO> dtoList;
 
+//    //DTO리스트
+//    private List<DTO> dtoList9;
+
     //총 페이지 번호
     private int totalPage;
 

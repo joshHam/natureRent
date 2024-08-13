@@ -4,6 +4,7 @@ import lombok.*;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,4 +24,12 @@ public class Product extends BaseEntity {
     private LocalDateTime rentalStartDate;
     private LocalDateTime rentalEndDate;
     private boolean isAvailable;
+
+    // 추가된 price 필드
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    // 상품 상세 설명을 위한 필드 추가
+    @Lob
+    private String detail;
 }

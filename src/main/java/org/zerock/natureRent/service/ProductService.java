@@ -1,12 +1,16 @@
 package org.zerock.natureRent.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.ProductImageDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.dto.PageResultDTO;
+import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.ProductImage;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +24,10 @@ public interface ProductService {
 
     ProductDTO getProduct(Long mno);
 
+    List<LocalDateTime> getRentedDates(Long mno);
+
+//    Page<Blog> findAllProducts(Pageable pageable);
+
     default ProductDTO entitiesToDTO(Product product, List<ProductImage> productImages, Double avg, Long reviewCnt){
         ProductDTO productDTO = ProductDTO.builder()
                 .mno(product.getMno())
@@ -29,6 +37,7 @@ public interface ProductService {
                 .rentalStartDate(product.getRentalStartDate())
                 .rentalEndDate(product.getRentalEndDate())
                 .isAvailable(product.isAvailable())
+                .price(product.getPrice())  // price 필드 설정
                 .build();
 
         List<ProductImageDTO> productImageDTOList = productImages.stream().map(productImage -> {
@@ -48,6 +57,12 @@ public interface ProductService {
 
     }
 
+//    public List<LocalDateTime> getRentedDates(Long mno) {
+//        // 이 메서드는 특정 상품(mno)의 렌탈 불가능한 날짜 리스트를 반환
+//        return productRepository.findRentedDatesByProductId(mno);
+//    }
+
+
     default Map<String, Object> dtoToEntity(ProductDTO productDTO){
 
         Map<String, Object> entityMap = new HashMap<>();
@@ -58,6 +73,7 @@ public interface ProductService {
                 .rentalStartDate(productDTO.getRentalStartDate())
                 .rentalEndDate(productDTO.getRentalEndDate())
                 .isAvailable(productDTO.isAvailable()) // boolean 필드 바로 사용
+                .price(productDTO.getPrice())  // price 필드 설정
                 .build();
 
         entityMap.put("product", product);

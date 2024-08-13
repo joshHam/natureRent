@@ -2,6 +2,9 @@ package org.zerock.natureRent.controller;
 
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,18 +13,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.natureRent.dto.BlogDTO;
+import org.zerock.natureRent.dto.PageRequestDTO;
+import org.zerock.natureRent.dto.PageResultDTO;
 import org.zerock.natureRent.dto.ReviewDTO;
 import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.repository.MemberRepository;
 import org.zerock.natureRent.security.dto.MemberDTO;
 import org.zerock.natureRent.service.BlogService;
+//import org.zerock.natureRent.service.BlogService2;
+import org.zerock.natureRent.service.BlogServiceImpl;
 import org.zerock.natureRent.service.ProductService;
 import org.zerock.natureRent.service.ReviewService;
 
-import java.time.LocalDateTime;
+import javax.xml.transform.Result;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 //import org.zerock.natureRent.service.BlogService;
 
 @Controller
@@ -70,33 +79,6 @@ public class BlogController {
         return "blog/blog-single-sidebar";
     }
 
-////    @GetMapping("blog/{id}")
-//    public String viewBlog(@PathVariable Long id, Model model) {
-////        Blog blog = blogService.findBlogById(id);
-////        if (blog == null) {
-////            throw new IllegalArgumentException("Blog not found");
-////        }
-////
-////        model.addAttribute("blog", blog);
-//////        model.addAttribute("blog", blogService.findBlogById(id));
-//
-//
-//
-//        Blog blog = new Blog();
-//        blog.setTitle("Sample Title");
-//        blog.setDetail("This is a sample blog detail.");
-//        blog.setTags("sample, test");
-//
-//
-//        Member member = new Member();
-//        member.setName("John Doe");
-//        blog.setMember(member);
-//
-//        model.addAttribute("blog", blog);
-//        return "blog/blog-single";
-//    }
-
-
 
 
     @GetMapping("{id}")
@@ -121,12 +103,6 @@ public class BlogController {
         return "blog/blog-single";
     }
 
-//    @GetMapping("{blogId}")
-////    @ResponseBody
-//    public ResponseEntity<List<ReviewDTO>> getReviewsByBlogId(@PathVariable Long blogId) {
-//        List<ReviewDTO> reviews = reviewService.getListOfBlog(blogId);
-//        return new ResponseEntity<>(reviews, HttpStatus.OK);
-//    }
 
     // 블로그에 대한 리뷰 가져오기
     @GetMapping("{blogId}/reviews")
@@ -158,16 +134,75 @@ public class BlogController {
 
 //    ////////////////////////////////////////////////////////////
 
+//    @GetMapping("blog-grid-sidebar")
+//    public String exBlogGridSidebar() {
+//        log.info("exBlogGridSidebar..........");
+//        return "blog/blog-grid-sidebar"; // 명시적으로 뷰 이름을 반환
+//    }
+
     @GetMapping("blog-grid-sidebar")
-    public String exBlogGridSidebar() {
+    public String exBlogGridSidebar(PageRequestDTO pageRequestDTO, Model model) {
         log.info("exBlogGridSidebar..........");
+
+//        // Blog 엔티티를 가져오는 서비스 메서드 호출 (예시로 가정)
+//        List<Blog> blogList = blogService.findAllBlogs(); // 모든 Blog 엔티티를 가져오는 메서드
+        // 페이지 사이즈를 9로 설정
+        pageRequestDTO.setSize(6);
+
+        // Pageable 객체를 PageRequestDTO에서 가져옴
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("bno").descending());
+
+
+        // Page 객체로 Blog 엔티티를 가져오는 서비스 메서드 호출
+        Page<Blog> result = blogService.findAllBlogs(pageable); // pageable을 사용하여 페이징 처리
+
+
+
+        // PageResultDTO로 변환
+        PageResultDTO<BlogDTO, Blog> pageResultDTO = new PageResultDTO<>(result,
+                blog -> BlogDTO.builder()
+                        .bno(blog.getBno())
+                        .title(blog.getTitle())
+                        .detail(blog.getDetail())
+                        .likes(blog.getLikes())
+                        .views(blog.getViews())
+                        .tags(blog.getTags())
+                        .memberEmail(blog.getMember().getEmail())
+                        .build()
+        );
+
+
+
+//        PageResultDTO<BlogDTO, Blog> result = blogService.getList(pageRequestDTO);
+
+        model.addAttribute("result", pageResultDTO);
+
         return "blog/blog-grid-sidebar"; // 명시적으로 뷰 이름을 반환
     }
 
-    @GetMapping("blog-single")
-    public String exBlogSingle() {
-        log.info("exBlogSingle..........");
-        return "blog/blog-single"; // 명시적으로 뷰 이름을 반환
+
+//    @GetMapping("blog-single")
+//    public String exBlogSingle() {
+//        log.info("exBlogSingle..........");
+//        return "blog/blog-single"; // 명시적으로 뷰 이름을 반환
+//    }
+
+    @GetMapping("/blog/blog-single")
+    public String getBlogSingle(@RequestParam("bno") Long bno, @RequestParam("page") int page, Model model) {
+        // 서비스 메서드를 호출하여 블로그 데이터를 가져옴
+        Blog blog = blogService.findBlogById(bno);
+
+        // 블로그 데이터를 모델에 추가
+        model.addAttribute("blog", blog);
+        model.addAttribute("page", page);
+
+        // 등록일 포맷 설정
+        if (blog != null) {
+            String formattedRegDate = blog.getRegDate() != null ? blog.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "No date available";
+            model.addAttribute("formattedRegDate", formattedRegDate);
+        }
+
+        return "blog/blog-single";
     }
 
     @GetMapping("blog-single-sidebar")

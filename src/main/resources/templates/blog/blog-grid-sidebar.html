@@ -370,153 +370,179 @@
         <div class="row">
             <div class="col-lg-8 col-md-12 col-12">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-12">
+                    <div class="col-lg-6 col-md-6 col-12" th:each="dto : ${result.dtoList}">
                         <!-- Start Single Blog -->
                         <div class="single-blog">
                             <div class="blog-img">
-                                <a href="/blog/blog-single-sidebar">
+                                <a th:href="@{/blog/{bno}(bno=${dto.bno})}">
+<!--                                <a th:href="@{/blog/(bno=${dto.bno}, page=${result.page})}">-->
+<!--                                <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">-->
+<!--                                <a href="/blog/blog-single-sidebar">-->
                                     <img src="/assets/images/blog/blog-1.jpg" alt="#">
+<!--                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>-->
                                 </a>
                             </div>
                             <div class="blog-content">
                                 <a class="category" href="javascript:void(0)">eCommerce</a>
                                 <h4>
-                                    <a href="/blog/blog-single-sidebar">What information is needed for shipping?</a>
+<!--                                    <a href="/blog/blog-single-sidebar">What information is needed for shipping?</a>-->
+                                    <!--<a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">-->
+                                    <a th:href="@{/blog/{bno}(bno=${dto.bno})}">[[${dto.title}]]</a>
                                 </h4>
+
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                     incididunt.</p>
                                 <div class="button">
-                                    <a href="javascript:void(0)" class="btn">Read More</a>
+                                    <a th:href="@{/blog/{bno}(bno=${dto.bno})}" class="btn">Read More</a>
                                 </div>
                             </div>
                         </div>
                         <!-- End Single Blog -->
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
-                        <!-- Start Single Blog -->
-                        <div class="single-blog">
-                            <div class="blog-img">
-                                <a href="/blog/blog-single-sidebar">
-                                    <img src="/assets/images/blog/blog-2.jpg" alt="#">
-                                </a>
-                            </div>
-                            <div class="blog-content">
-                                <a class="category" href="javascript:void(0)">Gaming</a>
-                                <h4>
-                                    <a href="/blog/blog-single-sidebar">Interesting fact about gaming consoles</a>
-                                </h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt.</p>
-                                <div class="button">
-                                    <a href="javascript:void(0)" class="btn">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Blog -->
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <!-- Start Single Blog -->
-                        <div class="single-blog">
-                            <div class="blog-img">
-                                <a href="/blog/blog-single-sidebar">
-                                    <img src="/assets/images/blog/blog-3.jpg" alt="#">
-                                </a>
-                            </div>
-                            <div class="blog-content">
-                                <a class="category" href="javascript:void(0)">Electronic</a>
-                                <h4>
-                                    <a href="/blog/blog-single-sidebar">Electronics, instrumentation & control
-                                        engineering
-                                    </a>
-                                </h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt.</p>
-                                <div class="button">
-                                    <a href="javascript:void(0)" class="btn">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Blog -->
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <!-- Start Single Blog -->
-                        <div class="single-blog">
-                            <div class="blog-img">
-                                <a href="/blog/blog-single-sidebar">
-                                    <img src="/assets/images/blog/blog-1.jpg" alt="#">
-                                </a>
-                            </div>
-                            <div class="blog-content">
-                                <a class="category" href="javascript:void(0)">eCommerce</a>
-                                <h4>
-                                    <a href="/blog/blog-single-sidebar">What information is needed for shipping?</a>
-                                </h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt.</p>
-                                <div class="button">
-                                    <a href="javascript:void(0)" class="btn">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Blog -->
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <!-- Start Single Blog -->
-                        <div class="single-blog">
-                            <div class="blog-img">
-                                <a href="/blog/blog-single-sidebar">
-                                    <img src="/assets/images/blog/blog-2.jpg" alt="#">
-                                </a>
-                            </div>
-                            <div class="blog-content">
-                                <a class="category" href="javascript:void(0)">Gaming</a>
-                                <h4>
-                                    <a href="/blog/blog-single-sidebar">Interesting fact about gaming consoles</a>
-                                </h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt.</p>
-                                <div class="button">
-                                    <a href="javascript:void(0)" class="btn">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Blog -->
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <!-- Start Single Blog -->
-                        <div class="single-blog">
-                            <div class="blog-img">
-                                <a href="/blog/blog-single-sidebar">
-                                    <img src="/assets/images/blog/blog-3.jpg" alt="#">
-                                </a>
-                            </div>
-                            <div class="blog-content">
-                                <a class="category" href="javascript:void(0)">Electronic</a>
-                                <h4>
-                                    <a href="/blog/blog-single-sidebar">Electronics, instrumentation & control
-                                        engineering
-                                    </a>
-                                </h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt.</p>
-                                <div class="button">
-                                    <a href="javascript:void(0)" class="btn">Read More</a>
-                                </div>
-                            </div>
-                        </div>
+<!--                        &lt;!&ndash; Start Single Blog &ndash;&gt;-->
+                        <!-- <div class="single-blog">
+                             <div class="blog-img">
+                                 <a href="/blog/blog-single-sidebar">
+                                     <img src="/assets/images/blog/blog-2.jpg" alt="#">
+                                 </a>
+                             </div>
+                             <div class="blog-content">
+                                 <a class="category" href="javascript:void(0)">Gaming</a>
+                                 <h4>
+                                     <a href="/blog/blog-single-sidebar">Interesting fact about gaming consoles</a>
+                                 </h4>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                     incididunt.</p>
+                                 <div class="button">
+                                     <a href="javascript:void(0)" class="btn">Read More</a>
+                                 </div>
+                             </div>
+                         </div>
+                         &lt;!&ndash; End Single Blog &ndash;&gt;
+                     </div>
+                     <div class="col-lg-6 col-md-6 col-12">
+                         &lt;!&ndash; Start Single Blog &ndash;&gt;
+                         <div class="single-blog">
+                             <div class="blog-img">
+                                 <a href="/blog/blog-single-sidebar">
+                                     <img src="/assets/images/blog/blog-3.jpg" alt="#">
+                                 </a>
+                             </div>
+                             <div class="blog-content">
+                                 <a class="category" href="javascript:void(0)">Electronic</a>
+                                 <h4>
+                                     <a href="/blog/blog-single-sidebar">Electronics, instrumentation & control
+                                         engineering
+                                     </a>
+                                 </h4>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                     incididunt.</p>
+                                 <div class="button">
+                                     <a href="javascript:void(0)" class="btn">Read More</a>
+                                 </div>
+                             </div>
+                         </div>
+                         &lt;!&ndash; End Single Blog &ndash;&gt;
+                     </div>
+                     <div class="col-lg-6 col-md-6 col-12">
+                         &lt;!&ndash; Start Single Blog &ndash;&gt;
+                         <div class="single-blog">
+                             <div class="blog-img">
+                                 <a href="/blog/blog-single-sidebar">
+                                     <img src="/assets/images/blog/blog-1.jpg" alt="#">
+                                 </a>
+                             </div>
+                             <div class="blog-content">
+                                 <a class="category" href="javascript:void(0)">eCommerce</a>
+                                 <h4>
+                                     <a href="/blog/blog-single-sidebar">What information is needed for shipping?</a>
+                                 </h4>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                     incididunt.</p>
+                                 <div class="button">
+                                     <a href="javascript:void(0)" class="btn">Read More</a>
+                                 </div>
+                             </div>
+                         </div>
+                         &lt;!&ndash; End Single Blog &ndash;&gt;
+                     </div>
+                     <div class="col-lg-6 col-md-6 col-12">
+                         &lt;!&ndash; Start Single Blog &ndash;&gt;
+                         <div class="single-blog">
+                             <div class="blog-img">
+                                 <a href="/blog/blog-single-sidebar">
+                                     <img src="/assets/images/blog/blog-2.jpg" alt="#">
+                                 </a>
+                             </div>
+                             <div class="blog-content">
+                                 <a class="category" href="javascript:void(0)">Gaming</a>
+                                 <h4>
+                                     <a href="/blog/blog-single-sidebar">Interesting fact about gaming consoles</a>
+                                 </h4>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                     incididunt.</p>
+                                 <div class="button">
+                                     <a href="javascript:void(0)" class="btn">Read More</a>
+                                 </div>
+                             </div>
+                         </div>
+                         &lt;!&ndash; End Single Blog &ndash;&gt;
+                     </div>
+                     <div class="col-lg-6 col-md-6 col-12">
+                         &lt;!&ndash; Start Single Blog &ndash;&gt;
+                         <div class="single-blog">
+                             <div class="blog-img">
+                                 <a href="/blog/blog-single-sidebar">
+                                     <img src="/assets/images/blog/blog-3.jpg" alt="#">
+                                 </a>
+                             </div>
+                             <div class="blog-content">
+                                 <a class="category" href="javascript:void(0)">Electronic</a>
+                                 <h4>
+                                     <a href="/blog/blog-single-sidebar">Electronics, instrumentation & control
+                                         engineering
+                                     </a>
+                                 </h4>
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                     incididunt.</p>
+                                 <div class="button">
+                                     <a href="javascript:void(0)" class="btn">Read More</a>
+                                 </div>
+                             </div>
+                         </div>-->
                         <!-- End Single Blog -->
                     </div>
                 </div>
                 <!-- Pagination -->
-                <div class="pagination left blog-grid-page">
-                    <ul class="pagination-list">
-                        <li><a href="javascript:void(0)">Prev</a></li>
-                        <li class="active"><a href="javascript:void(0)">2</a></li>
-                        <li><a href="javascript:void(0)">3</a></li>
-                        <li><a href="javascript:void(0)">4</a></li>
-                        <li><a href="javascript:void(0)">Next</a></li>
-                    </ul>
-                </div>
+<!--                <div class="pagination left blog-grid-page">-->
+<!--                    <ul class="pagination-list">-->
+<!--                        <li><a href="javascript:void(0)">Prev</a></li>-->
+<!--                        <li class="active"><a href="javascript:void(0)">2</a></li>-->
+<!--                        <li><a href="javascript:void(0)">3</a></li>-->
+<!--                        <li><a href="javascript:void(0)">4</a></li>-->
+<!--                        <li><a href="javascript:void(0)">Next</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+                <ul class="pagination h-100 justify-content-center align-items-center">
+
+                    <li class="pagination left " th:if="${result.prev}">
+                        <a class="page-link" th:href="@{/blog/blog-grid-sidebar(page= ${result.start -1})}" tabindex="-1">Previous</a>
+                    </li>
+
+                    <li th:class=" 'pagination-list ' + ${result.page == page?'active':''} " th:each="page: ${result.pageList}">
+                        <a class="page-link" th:href="@{/blog/blog-grid-sidebar(page = ${page})}">
+                            [[${page}]]
+                        </a>
+                    </li>
+
+                    <li class="lni lni-chevron-right" th:if="${result.next}">
+                        <a class="page-link" th:href="@{/blog/blog-grid-sidebar(page= ${result.end + 1} )}">Next</a>
+                    </li>
+                </ul>
+
+
+
                 <!--/ End Pagination -->
             </div>
             <aside class="col-lg-4 col-md-12 col-12">

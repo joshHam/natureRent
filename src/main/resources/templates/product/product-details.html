@@ -401,15 +401,43 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
+                            <form th:action="@{/product/register}" th:method="post">
                             <h2 class="title">[[${dto.title}]]</h2>
                             <p class="category"><i class="lni lni-tag"></i> Drones:<a href="javascript:void(0)">Action
                                     cameras</a></p>
-                            <h3 class="price">$850<span>$945</span></h3>
-                            <p class="info-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
+                            <h3 class="price">[[${dto.price}]]₩<span>945₩</span></h3>
+<!--                            <p class="info-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod-->
+<!--                                tempor incididunt-->
+<!--                                ut labore et dolore magna aliqua.</p>-->
                             <div class="row">
-                                <div class="col-lg-4 col-md-4 col-12">
+
+                                <input type="hidden" name="rentalReserveStart" />
+                                <input type="hidden" name="rentalReserveEnd" />
+                                <!-- 달력 모달 버튼 -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#calendarModal">
+                                    Open Calendar
+                                </button>
+
+                                <!-- 달력 모달 -->
+                                <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="calendarModalLabel">Select Rental Dates</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="calendar"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" id="confirmDates">Confirm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--<div class="col-lg-4 col-md-4 col-12">
                                     <div class="form-group color-option">
                                         <label class="title-label" for="size">Choose color</label>
                                         <div class="single-checkbox checkbox-style-1">
@@ -439,7 +467,7 @@
                                             <option>8000 mAh</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="form-group quantity">
                                         <label for="color">Quantity</label>
@@ -472,6 +500,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -481,22 +510,23 @@
                     <div class="row">
                         <div class="col-lg-6 col-12">
                             <div class="info-body custom-responsive-margin">
-                                <h4>Details</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
-                                <h4>Features</h4>
-                                <ul class="features">
-                                    <li>Capture 4K30 Video and 12MP Photos</li>
-                                    <li>Game-Style Controller with Touchscreen</li>
-                                    <li>View Live Camera Feed</li>
-                                    <li>Full Control of HERO6 Black</li>
-                                    <li>Use App for Dedicated Camera Operation</li>
-                                </ul>
+                                <h4>상세설명</h4>
+                                <p>[[${dto.detail}]]</p>
+<!--                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
+<!--                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud-->
+<!--                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute-->
+<!--                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>-->
+<!--                                <h4>Features</h4>-->
+<!--                                <ul class="features">-->
+<!--                                    <li>Capture 4K30 Video and 12MP Photos</li>-->
+<!--                                    <li>Game-Style Controller with Touchscreen</li>-->
+<!--                                    <li>View Live Camera Feed</li>-->
+<!--                                    <li>Full Control of HERO6 Black</li>-->
+<!--                                    <li>Use App for Dedicated Camera Operation</li>-->
+<!--                                </ul>-->
                             </div>
                         </div>
-                        <div class="col-lg-6 col-12">
+                        <!--<div class="col-lg-6 col-12">
                             <div class="info-body">
                                 <h4>Specifications</h4>
                                 <ul class="normal-list">
@@ -514,7 +544,7 @@
                                     <li><span>Unishop Global Export:</span> 3 - 4 days, $25.00</li>
                                 </ul>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -1257,7 +1287,121 @@ document.getElementById('rating-summary').innerHTML = summaryHTML;
         }
     });
 });
+
 </script>
+
+<!--    &lt;!&ndash; FullCalendar 및 jQuery &ndash;&gt;-->
+<!--    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />-->
+<!--    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            var calendarEl = document.getElementById('calendar');-->
+<!--            var calendar = new FullCalendar.Calendar(calendarEl, {-->
+<!--                initialView: 'dayGridMonth',-->
+<!--                selectable: true,-->
+<!--                select: function(info) {-->
+<!--                    var rentalReserveStart = info.startStr;-->
+<!--                    var rentalReserveEnd = info.endStr;-->
+
+<!--                    // 선택된 날짜를 표시하거나 저장-->
+<!--                    $('#confirmDates').data('rentalReserveStart', rentalReserveStart);-->
+<!--                    $('#confirmDates').data('rentalReserveEnd', rentalReserveEnd);-->
+<!--                },-->
+<!--                events: [-->
+<!--                    {-->
+<!--                        start: '2024-08-20',-->
+<!--                        end: '2024-08-25',-->
+<!--                        display: 'background',-->
+<!--                        color: '#ff9f89'-->
+<!--                    },-->
+<!--                    // 다른 이벤트도 추가 가능-->
+<!--                ]-->
+<!--            });-->
+<!--            calendar.render();-->
+
+<!--            // 확인 버튼 클릭 시-->
+<!--            $('#confirmDates').click(function() {-->
+<!--                var rentalReserveStart = $(this).data('rentalReserveStart');-->
+<!--                var rentalReserveEnd = $(this).data('rentalReserveEnd');-->
+
+<!--                if (rentalReserveStart && rentalReserveEnd) {-->
+<!--                    // 기존 폼에 선택된 날짜를 추가-->
+<!--                    $('input[name="rentalReserveStart"]').val(rentalReserveStart);-->
+<!--                    $('input[name="rentalReserveEnd"]').val(rentalReserveEnd);-->
+
+<!--                    // 모달 닫기-->
+<!--                    $('#calendarModal').modal('hide');-->
+<!--                } else {-->
+<!--                    alert('Please select a valid date range.');-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+
+    <!-- FullCalendar 및 jQuery -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var rentedDates = /*[[${rentedDates}]]*/ []; // 서버에서 전달된 예약 불가능한 날짜
+            var events = [];
+
+            // 예약 불가능한 날짜를 이벤트로 추가
+            rentedDates.forEach(function(date) {
+                events.push({
+                    start: date,
+                    end: date,
+                    display: 'background',
+                    color: '#ff9f89' // 붉은 색으로 표시
+                });
+            });
+
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                select: function(info) {
+                    var rentalReserveStart = info.startStr;
+                    var rentalReserveEnd = info.endStr;
+
+                    // 선택된 날짜를 표시하거나 저장
+                    $('#confirmDates').data('rentalReserveStart', rentalReserveStart);
+                    $('#confirmDates').data('rentalReserveEnd', rentalReserveEnd);
+                },
+                events: events // 예약 불가능한 날짜들을 이벤트로 추가
+            });
+            calendar.render();
+
+            // 확인 버튼 클릭 시
+            $('#confirmDates').click(function() {
+                var rentalReserveStart = $(this).data('rentalReserveStart');
+                var rentalReserveEnd = $(this).data('rentalReserveEnd');
+
+                if (rentalReserveStart && rentalReserveEnd) {
+                    // 기존 폼에 선택된 날짜를 추가
+                    $('input[name="rentalReserveStart"]').val(rentalReserveStart);
+                    $('input[name="rentalReserveEnd"]').val(rentalReserveEnd);
+
+                    // 모달 닫기
+                    $('#calendarModal').modal('hide');
+                } else {
+                    alert('Please select a valid date range.');
+                }
+            });
+        });
+
+
+    </script>
+    <!--설명
+    var rentedDates = /*[[${rentedDates}]]*/ [];: Thymeleaf를 사용하여 서버에서 전달된 예약 불가능한 날짜를 JavaScript 배열로 설정합니다.
+
+    rentedDates.forEach(function(date) { ... }): 각 예약 불가능한 날짜를 events 배열에 추가하여 FullCalendar에서 표시합니다.
+
+    display: 'background'와 color: '#ff9f89': 예약 불가능한 날짜를 붉은색 배경으로 표시하여 사용자가 해당 날짜를 선택할 수 없도록 시각적으로 안내합니다.-->
 
 </body>
 

@@ -3,6 +3,7 @@ package org.zerock.natureRent.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class ProductDTO {
     private Long mno;
 
     private String title;
+    private String detail;
+    private BigDecimal price;
 
     @Builder.Default
     private List<ProductImageDTO> imageDTOList = new ArrayList<>();
@@ -29,7 +32,6 @@ public class ProductDTO {
     private int reviewCnt;
 
     private LocalDateTime regDate;
-
     private LocalDateTime modDate;
 
 
@@ -38,6 +40,7 @@ public class ProductDTO {
     private LocalDateTime rentalEndDate;
 
     private boolean isAvailable;
+
 
     public boolean isAvailable() {
         return isAvailable;

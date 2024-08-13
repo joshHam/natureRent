@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -116,6 +116,26 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
+                            <div sec:authorize="isAuthenticated()">
+                            <div class="user">
+                                <i class="lni lni-user"></i>
+                                Hello Member <div sec:authorize="hasRole('USER')">Has USER ROLE</div>
+                                <div sec:authorize="hasRole('MANAGER')">Has MANAGER ROLE</div>
+                                <div sec:authorize="hasRole('ADMIN')">Has ADMIN ROLE</div>
+
+                                <div sec:authorize="isAuthenticated()">
+                                    Only Authenticated user can see this Text
+                                </div>
+
+                                Authenticated username:
+                                <div sec:authentication="name"></div>
+                                Authenticated user roles:
+                                <div sec:authentication="principal.authorities">
+
+                                </div>
+
+                            </div>
+                            </div>
                             <div class="user">
                                 <i class="lni lni-user"></i>
                                 Hello
@@ -320,6 +340,7 @@
                                             <li class="nav-item"><a href="../product/product-details">shop Single</a></li>
                                             <li class="nav-item"><a href="cart">Cart</a></li>
                                             <li class="nav-item"><a href="checkout">Checkout</a></li>
+                                            <li class="nav-item"><a href="../product/register">상품등록</a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item">
@@ -332,6 +353,7 @@
                                             <li class="nav-item"><a href="/blog/blog-single">Blog Single</a></li>
                                             <li class="nav-item"><a href="/blog/blog-single-sidebar">Blog Single
                                                     Sibebar</a></li>
+                                            <li class="nav-item"><a href="/blog/blog-write">블로그글쓰기</a></li>
                                         </ul>
                                     </li>
                                     <li class="nav-item">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="zxx" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8" />
@@ -540,38 +540,45 @@
                         <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                              aria-labelledby="nav-grid-tab">
                             <div class="row">
-                                <div class="col-lg-4 col-md-6 col-12">
+                                <div class="col-lg-4 col-md-6 col-12" th:each="dto : ${result.dtoList}">
                                     <!-- Start Single Product -->
                                     <div class="single-product">
                                         <div class="product-image">
-                                            <img src="/assets/images/products/product-1.jpg" alt="#">
+<!--                                            <img src="/assets/images/products/product-1.jpg" alt="#">-->
+                                            <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>
                                             <div class="button">
-                                                <a href="/product/product-details" class="btn"><i
-                                                        class="lni lni-cart"></i> Add to Cart</a>
+<!--                                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>-->
+                                                <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>
                                             </div>
                                         </div>
                                         <div class="product-info">
                                             <span class="category">Watches</span>
                                             <h4 class="title">
-                                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>
+<!--                                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>-->
+                                                <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>
                                             </h4>
                                             <ul class="review">
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star"></i></li>
-                                                <li><span>4.0 Review(s)</span></li>
+                                                <li th:each="i : ${#numbers.sequence(1, 5)}">
+<!--                                                    <i th:class="'lni lni-star' + (${dto.avg} >= i.doubleValue() ? '-filled' : '')"></i>-->
+                                                    <i th:class="${dto.avg} >= ${i} ? 'lni lni-star-filled' : 'lni lni-star'"></i>
+                                                </li>
+                                                <li><span>[[${dto.avg}]] Rating</span></li>
                                             </ul>
                                             <div class="price">
-                                                <span>$199.00</span>
+                                                <span>[[${dto.price}]] ￦</span>
+                                            </div>
+                                            <div class="reviewCnt">
+                                                <span>리뷰수 : [[${dto.reviewCnt}]]</span>
+                                            </div>
+                                            <div class="Regdate">
+                                                <span>등록일 : [[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- End Single Product -->
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                <!--<div class="col-lg-4 col-md-6 col-12">
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-2.jpg" alt="#">
@@ -600,10 +607,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-3.jpg" alt="#">
@@ -630,10 +637,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-4.jpg" alt="#">
@@ -661,10 +668,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-5.jpg" alt="#">
@@ -691,10 +698,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-6.jpg" alt="#">
@@ -721,10 +728,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-7.jpg" alt="#">
@@ -753,10 +760,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-8.jpg" alt="#">
@@ -783,10 +790,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
-                                    <!-- Start Single Product -->
+                                    &lt;!&ndash; Start Single Product &ndash;&gt;
                                     <div class="single-product">
                                         <div class="product-image">
                                             <img src="/assets/images/products/product-2.jpg" alt="#">
@@ -815,13 +822,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- End Single Product -->
-                                </div>
+                                    &lt;!&ndash; End Single Product &ndash;&gt;
+                                </div>-->
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <!-- Pagination -->
-                                    <div class="pagination left">
+                                    <!--<div class="pagination left">
                                         <ul class="pagination-list">
                                             <li><a href="javascript:void(0)">1</a></li>
                                             <li class="active"><a href="javascript:void(0)">2</a></li>
@@ -830,7 +837,25 @@
                                             <li><a href="javascript:void(0)"><i
                                                     class="lni lni-chevron-right"></i></a></li>
                                         </ul>
-                                    </div>
+                                    </div>-->
+
+                                    <ul class="pagination h-100 justify-content-center align-items-center">
+
+                                        <li class="pagination left " th:if="${result.prev}">
+                                            <a class="page-link" th:href="@{/product/product-grids(page= ${result.start -1})}" tabindex="-1">Previous</a>
+                                        </li>
+
+                                        <li th:class=" 'pagination-list ' + ${result.page == page?'active':''} " th:each="page: ${result.pageList}">
+                                            <a class="page-link" th:href="@{/product/product-grids(page = ${page})}">
+                                                [[${page}]]
+                                            </a>
+                                        </li>
+
+                                        <li class="lni lni-chevron-right" th:if="${result.next}">
+                                            <a class="page-link" th:href="@{/product/product-grids(page= ${result.end + 1} )}">Next</a>
+                                        </li>
+                                    </ul>
+
                                     <!--/ End Pagination -->
                                 </div>
                             </div>
