@@ -1,12 +1,9 @@
 package org.zerock.natureRent.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.ProductImageDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.dto.PageResultDTO;
-import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.ProductImage;
 
@@ -24,7 +21,7 @@ public interface ProductService {
 
     ProductDTO getProduct(Long mno);
 
-    List<LocalDateTime> getRentedDates(Long mno);
+//    List<LocalDateTime> getRentedDates(Long mno);
 
 //    Page<Blog> findAllProducts(Pageable pageable);
 
@@ -34,8 +31,8 @@ public interface ProductService {
                 .title(product.getTitle())
                 .regDate(product.getRegDate())
                 .modDate(product.getModDate())
-                .rentalStartDate(product.getRentalStartDate())
-                .rentalEndDate(product.getRentalEndDate())
+//                .rentalStartDate(product.getRentalStartDate())
+//                .rentalEndDate(product.getRentalEndDate())
                 .isAvailable(product.isAvailable())
                 .price(product.getPrice())  // price 필드 설정
                 .build();
@@ -70,8 +67,8 @@ public interface ProductService {
         Product product = Product.builder()
                 .mno(productDTO.getMno())
                 .title(productDTO.getTitle())
-                .rentalStartDate(productDTO.getRentalStartDate())
-                .rentalEndDate(productDTO.getRentalEndDate())
+//                .rentalStartDate(productDTO.getRentalStartDate())
+//                .rentalEndDate(productDTO.getRentalEndDate())
                 .isAvailable(productDTO.isAvailable()) // boolean 필드 바로 사용
                 .price(productDTO.getPrice())  // price 필드 설정
                 .build();

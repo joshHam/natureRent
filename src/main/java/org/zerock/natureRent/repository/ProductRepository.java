@@ -29,6 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             " where m.mno = :mno group by mi")
     List<Object[]> getProductWithAll(Long mno);
 
-    @Query("SELECT p.rentalStartDate, p.rentalEndDate FROM Product p WHERE p.mno = :mno")
-    List<Object[]> findRentalPeriodsByProductId(@Param("mno") Long mno);
+//    @Query("SELECT p.rentalStartDate, p.rentalEndDate FROM Product p WHERE p.mno = :mno")
+//    List<Object[]> findRentalPeriodsByProductId(@Param("mno") Long mno);
+
 }

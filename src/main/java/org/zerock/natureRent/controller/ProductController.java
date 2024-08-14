@@ -2,6 +2,7 @@ package org.zerock.natureRent.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,9 +19,13 @@ import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.service.ProductService;
+import org.zerock.natureRent.service.RentalService;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/product")
@@ -29,6 +34,13 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService; //final
+    private final RentalService rentalService;
+
+    @Autowired
+    public ProductController(ProductService productService, RentalService rentalService) {
+        this.productService = productService;
+        this.rentalService = rentalService;
+    }
 
     @GetMapping("/register")
     public void register(){
@@ -105,12 +117,31 @@ public class ProductController {
 
         // ProductDTO 가져오기
         ProductDTO productDTO = productService.getProduct(mno);
+        log.info("Fetched product DTO: " + productDTO);
 
-        // 해당 상품의 렌탈 불가능한 날짜 가져오기
-        List<LocalDateTime> rentedDates = productService.getRentedDates(mno);
+        // RentalService를 이용하여 해당 상품의 렌탈 불가능한 날짜 가져오기
+        List<LocalDateTime> rentedDates = rentalService.getRentedDatesByProductId(mno);
 
+        // rentedDates가 null일 경우 빈 리스트로 초기화
+        if (rentedDates == null) {
+            rentedDates = Collections.emptyList();
+        } else {
+            rentedDates = rentedDates.stream()
+                    .filter(Objects::nonNull)  // null 값을 필터링
+                    .collect(Collectors.toList());
+        }
+
+
+        log.info("Fetched rented dates: " + rentedDates);
+
+        //rentedDates를 뷰에 전달
         model.addAttribute("dto", productDTO);
-        model.addAttribute("rentedDates", rentedDates);
+        model.addAttribute("rentedDates", rentedDates
+                .stream()
+                .map(LocalDateTime::toString)
+                .collect(Collectors.toList()));
+//        model.addAttribute("dto", productDTO);
+//        model.addAttribute("rentedDates", rentedDates);
 
 //    log.info("exProductDetails..........");
 //    if (mno == null) {

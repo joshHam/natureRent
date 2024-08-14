@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Log4j2
@@ -92,22 +94,43 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<LocalDateTime> getRentedDates(Long mno) {
-        List<Object[]> rentalPeriods = productRepository.findRentalPeriodsByProductId(mno);
-        List<LocalDateTime> rentedDates = new ArrayList<>();
+    public List<LocalDateTime> getRentedDatesByProductId(Long mno) {
+        log.info("Fetching rented dates for product: " + mno);
 
-        for (Object[] period : rentalPeriods) {
-            LocalDateTime startDate = (LocalDateTime) period[0];
-            LocalDateTime endDate = (LocalDateTime) period[1];
+//        List<Object[]> rentalPeriods = productRepository.findRentalPeriodsByProductId(mno);
 
-            // startDate부터 endDate까지의 날짜를 모두 리스트에 추가
-            while (!startDate.isAfter(endDate)) {
-                rentedDates.add(startDate);
-                startDate = startDate.plusDays(1);
-            }
-        }
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        log.info("Fetched rental periods: " + rentalPeriods);
+        // 기간별 날짜 리스트 생성
+        List<LocalDateTime> rentedDates = rentalPeriods.stream()
+                .flatMap(period -> Stream.of((LocalDateTime) period[0], (LocalDateTime) period[1]))
+                .collect(Collectors.toList());
 
-        return rentedDates;
+        log.info("Converted rented dates: " + rentedDates);
+
+//        List<String> rentedDates = rentalPeriods.stream()
+//                .flatMap(period -> {
+//                    LocalDateTime start = (LocalDateTime) period[0];
+//                    LocalDateTime end = (LocalDateTime) period[1];
+//                    return start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1)).map(date -> date.format(formatter));
+//                })
+//                .collect(Collectors.toList());
+
+
+//        List<LocalDateTime> rentedDates = new ArrayList<>();
+//        for (Object[] period : rentalPeriods) {
+//            LocalDateTime start = (LocalDateTime) period[0];
+//            LocalDateTime end = (LocalDateTime) period[1];
+//
+//            // start부터 end까지의 날짜를 모두 리스트에 추가
+//            while (!start.isAfter(end)) {
+//                rentedDates.add(start);
+//                start = start.plusDays(1); // 하루씩 추가
+//            }
+//        }
+
+//        return rentedDates;
+        return rentalRepository.findRentedDatesByProductId(productId);
     }
 
 }

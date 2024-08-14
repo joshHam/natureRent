@@ -18,6 +18,28 @@
     <link rel="stylesheet" href="/assets/css/main.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+        <!-- FullCalendar 및 jQuery -->
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <style>
+
+    #calendarModal .modal-dialog {
+        max-width: 80%; /* 모달의 최대 너비를 설정 */
+    }
+
+    #calendarModal .modal-body {
+        height: 600px; /* 모달의 높이를 명시적으로 설정 */
+        overflow-y: auto;
+    }
+
+    #calendar {
+        max-width: 100%;
+        height: 100%;
+    }
+        </style>
+        </style>
 </head>
 
 <body>
@@ -420,13 +442,14 @@
 
                                 <!-- 달력 모달 -->
                                 <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog"> <!-- modal-lg 클래스를 사용하여 모달 크기를 크게 설정 -->
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="calendarModalLabel">Select Rental Dates</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
+<!--                                                <div id="calendar" style="max-width: 100%; height: auto;"></div>-->
                                                 <div id="calendar"></div>
                                             </div>
                                             <div class="modal-footer">
@@ -817,585 +840,487 @@
             });
         });
     </script>
-    <!--<script>
-        $(document).ready(function(e) {
-
-            var grade = 0;
-            var mno = [[${dto.mno}]];
-
-        // Star rating 초기화
-        $('.starrr').starrr({
-            rating: grade,
-            change: function(e, value){
-                if (value) {
-                    console.log(value);
-                    grade = value;
-                }
-            }
-        });
-
-        var reviewModal = $(".reviewModal");
-        var inputEmail = $('input[name="email"]');
-        var inputText = $('input[name="text"]');
-
-        // Review 등록 버튼 클릭 이벤트
-        $(".addReviewBtn").click(function () {
-            inputEmail.val("");
-            inputText.val("");
-
-            $(".removeBtn, .modifyBtn").hide();
-            $(".reviewSaveBtn").show();
-
-            reviewModal.modal('show');
-        });
-
-        // Review 저장 버튼 클릭 이벤트
-        $('.reviewSaveBtn').click(function() {
-            var data = {
-                mno: mno,
-                grade: grade,
-                text: inputText.val(),
-                member_email: inputEmail.val()
-            };
-
-            console.log("Data being sent:", data);
-
-            $.ajax({
-                url: '/reviews/' + mno,
-                type: "POST",
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-                success: function(result){
-                    console.log("result: " + result);
-                    self.location.reload();
-                }
-            });
-            reviewModal.modal('hide');
-        });
-
-            //페이지가 열리면 바로 리뷰 데이터들을 가져와서 사용한다.
-            function getProductReviews() {
-
-                function formatTime(str){
-                    var date = new Date(str);
-
-                    return date.getFullYear() + '/' +
-                        (date.getMonth() + 1) + '/' +
-                        date.getDate() + ' ' +
-                        date.getHours() + ':' +
-                        date.getMinutes();
-                }
-
-                $.getJSON("/reviews/"+ mno +"/all", function(arr){
-                    var str ="";
-
-                    $.each(arr, function(idx, review){
-
-                        console.log(review);
-
-                    str += '<div class="single-review">';
-                    str += '<img src="/assets/images/blog/comment1.jpg" alt="#">';
-                    str += '<div class="review-info">';
-                    str += '<h4>' + review.text + '<span>' + review.member_email + '</span></h4>';
-                    str += '<ul class="stars">';
-
-                    for (var i = 0; i < review.grade; i++) {
-                        str += '<li><i class="lni lni-star-filled"></i></li>';
-                    }
-
-                    for (var i = review.grade; i < 5; i++) {
-                        str += '<li><i class="lni lni-star"></i></li>';
-                    }
-
-                    str += '</ul>';
-                    str += '<p>' + formatTime(review.regDate) + '</p>';
-                    str += '</div>';
-                    str += '</div>';
-                });
-
-                $(".reviewList").html(str); // 리뷰 리스트 업데이트
-            });
-        }
-
-            getProductReviews();
-
-        // Review 수정 클릭 이벤트
-        var reviewnum;
-
-        $(".reviewList").on("click", ".single-review", function() {
-
-                $(".reviewSaveBtn").hide();
-                $(".removeBtn , .modifyBtn").show();
-
-
-                var targetReview = $(this);
-
-            reviewnum = targetReview.data("reviewnum");
-            console.log("reviewnum: "+ reviewnum);
-            inputEmail.val(targetReview.data("email"));
-            inputText.val(targetReview.find('.review-info h4').clone().children().remove().end().text());
-
-            var grade = targetReview.find('.stars li i.lni-star-filled').length;
-            $(".starrr a:nth-child("+grade+")").trigger('click');
-
-            reviewModal.modal('show');
-        });
-
-        // Review 수정 버튼 클릭 이벤트
-        $(".modifyBtn").on("click", function(){
-            var data = {
-                reviewnum: reviewnum,
-                mno: mno,
-                grade: grade,
-                text: inputText.val(),
-                member_email: inputEmail.val()
-            };
-
-                console.log(data);
-
-                $.ajax({
-                    url:'/reviews/'+mno +"/"+ reviewnum ,
-                    type:"PUT",
-                    data:JSON.stringify(data),
-                    contentType:"application/json; charset=utf-8",
-                    dataType:"text",
-                    success: function(result){
-
-                        console.log("result: " + result);
-
-                        self.location.reload();
-
-                    }
-                })
-                reviewModal.modal('hide');
-            });
-
-        // Review 삭제 버튼 클릭 이벤트
-        $(".removeBtn").on("click", function(){
-
-                var data = {reviewnum: reviewnum};
-
-                console.log(data);
-
-                $.ajax({
-                    url:'/reviews/'+mno +"/"+ reviewnum ,
-                    type:"DELETE",
-                    contentType:"application/json; charset=utf-8",
-                    dataType:"text",
-                    success: function(result){
-
-                        console.log("result: " + result);
-
-                        self.location.reload();
-
-                    }
-                })
-                reviewModal.modal('hide');
-            });
-
-        // 이미지 클릭 이벤트
-        $(".uploadResult li").click(function() {
-
-                var file = $(this).data('file');
-
-            console.log(file);
-            $('.imageModal .modal-body').html("<img style='width:100%' src='/display?fileName="+file+"&size=1' >");
-            $(".imageModal").modal("show");
-
-            });
-
-
-
-        });
-    </script>-->
-    <!-- JavaScript for fetching and displaying reviews -->
-
-
-<!--<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // URL에서 mno 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
-
-    // 리뷰 가져오기 함수
-    const fetchReviews = async () => {
-        try {
-            const response = await fetch(`/reviews/${mno}/all`);
-            const data = await response.json();
-
-            if (data && data.length > 0) {
-                let overallRatingValue = 0;
-                let ratingCount = [0, 0, 0, 0, 0];
-
-                // 리뷰 데이터를 순회하며 필요한 정보 계산
-                data.forEach(review => {
-                    overallRatingValue += review.grade;
-                    ratingCount[review.grade - 1]++;
-                });
-
-                const averageRating = (overallRatingValue / data.length).toFixed(1);
-                document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
-
-                // 평점 요약 업데이트
-                let summaryHTML = '';
-                ratingCount.forEach((count, index) => {
-                    summaryHTML += `
-                        <li>
-                            <span>${5 - index} stars - ${count}</span>
-                            ${generateStars(5 - index)}
-                        </li>`;
-                });
-                document.getElementById('rating-summary').innerHTML = summaryHTML;
-
-                // 최신 리뷰 업데이트
-                let reviewsHTML = '';
-                data.forEach(review => {
-                    reviewsHTML += `
-                        <div class="single-review">
-                            <img src="https://via.placeholder.com/50" alt="#">
-                            <div class="review-info">
-                                <h4>${review.text} <span>${review.nickname}</span></h4>
-                                <ul class="stars">${generateStars(review.grade)}</ul>
-                                <p>${review.text}</p>
-                            </div>
-                        </div>`;
-                });
-                document.getElementById('latest-reviews').innerHTML = reviewsHTML;
-            } else {
-                document.getElementById('overall-rating').textContent = 'No reviews yet';
-                document.getElementById('rating-summary').innerHTML = '';
-                document.getElementById('latest-reviews').innerHTML = 'No reviews available';
-            }
-        } catch (error) {
-            console.error('Error fetching reviews:', error);
-            document.getElementById('overall-rating').textContent = 'Error loading reviews';
-            document.getElementById('rating-summary').innerHTML = '';
-            document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
-        }
-    };
-
-    // 별점 생성 함수
-    const generateStars = (rating) => {
-        let stars = '';
-        for (let i = 1; i <= 5; i++) {
-            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;
-        }
-        return stars;
-    };
-
-    fetchReviews();
-});
-
-
-let mno; // 전역 변수로 mno 선언
-
-document.addEventListener('DOMContentLoaded', function() {
-    // URL에서 mno 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
-
-    // 리뷰 가져오기 함수
-    const fetchReviews = async () => {
-        try {
-            const response = await fetch(`/reviews/${mno}/all`);
-            const data = await response.json();
-
-            if (data && data.length > 0) {
-                // 리뷰 데이터 처리 코드...
-            } else {
-                // 리뷰 없음 처리...
-            }
-        } catch (error) {
-            console.error('Error fetching reviews:', error);
-        }
-    };
-
-    fetchReviews(); // 페이지 로드 시 리뷰를 가져옵니다
-
-    // 리뷰 등록 버튼 클릭 이벤트 핸들러
-    document.getElementById('submit-review').addEventListener('click', async () => {
-        const name = document.getElementById('review-name').value;
-        const email = document.getElementById('review-email').value;
-        const subject = document.getElementById('review-subject').value;
-        const rating = document.getElementById('review-rating').value;
-        const message = document.getElementById('review-message').value;
-
-        if (!mno) {
-            console.error('mno is not defined');
-            alert('Failed to submit review. Product ID is missing.');
-            return;
-        }
-
-        const reviewData = {
-            mno: mno,  // 전역으로 선언된 mno 사용
-            nickname: name,
-            grade: rating,
-            text: message
-        };
-
-        try {
-            const response = await fetch(`/reviews/${mno}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(reviewData),
-            });
-
-            if (response.ok) {
-                fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
-                alert('Review submitted successfully!');
-                $('#exampleModal').modal('hide'); // 모달 닫기
-            } else {
-                alert('Failed to submit review.');
-            }
-        } catch (error) {
-            console.error('Error submitting review:', error);
-            alert('Error submitting review.');
-        }
-    });
-});
-
-
-</script>-->
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // URL에서 mno 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
-
-    // 리뷰 가져오기 함수
-    const fetchReviews = async () => {
-        try {
-            const response = await fetch(`/reviews/${mno}/all`);
-            const data = await response.json();
-
-            if (data && data.length > 0) {
-                let overallRatingValue = 0;
-                let ratingCount = [0, 0, 0, 0, 0];
-
-                // 리뷰 데이터를 순회하며 필요한 정보 계산
-                data.forEach(review => {
-                    overallRatingValue += review.grade;
-                    ratingCount[review.grade - 1]++;
-                });
-
-                const averageRating = (overallRatingValue / data.length).toFixed(1);
-                document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
-
-
- // 평점 요약 업데이트
-let summaryHTML = '';
-for (let i = 4; i >= 0; i--) {
-summaryHTML += `
-<li>
-    <span>${i + 1} stars - ${ratingCount[i]}</span>
-    ${generateStars(i + 1)}
-</li>`;
-}
-document.getElementById('rating-summary').innerHTML = summaryHTML;
-
-
-
-                // 최신 리뷰 업데이트
-                let reviewsHTML = '';
-                data.forEach(review => {
-                    reviewsHTML += `
-                        <div class="single-review">
-                            <img src="https://via.placeholder.com/50" alt="#">
-                            <div class="review-info">
-                                <h4>${review.text} <span>${review.member_email}</span></h4>
-                                <ul class="stars">${generateStars(review.grade)}</ul>
-                                <p>${review.text}</p>
-                            </div>
-                        </div>`;
-                });
-                document.getElementById('latest-reviews').innerHTML = reviewsHTML;
-            } else {
-                document.getElementById('overall-rating').textContent = 'No reviews yet';
-                document.getElementById('rating-summary').innerHTML = '';
-                document.getElementById('latest-reviews').innerHTML = 'No reviews available';
-            }
-        } catch (error) {
-            console.error('Error fetching reviews:', error);
-            document.getElementById('overall-rating').textContent = 'Error loading reviews';
-            document.getElementById('rating-summary').innerHTML = '';
-            document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
-        }
-    };
-
-    // 별점 생성 함수
-    const generateStars = (rating) => {
-        let stars = '';
-        for (let i = 1; i <= 5; i++) {
-         const color = i <= rating ? '#FFD700' : '#d3d3d3'; // 채워진 별은 금색, 비어 있는 별은 회색
-        stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}" style="color: ${color};"></i>`;
-<!--            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;-->
-        }
-        return stars;
-    };
-
-    // 페이지 로드 시 리뷰를 가져옵니다
-    fetchReviews();
-
-    // 리뷰 등록 버튼 클릭 이벤트 핸들러
-    document.getElementById('submit-review').addEventListener('click', async () => {
-        const name = document.getElementById('review-name').value;
-        const email = document.getElementById('review-email').value;
-        const subject = document.getElementById('review-subject').value;
-        const rating = document.getElementById('review-rating').value;
-        const message = document.getElementById('review-message').value;
-
-        if (!mno) {
-            console.error('mno is not defined');
-            alert('Failed to submit review. Product ID is missing.');
-            return;
-        }
-
-        const reviewData = {
-            mno: mno,
-            nickname: name,
-            grade: rating,
-            text: message,
-            member_email: email
-        };
-
-        try {
-            const response = await fetch(`/reviews/${mno}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(reviewData),
-            });
-
-            if (response.ok) {
-                fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
-                alert('Review submitted successfully!');
-              /*  $('#exampleModal').modal('hide'); // 모달 닫기*/
-                  const modal = document.getElementById('exampleModal');
-                const bootstrapModal = new bootstrap.Modal(modal);
-                bootstrapModal.hide();
-            } else {
-                alert('Failed to submit review.');
-            }
-        } catch (error) {
-            console.error('Error submitting review:', error);
-            alert('Error submitting review.');
-        }
-    });
-});
-
-</script>
-
-<!--    &lt;!&ndash; FullCalendar 및 jQuery &ndash;&gt;-->
-<!--    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />-->
-<!--    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>-->
-<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
-
-<!--    <script>-->
-<!--        $(document).ready(function() {-->
-<!--            var calendarEl = document.getElementById('calendar');-->
-<!--            var calendar = new FullCalendar.Calendar(calendarEl, {-->
-<!--                initialView: 'dayGridMonth',-->
-<!--                selectable: true,-->
-<!--                select: function(info) {-->
-<!--                    var rentalReserveStart = info.startStr;-->
-<!--                    var rentalReserveEnd = info.endStr;-->
-
-<!--                    // 선택된 날짜를 표시하거나 저장-->
-<!--                    $('#confirmDates').data('rentalReserveStart', rentalReserveStart);-->
-<!--                    $('#confirmDates').data('rentalReserveEnd', rentalReserveEnd);-->
-<!--                },-->
-<!--                events: [-->
-<!--                    {-->
-<!--                        start: '2024-08-20',-->
-<!--                        end: '2024-08-25',-->
-<!--                        display: 'background',-->
-<!--                        color: '#ff9f89'-->
-<!--                    },-->
-<!--                    // 다른 이벤트도 추가 가능-->
-<!--                ]-->
-<!--            });-->
-<!--            calendar.render();-->
-
-<!--            // 확인 버튼 클릭 시-->
-<!--            $('#confirmDates').click(function() {-->
-<!--                var rentalReserveStart = $(this).data('rentalReserveStart');-->
-<!--                var rentalReserveEnd = $(this).data('rentalReserveEnd');-->
-
-<!--                if (rentalReserveStart && rentalReserveEnd) {-->
-<!--                    // 기존 폼에 선택된 날짜를 추가-->
-<!--                    $('input[name="rentalReserveStart"]').val(rentalReserveStart);-->
-<!--                    $('input[name="rentalReserveEnd"]').val(rentalReserveEnd);-->
-
-<!--                    // 모달 닫기-->
-<!--                    $('#calendarModal').modal('hide');-->
-<!--                } else {-->
-<!--                    alert('Please select a valid date range.');-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
 
     <!-- FullCalendar 및 jQuery -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            var rentedDates = /*[[${rentedDates}]]*/ []; // 서버에서 전달된 예약 불가능한 날짜
-            var events = [];
+    <script type="text/javascript">
+        // 리뷰 가져오기와 리뷰 관련 스크립트
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
 
-            // 예약 불가능한 날짜를 이벤트로 추가
-            rentedDates.forEach(function(date) {
-                events.push({
-                    start: date,
-                    end: date,
-                    display: 'background',
-                    color: '#ff9f89' // 붉은 색으로 표시
-                });
+            // 리뷰 가져오기 함수
+            const fetchReviews = async () => {
+                try {
+                    const response = await fetch(`/reviews/${mno}/all`);
+                    const data = await response.json();
+
+                    if (data && data.length > 0) {
+                        let overallRatingValue = 0;
+                        let ratingCount = [0, 0, 0, 0, 0];
+
+                        data.forEach(review => {
+                            overallRatingValue += review.grade;
+                            ratingCount[review.grade - 1]++;
+                        });
+
+                        const averageRating = (overallRatingValue / data.length).toFixed(1);
+                        document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
+
+                        let summaryHTML = '';
+                        for (let i = 4; i >= 0; i--) {
+                            summaryHTML += `
+                                <li>
+                                    <span>${i + 1} stars - ${ratingCount[i]}</span>
+                                    ${generateStars(i + 1)}
+                                </li>`;
+                        }
+                        document.getElementById('rating-summary').innerHTML = summaryHTML;
+
+                        let reviewsHTML = '';
+                        data.forEach(review => {
+                            reviewsHTML += `
+                                <div class="single-review">
+                                    <img src="https://via.placeholder.com/50" alt="#">
+                                    <div class="review-info">
+                                        <h4>${review.text} <span>${review.member_email}</span></h4>
+                                        <ul class="stars">${generateStars(review.grade)}</ul>
+                                        <p>${review.text}</p>
+                                    </div>
+                                </div>`;
+                        });
+                        document.getElementById('latest-reviews').innerHTML = reviewsHTML;
+                    } else {
+                        document.getElementById('overall-rating').textContent = 'No reviews yet';
+                        document.getElementById('rating-summary').innerHTML = '';
+                        document.getElementById('latest-reviews').innerHTML = 'No reviews available';
+                    }
+                } catch (error) {
+                    console.error('Error fetching reviews:', error);
+                    document.getElementById('overall-rating').textContent = 'Error loading reviews';
+                    document.getElementById('rating-summary').innerHTML = '';
+                    document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
+                }
+            };
+
+            const generateStars = (rating) => {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    const color = i <= rating ? '#FFD700' : '#d3d3d3'; // 채워진 별은 금색, 비어 있는 별은 회색
+                    stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}" style="color: ${color};"></i>`;
+                }
+                return stars;
+            };
+
+            fetchReviews();
+
+            document.getElementById('submit-review').addEventListener('click', async () => {
+                const name = document.getElementById('review-name').value;
+                const email = document.getElementById('review-email').value;
+                const subject = document.getElementById('review-subject').value;
+                const rating = document.getElementById('review-rating').value;
+                const message = document.getElementById('review-message').value;
+
+                if (!mno) {
+                    console.error('mno is not defined');
+                    alert('Failed to submit review. Product ID is missing.');
+                    return;
+                }
+
+                const reviewData = {
+                    mno: mno,
+                    nickname: name,
+                    grade: rating,
+                    text: message,
+                    member_email: email
+                };
+
+                try {
+                    const response = await fetch(`/reviews/${mno}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(reviewData),
+                    });
+
+                    if (response.ok) {
+                        fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
+                        alert('Review submitted successfully!');
+                        const modal = document.getElementById('exampleModal');
+                        const bootstrapModal = new bootstrap.Modal(modal);
+                        bootstrapModal.hide();
+                    } else {
+                        alert('Failed to submit review.');
+                    }
+                } catch (error) {
+                    console.error('Error submitting review:', error);
+                    alert('Error submitting review.');
+                }
             });
+        });
+    </script>
 
+<!--    //Thymeleaf 변수를 자바스크립트로 전달할 때는 반드시 th:inline="javascript"를 사용하여 스크립트 내에서 Thymeleaf 변수를 처리할 수 있게 해야 합니다.-->
+
+<script th:inline="javascript" type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Thymeleaf에서 서버로부터 전달된 rentedDates
+            var rentedDates = /*[[${rentedDates}]]*/ [];
+
+          var events = [];
+            var today = new Date().toISOString().split("T")[0];
+
+   // 과거 날짜를 비활성화
+        var pastEvents = {
+            start: "1970-01-01",
+            end: today,
+            display: 'background',
+            color: '#d3d3d3', // 과거 날짜를 회색으로 표시
+            title: 'Unavailable'
+        };
+        events.push(pastEvents);
+
+            console.log("Rented dates:", rentedDates); // 이 로그로 데이터 확인
+
+        // rentedDates 배열을 돌면서 각 기간을 이벤트로 추가
+             // 날짜 범위를 설정
+        if (rentedDates.length >= 2) {
+            var startDate = new Date(rentedDates[0].split("T")[0]);
+            var endDate = new Date(rentedDates[1].split("T")[0]);
+
+            // startDate가 endDate보다 뒤에 있는 경우, 날짜 순서를 맞춤
+            if (startDate > endDate) {
+                var tempDate = startDate;
+                startDate = endDate;
+                endDate = tempDate;
+            }
+
+            console.log("Processing rental period from", startDate, "to", endDate);
+              // startDate와 endDate 사이의 모든 날짜를 이벤트로 추가
+            while (startDate <= endDate) {
+            console.log("Adding date to calendar:", startDate);
+                events.push({
+                    start: new Date(startDate).toISOString().split("T")[0],
+                    end: new Date(startDate).toISOString().split("T")[0],
+                    display: 'background',
+                    color: '#ff9f89', // 예약된 날짜를 붉은색으로 표시
+                    title: 'Reserved'
+                });
+                startDate.setDate(startDate.getDate() + 1);
+            }
+        }
+
+
+            console.log("Events to render on calendar:", events); // 이 로그로 데이터 확인
+
+ // FullCalendar 설정
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 selectable: true,
-                select: function(info) {
-                    var rentalReserveStart = info.startStr;
-                    var rentalReserveEnd = info.endStr;
+                height: 'auto',
+                events: events,
+                eventOverlap: false,    // 예약 불가능한 기간은 겹치지 않도록 설정
+                selectOverlap: function(event) {
+                    return event.display !== 'background'; // 예약 불가능한 날짜는 선택할 수 없도록 함
+                }
+                });
 
-                    // 선택된 날짜를 표시하거나 저장
-                    $('#confirmDates').data('rentalReserveStart', rentalReserveStart);
-                    $('#confirmDates').data('rentalReserveEnd', rentalReserveEnd);
-                },
-                events: events // 예약 불가능한 날짜들을 이벤트로 추가
+
+                   var selectedDates = [];
+
+        // 날짜 클릭 이벤트 핸들링
+        calendar.on('dateClick', function(info) {
+            selectedDates.push(info.dateStr);
+
+            if (selectedDates.length === 2) {
+                var rentalReserveStartDate = selectedDates[0];
+                var rentalReserveEndDate = selectedDates[1];
+
+                // start와 end를 Date 객체로 변환 /시간을 00:00:00으로 초기화
+                var start = new Date(rentalReserveStartDate);
+                var end = new Date(rentalReserveEndDate);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
+
+                    // 종료 날짜에 +1일 추가해서 선택 범위에 포함
+                end.setDate(end.getDate() + 1);
+                start.setDate(start.getDate() + 1);
+
+                if (start > end) {
+                    // 날짜 순서가 반대일 경우 교환
+                    var tempDate = start;
+                    start = end;
+                    end = tempDate;
+                }
+
+                console.log("Selected range:", rentalReserveStartDate, "to", rentalReserveEndDate);
+
+                while (start <= end) {
+                    console.log("Adding selected date to calendar:", start);
+                    events.push({
+                        start: new Date(start).toISOString().split("T")[0],
+                        end: new Date(start).toISOString().split("T")[0],
+                        display: 'background',
+                        color: '#90ee90' // 초록색으로 표시
+                    });
+                    start.setDate(start.getDate() + 1);
+                }
+
+                calendar.addEventSource(events);
+
+                // 선택된 날짜를 저장
+                $('#confirmDates').data('rentalReserveStartDate', rentalReserveStartDate);
+                $('#confirmDates').data('rentalReserveEndDate', rentalReserveEndDate);
+
+                // 두 번째 클릭 후 배열 초기화
+                selectedDates = [];
+            }
+        });
+
+        calendar.render();
+
+            // 창 크기 조정 시 캘린더 크기 업데이트
+            $(window).resize(function() {
+                calendar.updateSize();
             });
-            calendar.render();
 
-            // 확인 버튼 클릭 시
+            // 날짜 확인 버튼 클릭 시 동작
             $('#confirmDates').click(function() {
-                var rentalReserveStart = $(this).data('rentalReserveStart');
-                var rentalReserveEnd = $(this).data('rentalReserveEnd');
+                var rentalReserveStartDate = $(this).data('rentalReserveStartDate');
+                var rentalReserveEndDate = $(this).data('rentalReserveEndDate');
 
-                if (rentalReserveStart && rentalReserveEnd) {
-                    // 기존 폼에 선택된 날짜를 추가
-                    $('input[name="rentalReserveStart"]').val(rentalReserveStart);
-                    $('input[name="rentalReserveEnd"]').val(rentalReserveEnd);
+                if (rentalReserveStartDate && rentalReserveEndDate) {
+                    $('input[name="rentalReserveStartDate"]').val(rentalReserveStartDate);
+                    $('input[name="rentalReserveEndDate"]').val(rentalReserveEndDate);
 
-                    // 모달 닫기
+                  // 로그로 hidden 속성 값 출력
+                console.log("Rental Reserve Start Date:", rentalReserveStartDate);
+                console.log("Rental Reserve End Date:", rentalReserveEndDate);
+
                     $('#calendarModal').modal('hide');
                 } else {
                     alert('Please select a valid date range.');
                 }
             });
         });
+    </script>
 
+
+
+
+
+    <!--
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // URL에서 mno 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
+
+        // 리뷰 가져오기 함수
+        const fetchReviews = async () => {
+            try {
+                const response = await fetch(`/reviews/${mno}/all`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    let overallRatingValue = 0;
+                    let ratingCount = [0, 0, 0, 0, 0];
+
+                    // 리뷰 데이터를 순회하며 필요한 정보 계산
+                    data.forEach(review => {
+                        overallRatingValue += review.grade;
+                        ratingCount[review.grade - 1]++;
+                    });
+
+                    const averageRating = (overallRatingValue / data.length).toFixed(1);
+                    document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
+
+
+     // 평점 요약 업데이트
+    let summaryHTML = '';
+    for (let i = 4; i >= 0; i&#45;&#45;) {
+    summaryHTML += `
+    <li>
+        <span>${i + 1} stars - ${ratingCount[i]}</span>
+        ${generateStars(i + 1)}
+    </li>`;
+    }
+    document.getElementById('rating-summary').innerHTML = summaryHTML;
+
+
+
+                    // 최신 리뷰 업데이트
+                    let reviewsHTML = '';
+                    data.forEach(review => {
+                        reviewsHTML += `
+                            <div class="single-review">
+                                <img src="https://via.placeholder.com/50" alt="#">
+                                <div class="review-info">
+                                    <h4>${review.text} <span>${review.member_email}</span></h4>
+                                    <ul class="stars">${generateStars(review.grade)}</ul>
+                                    <p>${review.text}</p>
+                                </div>
+                            </div>`;
+                    });
+                    document.getElementById('latest-reviews').innerHTML = reviewsHTML;
+                } else {
+                    document.getElementById('overall-rating').textContent = 'No reviews yet';
+                    document.getElementById('rating-summary').innerHTML = '';
+                    document.getElementById('latest-reviews').innerHTML = 'No reviews available';
+                }
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+                document.getElementById('overall-rating').textContent = 'Error loading reviews';
+                document.getElementById('rating-summary').innerHTML = '';
+                document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
+            }
+        };
+
+        // 별점 생성 함수
+        const generateStars = (rating) => {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+             const color = i <= rating ? '#FFD700' : '#d3d3d3'; // 채워진 별은 금색, 비어 있는 별은 회색
+            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}" style="color: ${color};"></i>`;
+    &lt;!&ndash;            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;&ndash;&gt;
+            }
+            return stars;
+        };
+
+        // 페이지 로드 시 리뷰를 가져옵니다
+        fetchReviews();
+
+        // 리뷰 등록 버튼 클릭 이벤트 핸들러
+        document.getElementById('submit-review').addEventListener('click', async () => {
+            const name = document.getElementById('review-name').value;
+            const email = document.getElementById('review-email').value;
+            const subject = document.getElementById('review-subject').value;
+            const rating = document.getElementById('review-rating').value;
+            const message = document.getElementById('review-message').value;
+
+            if (!mno) {
+                console.error('mno is not defined');
+                alert('Failed to submit review. Product ID is missing.');
+                return;
+            }
+
+            const reviewData = {
+                mno: mno,
+                nickname: name,
+                grade: rating,
+                text: message,
+                member_email: email
+            };
+
+            try {
+                const response = await fetch(`/reviews/${mno}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(reviewData),
+                });
+
+                if (response.ok) {
+                    fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
+                    alert('Review submitted successfully!');
+                  /*  $('#exampleModal').modal('hide'); // 모달 닫기*/
+                      const modal = document.getElementById('exampleModal');
+                    const bootstrapModal = new bootstrap.Modal(modal);
+                    bootstrapModal.hide();
+                } else {
+                    alert('Failed to submit review.');
+                }
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                alert('Error submitting review.');
+            }
+        });
+    });
 
     </script>
+
+        <script>
+    // $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                // 서버에서 전달된 예약 불가능한 날짜 범위 (rentalStartDate와 rentalEndDate)
+                       var rentedDates = /*[[${rentedDates}]]*/ [];
+
+             // [{ start: '2024-08-20', end: '2024-08-25' }, ...]
+
+
+
+                // 예약 불가능한 날짜 범위를 이벤트로 추가
+                var events = rentedDates.map(function(date){
+                    return {
+                        start: date,
+                        end: date,
+                        display: 'background',
+                        color: '#ff9f89' // 붉은 색으로 표시
+                    };
+                });
+
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    selectable: true,
+                    select: function(info) {
+                        var rentalReserveStart = info.startStr;
+                        var rentalReserveEnd = info.endStr;
+
+                        // 선택된 날짜를 표시하거나 저장
+                        $('#confirmDates').data('rentalReserveStart', rentalReserveStart);
+                        $('#confirmDates').data('rentalReserveEnd', rentalReserveEnd);
+                    },
+                    events: events,
+                    eventOverlap: false, // 예약 불가능한 기간은 겹치지 않도록 설정
+                    selectOverlap: function(event) {
+                        return event.display !== 'background'; // 예약 불가능한 날짜는 선택할 수 없도록 함
+                    }
+                });
+                calendar.render();
+
+                // 확인 버튼 클릭 시
+                $('#confirmDates').click(function() {
+                    var rentalReserveStart = $(this).data('rentalReserveStart');
+                    var rentalReserveEnd = $(this).data('rentalReserveEnd');
+
+                    if (rentalReserveStart && rentalReserveEnd) {
+                        // 기존 폼에 선택된 날짜를 추가
+                        $('input[name="rentalReserveStart"]').val(rentalReserveStart);
+                        $('input[name="rentalReserveEnd"]').val(rentalReserveEnd);
+
+                        // 모달 닫기
+                        $('#calendarModal').modal('hide');
+                    } else {
+                        alert('Please select a valid date range.');
+                    }
+                });
+            });
+
+
+            $(document).ready(function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            height: 'auto', // 높이를 자동으로 설정
+            events: events // 기존 이벤트를 여기에 추가
+        });
+        calendar.render();
+
+        // 창 크기 조정 시 강제로 리프레시
+        $(window).resize(function() {
+            calendar.updateSize();
+        });
+    });
+        </script>-->
+
     <!--설명
     var rentedDates = /*[[${rentedDates}]]*/ [];: Thymeleaf를 사용하여 서버에서 전달된 예약 불가능한 날짜를 JavaScript 배열로 설정합니다.
 

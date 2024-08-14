@@ -41,6 +41,9 @@ public class ProductDTO {
 
     private boolean isAvailable;
 
+    // 예약 관련 필드 추가
+    private LocalDateTime rentalReserveStart;
+    private LocalDateTime rentalReserveEnd;
 
     public boolean isAvailable() {
         return isAvailable;
