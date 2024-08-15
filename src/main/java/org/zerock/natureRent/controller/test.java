@@ -1,61 +1,54 @@
-//@Controller
-//@RequestMapping("/reviews")
-//@Log4j2
-//@RequiredArgsConstructor
-//public class ReviewController {
+//@PostMapping("/uploadAjax")
+//public ResponseEntity<List<UploadResultDTO>> uploadFile(MultipartFile[] uploadFiles) {
 //
-//    private final ReviewService reviewService;
+//    List<UploadResultDTO> resultDTOList = new ArrayList<>();
 //
-//    @GetMapping("/{mno}/all")
-//    public ResponseEntity<List<ReviewDTO>> getList(@PathVariable("mno") Long mno){
-//        List<ReviewDTO> reviewDTOList = reviewService.getListOfProduct(mno);
-//        return new ResponseEntity<>(reviewDTOList, HttpStatus.OK);
+//    for (MultipartFile uploadFile : uploadFiles) {
+//
+//        if (!Objects.requireNonNull(uploadFile.getContentType()).startsWith("image")) {
+//            log.warn("This file is not an image type");
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
+//
+//        String originalName = uploadFile.getOriginalFilename();
+//        assert originalName != null;
+//        String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
+//
+//        log.info("fileName: {}", fileName);
+//
+//        String folderPath = makeFolder();
+//        String uuid = UUID.randomUUID().toString();
+//
+//        // 수정된 경로 설정
+//        Path savePath;
+//        if (folderPath.startsWith(uploadPath)) {
+//            savePath = Paths.get(folderPath, uuid + "_" + fileName);
+//        } else {
+//            savePath = Paths.get(uploadPath, folderPath, uuid + "_" + fileName);
+//        }
+//
+//        log.info("Saving to: " + savePath.toString());
+//
+//        try {
+//            if (!Files.exists(savePath.getParent())) {
+//                Files.createDirectories(savePath.getParent());
+//            }
+//
+//            // 파일 저장
+//            uploadFile.transferTo(savePath.toFile());
+//
+//            // 섬네일 생성
+//            String thumbnailSaveName = "s_" + uuid + "_" + fileName;
+//            Path thumbnailPath = Paths.get(uploadPath, folderPath, thumbnailSaveName);
+//            Thumbnailator.createThumbnail(savePath.toFile(), thumbnailPath.toFile(), 288, 240);
+//
+//            resultDTOList.add(new UploadResultDTO(fileName, uuid, folderPath));
+//
+//        } catch (IOException e) {
+//            log.error("File upload error: " + e.getMessage(), e);
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
 //    }
 //
-//    @PostMapping("/{mno}")
-//    public ResponseEntity<Long> addReview(@RequestBody ReviewDTO productReviewDTO){
-//        Long reviewnum = reviewService.register(productReviewDTO);
-//        return new ResponseEntity<>( reviewnum, HttpStatus.OK);
-//    }
-//
-//    @PutMapping("/{mno}/{reviewnum}")
-//    public ResponseEntity<Long> modifyReview(@PathVariable Long reviewnum, @RequestBody ReviewDTO productReviewDTO){
-//        reviewService.modify(productReviewDTO);
-//        return new ResponseEntity<>( reviewnum, HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/{mno}/{reviewnum}")
-//    public ResponseEntity<Long> removeReview( @PathVariable Long reviewnum){
-//        reviewService.remove(reviewnum);
-//        return new ResponseEntity<>( reviewnum, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/blog/{blogId}")
-//    public ResponseEntity<List<ReviewDTO>> getReviewsByBlogId(@PathVariable Long blogId) {
-//        List<ReviewDTO> reviews = reviewService.getListOfBlog(blogId);
-//        return new ResponseEntity<>(reviews, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/product/{productId}")
-//    public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable Long productId) {
-//        List<ReviewDTO> reviews = reviewService.getListOfProduct(productId);
-//        return new ResponseEntity<>(reviews, HttpStatus.OK);
-//    }
-//
-//    @PostMapping("/add")
-//    public String addReview(
-//            @RequestParam("name") String name,
-//            @RequestParam("email") String email,
-//            @RequestParam("text") String text,
-//            @RequestParam("blogId") Long blogId,
-//            RedirectAttributes redirectAttributes) {
-//        ReviewDTO reviewDTO = new ReviewDTO();
-//        reviewDTO.setName(name);
-//        reviewDTO.setMember_email(email);
-//        reviewDTO.setText(text);
-//        reviewDTO.setBno(blogId); // 블로그 ID 설정
-//        reviewService.register(reviewDTO);
-//        redirectAttributes.addFlashAttribute("message", "Review added successfully!");
-//        return "redirect:/blog/" + blogId;
-//    }
+//    return new ResponseEntity<>(resultDTOList, HttpStatus.OK);
 //}

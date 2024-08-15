@@ -16,8 +16,10 @@ public interface RentalService {
 
     default RentalDTO entityToDTO(Rental rental){
         return RentalDTO.builder()
+//                .rentalId(rental.getRentalId())
+//                .productMno(rental.getProduct().getMno())
                 .rno(rental.getRno())
-                .rno(rental.getProduct().getMno())
+                .mno(rental.getProduct().getMno())
                 .rentalStartDate(rental.getRentalStartDate())
                 .rentalEndDate(rental.getRentalEndDate())
                 .quantity(rental.getQuantity())

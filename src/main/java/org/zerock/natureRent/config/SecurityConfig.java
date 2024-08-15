@@ -55,7 +55,7 @@ public class SecurityConfig {
 
         // 권한 설정
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/main/all", "/login", "/register", "/assets/**").permitAll()
+                .requestMatchers("/main/all", "/login", "/register", "/assets/**","/uploadAjax").permitAll()
                 .requestMatchers("/main/member").hasAnyAuthority("USER", "OAUTH2_USER")
                 .requestMatchers("/main/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()

@@ -31,10 +31,11 @@ public class ProductRepositoryTests {
     @Test
     public void insertProducts() {
 
-        IntStream.rangeClosed(1,20).forEach(i -> {
+        IntStream.rangeClosed(1,100).forEach(i -> {
 
             Product product = Product.builder()
                                 .title("Product...." +i)
+                    .detail("Product details..." +i)
                                 .price(BigDecimal.valueOf(100 + i * 10)) // 여기서 price 값을 설정해줘야 해
                                 .build();
             System.out.println("------------------------------------------");

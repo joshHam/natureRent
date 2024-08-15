@@ -38,7 +38,7 @@ public class MemberTests {
         //81- 90까지는 USER,MANAGER
         //91- 100까지는 USER,MANAGER,ADMIN
 
-        IntStream.rangeClosed(1,250).forEach(i -> {
+        IntStream.rangeClosed(1,100).forEach(i -> {
             Member member = Member.builder()
                     .email("user"+i+"@zerock.org")
                     .name("사용자"+i)
@@ -50,11 +50,11 @@ public class MemberTests {
             //default role
             member.addMemberRole(ClubMemberRole.USER);
 
-            if(i > 220){
+            if(i > 90){
                 member.addMemberRole(ClubMemberRole.MANAGER);
             }
 
-            if(i > 235){
+            if(i > 95){
                 member.addMemberRole(ClubMemberRole.ADMIN);
             }
 

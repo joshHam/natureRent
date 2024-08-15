@@ -8,14 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.natureRent.dto.PageResultDTO;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
+import org.zerock.natureRent.dto.RentalDTO;
 import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.service.ProductService;
@@ -36,11 +34,11 @@ public class ProductController {
     private final ProductService productService; //final
     private final RentalService rentalService;
 
-    @Autowired
-    public ProductController(ProductService productService, RentalService rentalService) {
-        this.productService = productService;
-        this.rentalService = rentalService;
-    }
+//    @Autowired
+//    public ProductController(ProductService productService, RentalService rentalService) {
+//        this.productService = productService;
+//        this.rentalService = rentalService;
+//    }
 
     @GetMapping("/register")
     public void register(){
@@ -111,7 +109,7 @@ public class ProductController {
 
     /*============================================================================*/
     @GetMapping("/product-details")
-    public void read(long mno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
+    public void read(@RequestParam("mno") long mno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
 
         log.info("mno: " + mno);
 
@@ -121,6 +119,7 @@ public class ProductController {
 
         // RentalService를 이용하여 해당 상품의 렌탈 불가능한 날짜 가져오기
         List<LocalDateTime> rentedDates = rentalService.getRentedDatesByProductId(mno);
+//        List<RentalDTO> rentedDates = rentalService.getRentedDatesByProductId(mno);
 
         // rentedDates가 null일 경우 빈 리스트로 초기화
         if (rentedDates == null) {

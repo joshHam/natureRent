@@ -32,6 +32,6 @@ public class Rental extends BaseEntity {
     @Column(name = "rental_end_date", nullable = false)
     private LocalDateTime rentalEndDate;  // 예약 종료일
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "int default 1")
     private int quantity;  // 예약된 상품 수량
 }

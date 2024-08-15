@@ -93,45 +93,45 @@ public class ProductServiceImpl implements ProductService{
         return entitiesToDTO(product, productImageList, avg, reviewCnt);
     }
 
-    @Override
-    public List<LocalDateTime> getRentedDatesByProductId(Long mno) {
-        log.info("Fetching rented dates for product: " + mno);
-
-//        List<Object[]> rentalPeriods = productRepository.findRentalPeriodsByProductId(mno);
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        log.info("Fetched rental periods: " + rentalPeriods);
-        // 기간별 날짜 리스트 생성
-        List<LocalDateTime> rentedDates = rentalPeriods.stream()
-                .flatMap(period -> Stream.of((LocalDateTime) period[0], (LocalDateTime) period[1]))
-                .collect(Collectors.toList());
-
-        log.info("Converted rented dates: " + rentedDates);
-
-//        List<String> rentedDates = rentalPeriods.stream()
-//                .flatMap(period -> {
-//                    LocalDateTime start = (LocalDateTime) period[0];
-//                    LocalDateTime end = (LocalDateTime) period[1];
-//                    return start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1)).map(date -> date.format(formatter));
-//                })
-//                .collect(Collectors.toList());
-
-
-//        List<LocalDateTime> rentedDates = new ArrayList<>();
-//        for (Object[] period : rentalPeriods) {
-//            LocalDateTime start = (LocalDateTime) period[0];
-//            LocalDateTime end = (LocalDateTime) period[1];
+//    @Override
+//    public List<LocalDateTime> getRentedDatesByProductId(Long mno) {
+//        log.info("Fetching rented dates for product: " + mno);
 //
-//            // start부터 end까지의 날짜를 모두 리스트에 추가
-//            while (!start.isAfter(end)) {
-//                rentedDates.add(start);
-//                start = start.plusDays(1); // 하루씩 추가
-//            }
-//        }
-
-//        return rentedDates;
-        return rentalRepository.findRentedDatesByProductId(productId);
-    }
+////        List<Object[]> rentalPeriods = productRepository.findRentalPeriodsByProductId(mno);
+//
+////        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        log.info("Fetched rental periods: " + rentalPeriods);
+//        // 기간별 날짜 리스트 생성
+//        List<LocalDateTime> rentedDates = rentalPeriods.stream()
+//                .flatMap(period -> Stream.of((LocalDateTime) period[0], (LocalDateTime) period[1]))
+//                .collect(Collectors.toList());
+//
+//        log.info("Converted rented dates: " + rentedDates);
+//
+////        List<String> rentedDates = rentalPeriods.stream()
+////                .flatMap(period -> {
+////                    LocalDateTime start = (LocalDateTime) period[0];
+////                    LocalDateTime end = (LocalDateTime) period[1];
+////                    return start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1)).map(date -> date.format(formatter));
+////                })
+////                .collect(Collectors.toList());
+//
+//
+////        List<LocalDateTime> rentedDates = new ArrayList<>();
+////        for (Object[] period : rentalPeriods) {
+////            LocalDateTime start = (LocalDateTime) period[0];
+////            LocalDateTime end = (LocalDateTime) period[1];
+////
+////            // start부터 end까지의 날짜를 모두 리스트에 추가
+////            while (!start.isAfter(end)) {
+////                rentedDates.add(start);
+////                start = start.plusDays(1); // 하루씩 추가
+////            }
+////        }
+//
+////        return rentedDates;
+//        return rentalRepository.findRentedDatesByProductId(productId);
+//    }
 
 }
 

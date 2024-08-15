@@ -116,26 +116,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
-                            <div sec:authorize="isAuthenticated()">
-                            <div class="user">
-                                <i class="lni lni-user"></i>
-                                Hello Member <div sec:authorize="hasRole('USER')">Has USER ROLE</div>
-                                <div sec:authorize="hasRole('MANAGER')">Has MANAGER ROLE</div>
-                                <div sec:authorize="hasRole('ADMIN')">Has ADMIN ROLE</div>
 
-                                <div sec:authorize="isAuthenticated()">
-                                    Only Authenticated user can see this Text
-                                </div>
-
-                                Authenticated username:
-                                <div sec:authentication="name"></div>
-                                Authenticated user roles:
-                                <div sec:authentication="principal.authorities">
-
-                                </div>
-
-                            </div>
-                            </div>
                             <div class="user">
                                 <i class="lni lni-user"></i>
                                 Hello
@@ -197,7 +178,32 @@
                         <div class="middle-right-area">
                             <div class="nav-hotline">
                                 <i class="lni lni-phone"></i>
-                                <h3>전화:
+                                <h3>
+                                    <div sec:authorize="isAuthenticated()">
+                                    <div class="user">
+                                        <i class="lni lni-user"></i>
+                                        회원님 반갑습니다!
+                                        <!-- ADMIN ROLE이 있는 경우에만 보임 -->
+                                        <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
+                                        <!-- ADMIN ROLE은 없고 MANAGER ROLE이 있는 경우에만 보임 -->
+                                        <div sec:authorize="hasRole('MANAGER') and !hasRole('ADMIN') and hasRole('USER')">메니저 모드 On</div>
+                                        <!-- ADMIN ROLE, MANAGER ROLE은 없고 USER ROLE만 있는 경우에만 보임 -->
+                                        <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">오늘은 어디로 떠날 준비를 할까요?</div>
+
+                                        <div sec:authorize="isAuthenticated()">
+                                            로그인 되었습니다.
+                                        </div>
+
+                                        회원 이메일:
+                                        <div sec:authentication="name"></div>
+                                        회원 권한:
+                                        <div sec:authentication="principal.authorities">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                    전화:
                                     <span>(+100) 123 456 7890</span>
                                 </h3>
                             </div>
@@ -473,261 +479,6 @@
     <!-- End Hero Area -->
 
     <!-- Start Trending Product Area -->
-    <!--<section class="trending-product section" style="margin-top: 12px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-title">
-                        <h2>Trending Product</h2>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-1.jpg" alt="#">
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Watches</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$199.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-2.jpg" alt="#">
-                            <span class="sale-tag">-25%</span>
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Speaker</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">Big Power Sound Speaker</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$275.00</span>
-                                <span class="discount-price">$300.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-3.jpg" alt="#">
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Camera</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">WiFi Security Camera</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$399.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-4.jpg" alt="#">
-                            <span class="new-tag">New</span>
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Phones</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">iphone 6x plus</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$400.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-5.jpg" alt="#">
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Headphones</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">Wireless Headphones</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$350.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-6.jpg" alt="#">
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Speaker</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">Mini Bluetooth Speaker</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$70.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-7.jpg" alt="#">
-                            <span class="sale-tag">-50%</span>
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Headphones</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">PX7 Wireless Headphones</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$100.00</span>
-                                <span class="discount-price">$200.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    &lt;!&ndash; Start Single Product &ndash;&gt;
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="/assets/images/products/product-8.jpg" alt="#">
-                            <div class="button">
-                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Laptop</span>
-                            <h4 class="title">
-                                <a href="/product/product-grids">Apple MacBook Air</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$899.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; End Single Product &ndash;&gt;
-                </div>
-            </div>
-        </div>
-    </section>-->
-    <!-- End Trending Product Area -->
-
-    <!-- Start Trending Product Area -->
     <section class="trending-product section" style="margin-top: 12px;">
         <div class="container">
             <div class="row">
@@ -743,32 +494,34 @@
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
-<!--                                <img th:src="@{/display?fileName=${dto.imageDTOList[0].thumbnailURL}}" alt="#"  />-->
+                                <!--                                            <img src="/assets/images/products/product-1.jpg" alt="#">-->
                                 <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>
-
                                 <div class="button">
-<!--                                    <a th:href="@{/product/read(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>-->
+                                    <!--                                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>-->
                                     <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>
                                 </div>
                             </div>
                             <div class="product-info">
-                                <span class="category">Product</span>
+                                <span class="category">Watches</span>
                                 <h4 class="title">
+                                    <!--                                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>-->
                                     <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>
                                 </h4>
                                 <ul class="review">
-                                    <li><i class="lni lni-star-filled"></i></li>
-                                    <li><i class="lni lni-star-filled"></i></li>
-                                    <li><i class="lni lni-star-filled"></i></li>
-                                    <li><i class="lni lni-star-filled"></i></li>
-                                    <li><i class="lni lni-star"></i></li>
+                                    <li th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <!--                                                    <i th:class="'lni lni-star' + (${dto.avg} >= i.doubleValue() ? '-filled' : '')"></i>-->
+                                        <i th:class="${dto.avg} >= ${i} ? 'lni lni-star-filled' : 'lni lni-star'"></i>
+                                    </li>
                                     <li><span>[[${dto.avg}]] Rating</span></li>
                                 </ul>
                                 <div class="price">
-                                    <span>Review Count: [[${dto.reviewCnt}]]</span>
+                                    <span>[[${dto.price}]] ￦</span>
                                 </div>
-                                <div class="price">
-                                    <span>Regdate: [[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>
+                                <div class="reviewCnt">
+                                    <span>리뷰수 : [[${dto.reviewCnt}]]</span>
+                                </div>
+                                <div class="Regdate">
+                                    <span>등록일 : [[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>
                                 </div>
                             </div>
                         </div>

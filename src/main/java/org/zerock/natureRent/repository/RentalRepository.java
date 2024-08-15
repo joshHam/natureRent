@@ -23,9 +23,9 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
             Long mno, LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("SELECT r.rentalStartDate, r.rentalEndDate FROM Rental r WHERE r.product.mno = :mno")
-    List<Object[]> findRentalPeriodsByProductId(@Param("mno") Long mno);
-
-    // 특정 상품의 렌탈 기간을 가져오는 쿼리
-    @Query("SELECT r.rentalStartDate FROM Rental r WHERE r.product.mno = :mno")
     List<Object[]> findRentedDatesByProductId(@Param("mno") Long mno);
+
+//    // 특정 상품의 렌탈 기간을 가져오는 쿼리
+//    @Query("SELECT r.rentalStartDate FROM Rental r WHERE r.product.mno = :mno")
+//    List<Object[]> findRentedDatesByProductId(@Param("mno") Long mno);
 }

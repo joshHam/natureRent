@@ -988,9 +988,12 @@
 
         // rentedDates 배열을 돌면서 각 기간을 이벤트로 추가
              // 날짜 범위를 설정
-        if (rentedDates.length >= 2) {
+/*        if (rentedDates.length >= 2) {
             var startDate = new Date(rentedDates[0].split("T")[0]);
-            var endDate = new Date(rentedDates[1].split("T")[0]);
+            var endDate = new Date(rentedDates[1].split("T")[0]); */
+        for (var i = 0; i < rentedDates.length - 1; i += 2) {
+            var startDate = new Date(rentedDates[i].split("T")[0]);
+            var endDate = new Date(rentedDates[i + 1].split("T")[0]);
 
             // startDate가 endDate보다 뒤에 있는 경우, 날짜 순서를 맞춤
             if (startDate > endDate) {
@@ -1000,6 +1003,7 @@
             }
 
             console.log("Processing rental period from", startDate, "to", endDate);
+
               // startDate와 endDate 사이의 모든 날짜를 이벤트로 추가
             while (startDate <= endDate) {
             console.log("Adding date to calendar:", startDate);

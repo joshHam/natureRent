@@ -27,19 +27,19 @@ public class BlogRepositoryTests {
     public void insertBlog() {
 
 
-        IntStream.rangeClosed(1, 20).forEach(i -> {
+        IntStream.rangeClosed(1, 100).forEach(i -> {
         // 작성할 멤버 조회 (여기서는 이메일을 통해 조회한다고 가정)
-        String memberEmail = "2@2.com";
+        String memberEmail = "user"+i+"@zerock.org";
         Member member = memberRepository.findById(memberEmail)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
         // 블로그 글 생성
         Blog blog = Blog.builder()
                 .title("Sample Blog" + i)
-                .detail("This is a sample blog detail.")
+                .detail("This is a sample blog detail...."+ i)
                 .likes(0)
                 .views(0)
-                .tags("sample, blog, test")
+                .tags("sample, blog, test, "+ i)
                 .member(member)
                 .build();
 

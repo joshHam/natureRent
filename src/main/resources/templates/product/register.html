@@ -132,7 +132,7 @@
                             return false;
                         }
 
-                        console.log(files[i]);
+                          console.log("Selected file:", files[i]); // 파일 정보 출력
                         formData.append("uploadFiles", files[i]);
                         appended = true;
                     }
@@ -143,8 +143,11 @@
                     }
 
                     for (var value of formData.values()) {
-                        console.log(value);
+                console.log("FormData contains:", value); // FormData 내용 출력
                     }
+
+                    // Ajax 호출 전 로그 추가
+            console.log("Uploading files...");
 
                     //실제 업로드 부분
                     //upload ajax
@@ -156,11 +159,11 @@
                         type: 'POST',
                         dataType:'json',
                         success: function(result){
-                            console.log(result);
+                    console.log("Upload success, server response:", result); // 응답 결과 출력
                             showResult(result);
                         },
                         error: function(jqXHR, textStatus, errorThrown){
-                            console.log(textStatus);
+                    console.log("Upload failed:", textStatus, errorThrown); // 오류 발생 시 로그 출력
                         }
                     }); //$j.ajax
                 }); //end change event
