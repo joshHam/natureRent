@@ -12,11 +12,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.natureRent.dto.BlogDTO;
-import org.zerock.natureRent.dto.PageRequestDTO;
-import org.zerock.natureRent.dto.PageResultDTO;
-import org.zerock.natureRent.dto.ReviewDTO;
+import org.zerock.natureRent.dto.*;
 import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.repository.MemberRepository;
@@ -29,6 +27,7 @@ import org.zerock.natureRent.service.ReviewService;
 
 import javax.xml.transform.Result;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 //import org.zerock.natureRent.service.BlogService;
@@ -41,13 +40,16 @@ public class BlogController {
     private final ReviewService reviewService;
     private final MemberRepository memberRepository;
     private final BlogService blogService;
+    private final UploadController uploadController;
+
 
     private final ProductService productService;
 
-    public BlogController(ReviewService reviewService, MemberRepository memberRepository, BlogService blogService, ProductService productService) {
+    public BlogController(ReviewService reviewService, MemberRepository memberRepository, BlogService blogService, UploadController uploadController, ProductService productService) {
         this.reviewService = reviewService;
         this.memberRepository = memberRepository;
         this.blogService = blogService;
+        this.uploadController = uploadController;
         this.productService = productService;
     }
 
@@ -57,9 +59,58 @@ public class BlogController {
         return "blog/blog-write";
     }
 
-//    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("blog-write")
-    public String writeBlog(Blog blog, @AuthenticationPrincipal MemberDTO memberDTO) {
+////    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PostMapping("blog-write")
+//    public String writeBlog(Blog blog, @AuthenticationPrincipal MemberDTO memberDTO) {
+//        if (memberDTO == null || memberDTO.getEmail() == null) {
+//            throw new IllegalArgumentException("User is not authenticated or email is null");
+//        }
+//
+//        // 이메일을 이용해 Member를 데이터베이스에서 찾기
+//        Member member = memberRepository.findById(memberDTO.getEmail())
+//                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+//
+////        Member member = Member.builder().email(memberDTO.getEmail()).build();
+////        // Member 저장 (DB에 저장되지 않은 경우)
+////        member = memberRepository.save(member);  // memberRepository는 JpaRepository 인터페이스를 구현해야 함
+//
+//        // 블로그 작성자를 설정
+//        blog.setMember(member);
+////        blog.setMember(Member.builder().email(memberDTO.getEmail()).build());
+//        blogService.saveBlog(blog, memberDTO);
+//        return "blog/blog-single-sidebar";
+//    }
+
+
+    @GetMapping("blog-write2")
+    public String showBlogWriteForm2() {
+        return "blog/blog-write2";
+    }
+    @PostMapping("blog-write2")
+    public String writeBlog2(Blog blog,
+                             @AuthenticationPrincipal MemberDTO memberDTO,
+                             @RequestParam("uploadFiles") MultipartFile[] uploadFiles,
+                             Model model) {
+
+        // 업로드된 파일 처리
+        List<UploadResultDTO> uploadResultDTOList = uploadController.uploadFile(uploadFiles).getBody();
+
+        if (uploadResultDTOList == null || uploadResultDTOList.isEmpty()) {
+            model.addAttribute("error", "File upload failed");
+            return "redirect:/blog/blog-write"; // 실패 시 다시 작성 페이지로 리다이렉트
+        }
+
+        // 업로드된 파일 정보를 ProductImageDTO 리스트로 변환
+        List<ProductImageDTO> imageDTOList = new ArrayList<>();
+        for (UploadResultDTO resultDTO : uploadResultDTOList) {
+            ProductImageDTO imageDTO = ProductImageDTO.builder()
+                    .imgName(resultDTO.getFileName())
+                    .path(resultDTO.getFolderPath())
+                    .uuid(resultDTO.getUuid())
+                    .build();
+            imageDTOList.add(imageDTO);
+        }
+
         if (memberDTO == null || memberDTO.getEmail() == null) {
             throw new IllegalArgumentException("User is not authenticated or email is null");
         }
@@ -68,38 +119,41 @@ public class BlogController {
         Member member = memberRepository.findById(memberDTO.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
-//        Member member = Member.builder().email(memberDTO.getEmail()).build();
-//        // Member 저장 (DB에 저장되지 않은 경우)
-//        member = memberRepository.save(member);  // memberRepository는 JpaRepository 인터페이스를 구현해야 함
-
         // 블로그 작성자를 설정
         blog.setMember(member);
 //        blog.setMember(Member.builder().email(memberDTO.getEmail()).build());
-        blogService.saveBlog(blog, memberDTO);
+        blogService.saveBlog(blog, memberDTO, imageDTOList);
         return "blog/blog-single-sidebar";
     }
 
 
 
-    @GetMapping("{id}")
-    public String getBlogById(@PathVariable Long id, Model model) {
-        Blog blog = blogService.findBlogById(id);
-        if (blog == null) {
-            throw new IllegalArgumentException("Blog not found");
+//    @GetMapping("{id}"
+@GetMapping("{id:[0-9]+}")
+public String getBlogById(@PathVariable Long id, Model model) {
+//        Blog blog = blogService.findBlogById(id);
+    // ID에 해당하는 블로그와 관련된 이미지 데이터를 포함한 DTO를 가져온다.
+    BlogDTO blogDTO = blogService.getBlogWithImages(id);
+    // BlogDTO가 null인 경우 예외를 던진다.
+    if (blogDTO== null) {
+            throw new IllegalArgumentException("blogDTO not found");
         }
         // 로그로 확인
-        log.info("Fetched Blog: " + blog);
-        log.info("Blog regDate: " + blog.getRegDate());
-        if (blog.getMember() == null) {
-            blog.setMember(new Member());
-            blog.getMember().setName("Unknown Author");
-        }
+        log.info("Fetched Blog: " + blogDTO);
+        log.info("blogDTOregDate: " + blogDTO.getRegDate());
+
+    // Member email이 null인 경우 "Unknown Author"로 설정
+    if (blogDTO.getMember_email() == null) {
+        blogDTO.setMember_email("Unknown Author");
+    }
         // 날짜를 문자열로 포맷팅
-        String formattedRegDate = blog.getRegDate() != null
-                ? blog.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        String formattedRegDate = blogDTO.getRegDate() != null
+                ? blogDTO.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 : "No date available";
-        model.addAttribute("blog", blog);
+    // 모델에 블로그 데이터와 포맷된 날짜를 추가
+        model.addAttribute("blogDTO", blogDTO);// 여기서 blogDTO로 모델에 추가
         model.addAttribute("formattedRegDate", formattedRegDate);
+    // 템플릿 반환
         return "blog/blog-single";
     }
 
@@ -167,7 +221,7 @@ public class BlogController {
                         .likes(blog.getLikes())
                         .views(blog.getViews())
                         .tags(blog.getTags())
-                        .memberEmail(blog.getMember().getEmail())
+                        .member_email(blog.getMember().getEmail())
                         .build()
         );
 

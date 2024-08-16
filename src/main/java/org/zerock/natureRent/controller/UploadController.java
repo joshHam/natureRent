@@ -63,7 +63,6 @@ public class UploadController {
             try {
                 //원본 파일 저장
                 uploadFile.transferTo(savePath);
-
                 //섬네일 생성
                 String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator
                         +"s_" + uuid +"_" + fileName;
@@ -72,25 +71,19 @@ public class UploadController {
                 //섬네일 생성
                 Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile,288,240 );
                 resultDTOList.add(new UploadResultDTO(fileName,uuid,folderPath));
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }//end for
         return new ResponseEntity<>(resultDTOList, HttpStatus.OK);
     }
 
-
     private String makeFolder() {
-
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-
         String folderPath =  str.replace("//", File.separator);
 
         // make folder --------
         File uploadPathFolder = new File(uploadPath, folderPath);
-
         if (uploadPathFolder.exists() == false) {
             uploadPathFolder.mkdirs();
         }

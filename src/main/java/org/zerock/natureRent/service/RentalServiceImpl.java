@@ -49,14 +49,11 @@ public class RentalServiceImpl implements RentalService {
                 .flatMap(period -> {
                     LocalDateTime start = (LocalDateTime) period[0];
                     LocalDateTime end = (LocalDateTime) period[1];
-//                    return start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1))
-//                            .map(LocalDate::atStartOfDay);
                     return Stream.iterate(start, date -> date.plusDays(1))
                             .limit(start.until(end, java.time.temporal.ChronoUnit.DAYS) + 1);
                 })
                 .collect(Collectors.toList());
         log.info("Converted rented dates: " + rentedDates);
-
         return rentedDates;
     }
 

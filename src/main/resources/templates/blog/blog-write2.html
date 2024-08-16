@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Blog Single - ShopGrids Bootstrap 5 eCommerce HTML Template.</title>
+    <title>Blog Grid Sidebar - ShopGrids Bootstrap 5 eCommerce HTML Template.</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.svg" />
@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
+
 </head>
 
 <body>
@@ -298,9 +299,10 @@
                                        aria-controls="navbarSupportedContent" aria-expanded="false"
                                        aria-label="Toggle navigation">Blog</a>
                                     <ul class="sub-menu collapse" id="submenu-1-4">
-                                        <li class="nav-item"><a href="/blog/blog-grid-sidebar">Blog Grid Sidebar</a>
+                                        <li class="nav-item active"><a href="/blog/blog-grid-sidebar">Blog Grid
+                                            Sidebar</a>
                                         </li>
-                                        <li class="nav-item active"><a href="/blog/blog-single">Blog Single</a></li>
+                                        <li class="nav-item"><a href="/blog/blog-single">Blog Single</a></li>
                                         <li class="nav-item"><a href="/blog/blog-single-sidebar">Blog Single
                                             Sibebar</a></li>
                                     </ul>
@@ -347,334 +349,275 @@
         <div class="row align-items-center">
             <div class="col-lg-6 col-md-6 col-12">
                 <div class="breadcrumbs-content">
-                    <h1 class="page-title">Blog Single</h1>
+                    <h1 class="page-title">블로그 목록보기</h1>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-12">
                 <ul class="breadcrumb-nav">
                     <li><a href="/main/all"><i class="lni lni-home"></i> Home</a></li>
                     <li><a href="/main/all">Blog</a></li>
-                    <li>Blog Single</li>
+                    <li>블로그 목록보기</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 <!-- End Breadcrumbs -->
-<!---------------------------------------------------------------------------->
-
-<!--<div class="container">
-    <div class="blog-single" th:if="${blog != null}">
-        <h1 th:text="${blog.title}"></h1>
-        <p th:text="${blog.detail}"></p>
-        <p><strong>Tags:</strong> <span th:text="${blog.tags}"></span></p>
-&lt;!&ndash;        <p><strong>Author:</strong> <span th:text="${blog.member.name}"></span></p>&ndash;&gt;
-        <p><strong>Author:</strong> <span th:text="${blog.member != null && blog.member.name != null ? blog.member.name : 'Unknown Author'}">Unknown Author</span></p>
-        <p>
-            <strong>Published on:</strong>
-            <span th:text="${formattedRegDate}"></span>
-        </p>
-
-
-    </div>
-    <div th:if="${blog == null}">
-        <p>Blog not found.</p>
-    </div>
-</div>-->
-
-
 
 <!-- Start Blog Singel Area -->
-<section class="section blog-single">
+<section class="section blog-section blog-list">
     <div class="container">
         <div class="row">
-            <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
-                <div class="single-inner">
-                    <div class="post-details">
-                        <div class="main-content-head">
-<!--                            ----------------------------------->
-                            <section class="item-details section">
-                            <div class="container">
-                                <div class="top-area">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-6 col-md-12 col-12">
-<!--                                           위에추가 -------------------------->
-                            <div class="post-thumbnils">
-                                <main id="gallery">
-                                    <div class="main-img">
-                                        <img th:if="${blogDTO != null and blogDTO.imageDTOList != null and #lists.size(blogDTO.imageDTOList) > 0}"
-                                             th:src="@{|/display?fileName=${blogDTO.imageDTOList[0].getImageURL()}|}" alt="#" id="current"/>
-                                        <!--                                                      <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getImageURL()}|}" alt="#"-->
-<!--                                             id="current" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>-->
-                                    </div>
-                                    <div class="images">
+            <div class="col-lg-8 col-md-12 col-12">
+                <div class="row">
 
-                                        <img th:each="image : ${blogDTO.imageDTOList}" class="img"
-                                             th:src="@{|/display?fileName=${image.getImageURL()}|}" alt="#" th:if="${blogDTO.imageDTOList != null and #lists.size(blogDTO.imageDTOList) > 0}"/>
+                    <div class="container">
+                        <h1 class="mt-5">블로그 작성</h1>
+                        <!-- Thymeleaf를 사용하여 action 속성 설정 -->
+                        <form th:action="@{/blog/blog-write2}" method="POST" enctype="multipart/form-data">
+                            <!-- 로그인한 사용자의 이메일을 히든 필드로 추가 -->
+                            <input type="hidden" name="email" th:value="${#authentication.principal.email}"/>
 
-                                        <!--                                    </li>-->
-
-                                        <!-- <img src="/assets/images/product-details/01.jpg" class="img" alt="#">
-                                         <img src="/assets/images/product-details/02.jpg" class="img" alt="#">
-                                         <img src="/assets/images/product-details/03.jpg" class="img" alt="#">
-                                         <img src="/assets/images/product-details/04.jpg" class="img" alt="#">
-                                         <img src="/assets/images/product-details/05.jpg" class="img" alt="#">-->
-                                    </div>
-                                </main>
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
                             </div>
-<!--                                            아래추가 ------------------------->
-                                        </div>
-                                    </div>
+
+                            <div class="form-group">
+                                <label for="content">Content</label>
+                                <textarea class="form-control" id="content" name="detail" rows="10" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tags">Tags (comma separated)</label>
+                                <input type="text" class="form-control" id="tags" name="tags">
+                            </div>
+
+                            <div class="form-group fileForm">
+                                <label>Image Files</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input files" id="fileInput" name="uploadFiles" multiple>
+                                    <label class="custom-file-label" for="fileInput" data-browse="Browse">Choose files</label>
                                 </div>
                             </div>
-                            </section>
-<!--                            --------------------------------------------------->
-                            <div class="meta-information">
-                                <h2  class="post-title">
-                                    <a th:text="${blogDTO.title}"  href="/blog/blog-single"></a>
-                                </h2>
-                                <!-- End Meta Info -->
-                                <ul class="meta-info">
-                                    <li>
-                                        <a href="javascript:void(0)"> <i  th:text="${blogDTO.member != null && blogDTO.member.name != null ? blogDTO.member.name : 'Unknown Author'}"  class="lni lni-user"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)"><i  th:text="${formattedRegDate}" class="lni lni-calendar"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)"><i th:text="${blogDTO.tags}"  class="lni lni-tag"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)"><i class="lni lni-timer"></i> 읽는시간: 5분</a>
-                                    </li>
-                                </ul>
-                                <!-- End Meta Info -->
+
+                            <div class="box"></div>
+
+                            <style>
+                                .uploadResult {
+                                    width: 100%;
+                                    background-color: gray;
+                                    margin-top: 10px;
+                                }
+
+                                .uploadResult ul {
+                                    display: flex;
+                                    flex-flow: row;
+                                    justify-content: center;
+                                    align-items: center;
+                                    vertical-align: top;
+                                    overflow: auto;
+                                }
+
+                                .uploadResult ul li {
+                                    list-style: none;
+                                    padding: 10px;
+                                    margin-left: 2em;
+                                }
+
+                                .uploadResult ul li img {
+                                    width: 100px;
+                                }
+                            </style>
+
+                            <div class="uploadResult">
+                                <ul></ul>
                             </div>
-                            <div  class="detail-inner">
-                                <p th:text="${blogDTO.detail}"></p>
-<!--                                <p>우리는 흔히 순간의 쾌락에 현혹되어 책임을 다하지 못하는 경우가 많습니다.-->
-<!--                                    이러한 문제는 명확하고 쉽게 구분할 수 있지만, 그로 인해 발생하는 고통과 문제는 예측하기 어렵습니다.-->
-<!--                                    이런 점에서 스마트폰은 우리 일상 속에 뗄 수 없는 존재가 되었습니다.</p>-->
-                                <!-- post image -->
-                             <!--   <ul class="list">
-                                    <li><i class="lni lni-checkmark-circle"></i> 일상 속에서 더 많은 것을 누리기를 원한다면</li>
-                                    <li><i class="lni lni-checkmark-circle"></i> 삶의 모든 면에서 수많은 유혹이 있습니다</li>
-                                    <li><i class="lni lni-checkmark-circle"></i> 대부분의 사람들은 자신이 진정으로 원하는 것이 무엇인지 모릅니다</li>
-                                    <li><i class="lni lni-checkmark-circle"></i> 명확한 목표를 가지고 있다면 그 목표를 향해 집중하세요</li>
-                                    <li><i class="lni lni-checkmark-circle"></i> 목표를 완수하기 위해 흔들리지 않는 주의가 필요합니다</li>
-                                </ul>
-                                <p>삶에서 고통과 쾌락은 우리에게 밀접하게 다가옵니다. 스마트폰은 우리의 선택에 큰 영향을 미치며,
-                                    모든 결정을 자유롭게 내릴 수 있도록 도와줍니다. 이 순간, 우리에게 주어진 선택의 힘을 최대한 활용해보세요. </p>
-                                &lt;!&ndash; post quote &ndash;&gt;
-                                <blockquote>
-                                    <div class="icon">
-                                        <i class="lni lni-quotation"></i>
-                                    </div>
-                                    <h4>"원하는 대로 일이 진행되길 바라지 말고, 일이 진행되는 대로 원하라. 그러면 잘 지낼 수 있을 것이다."</h4>
-                                    <span>- 에픽테투스, 『엔케이리디온』</span>
-                                </blockquote>
-                                <h3>인센스로 분위기 조성하기</h3>
-                                <p>우리의 통제 밖에 있는 모든 것에 대한 혐오감을 제거하고, 통제할 수 없는 것들에 대한 욕망을 억제하세요.
-                                    그렇게 하면 실망할 일이 없습니다. 오직 적절한 행동만을 선택하고, 이를 신중하고 부드럽게 수행하세요.</p>
-                                <p>우리는 흔히 삶에서 많은 것을 얻기 위해 노력하지만, 그로 인해 고통을 감수해야 할 때가 있습니다.
-                                    스마트폰은 우리의 선택과 욕망을 더 쉽고 편리하게 만들어줍니다.</p>-->
-                                <div class="post-bottom-area">
-                                    <!-- Start Post Tag -->
-                                    <div class="post-tag">
-                                        <ul>
-                                            <li><a href="javascript:void(0)">#electronics,</a></li>
-                                            <li><a href="javascript:void(0)">#gadgets</a></li>
-                                        </ul>
-                                    </div>
-                                    <!-- End Post Tag -->
-                                    <!-- Post Social Share -->
-                                    <div class="post-social-media">
-                                        <h5 class="share-title">Share post :</h5>
-                                        <ul>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <i class="lni lni-facebook-filled"></i>
-                                                    <span>facebook</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <i class="lni lni-twitter-original"></i>
-                                                    <span>twitter</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <i class="lni lni-google"></i>
-                                                    <span>google+</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <i class="lni lni-linkedin-original"></i>
-                                                    <span>linkedin</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <i class="lni lni-pinterest"></i>
-                                                    <span>pinterest</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!-- Post Social Share -->
-                                </div>
-                            </div>
-                        </div>
-                        <!------------------------------------------------------------->
 
-                        <div class="post-comments">
-                            <h3 class="comment-title"><span>댓글</span></h3>
-                            <ul class="comments-list" id="comments-list">
-                                <!-- 리뷰 데이터를 여기 추가할 것입니다. -->
-                            </ul>
-                        </div>
-
-                        <!-- Comments -->
-                        <!--<div class="post-comments2">
-                            <h3 class="comment-title"><span>Post comments</span></h3>
-                            <ul class="comments-list">
-                                <li>
-                                    <div class="comment-img">
-                                        <img src="/assets/images/blog/comment1.jpg" alt="img">
-                                    </div>
-                                    <div class="comment-desc">
-                                        <div class="desc-top">
-                                            <h6>Arista Williamson</h6>
-                                            <span class="date">19th May 2023</span>
-                                            <a href="javascript:void(0)" class="reply-link"><i
-                                                    class="lni lni-reply"></i>Reply</a>
-                                        </div>
-                                        <p>
-                                            Donec aliquam ex ut odio dictum, ut consequat leo interdum. Aenean nunc
-                                            ipsum, blandit eu enim sed, facilisis convallis orci. Etiam commodo
-                                            lectus
-                                            quis vulputate tincidunt. Mauris tristique velit eu magna maximus
-                                            condimentum.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="children">
-                                    <div class="comment-img">
-                                        <img src="/assets/images/blog/comment2.jpg" alt="img">
-                                    </div>
-                                    <div class="comment-desc">
-                                        <div class="desc-top">
-                                            <h6>Rosalina Kelian</h6>
-                                            <span class="date">15th May 2023</span>
-                                            <a href="javascript:void(0)" class="reply-link"><i
-                                                    class="lni lni-reply"></i>Reply</a>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="comment-img">
-                                        <img src="/assets/images/blog/comment3.jpg" alt="img">
-                                    </div>
-                                    <div class="comment-desc">
-                                        <div class="desc-top">
-                                            <h6>Alex Jemmi</h6>
-                                            <span class="date">12th May 2023</span>
-                                            <a href="javascript:void(0)" class="reply-link"><i
-                                                    class="lni lni-reply"></i>Reply</a>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                                            veniam.
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>-->
-
-
-                        <!--<div class="comment-form">
-                            <h3 class="comment-reply-title">Leave a comment</h3>
-                            <form action="#" method="POST">
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-box form-group">
-                                            <input type="text" name="name" class="form-control form-control-custom"
-                                                   placeholder="Website URL" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-box form-group">
-                                            <input type="text" name="email" class="form-control form-control-custom"
-                                                   placeholder="Your Name" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-box form-group">
-                                            <input type="email" name="email"
-                                                   class="form-control form-control-custom" placeholder="Your Email" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-box form-group">
-                                            <input type="text" name="name" class="form-control form-control-custom"
-                                                   placeholder="Phone Number" />
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-box form-group">
-                                                <textarea name="#" class="form-control form-control-custom"
-                                                          placeholder="Your Comments"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="button">
-                                            <button type="submit" class="btn">Post Comment</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>-->
-                        <div class="comment-form">
-                            <h3 class="comment-reply-title">Leave a comment</h3>
-                            <form action="/blog/reviews/add" method="POST">
-                                <div class="row">
-
-                                    <!-- 히든 필드를 사용하여 bno 값을 전송 -->
-                                    <input type="hidden" name="blogId" th:value ="${blogDTO.bno}" />
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-box form-group">
-                                            <input type="text" name="name" class="form-control form-control-custom" placeholder="Your Name" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-box form-group">
-                                            <input type="email" name="email" class="form-control form-control-custom" placeholder="Your Email" />
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-box form-group">
-                                            <textarea name="text" class="form-control form-control-custom" placeholder="Your Comments"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="button">
-                                            <button type="submit" class="btn">Post Comment</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
+                            <button type="submit" class="btn btn-primary mt-3">완료</button>
+                        </form>
                     </div>
+
+
+                    <!--                    <div class="container">-->
+<!--                        <h1 class="mt-5">블로그 작성t</h1>-->
+<!--                        <form action="@{/blog/blog-write}" method="POST">-->
+<!--                            &lt;!&ndash; 로그인한 사용자의 이메일을 히든 필드로 추가 &ndash;&gt;-->
+<!--                            <input type="hidden" name="email" value="${#authentication.principal.email}"/>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="title">Title</label>-->
+<!--                                <input type="text" class="form-control" id="title" name="title" required>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="content">Content</label>-->
+<!--                                <textarea class="form-control" id="content" name="detail" rows="10" required></textarea>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="tags">Tags (comma separated)</label>-->
+<!--                                <input type="text" class="form-control" id="tags" name="tags">-->
+<!--                            </div>-->
+<!--                            <div class="form-group fileForm">-->
+<!--                                <label>Image Files</label>-->
+<!--                                <div class="custom-file">-->
+<!--                                    <input type="file" class="custom-file-input files" id="fileInput" multiple>-->
+<!--                                    <label class="custom-file-label" data-browse="Browse"></label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="box"></div>-->
+
+<!--                            <style>-->
+<!--                                .uploadResult {-->
+<!--                                    width: 100%;-->
+<!--                                    background-color: gray;-->
+<!--                                    margin-top: 10px;-->
+<!--                                }-->
+
+<!--                                .uploadResult ul {-->
+<!--                                    display: flex;-->
+<!--                                    flex-flow: row;-->
+<!--                                    justify-content: center;-->
+<!--                                    align-items: center;-->
+<!--                                    vertical-align: top;-->
+<!--                                    overflow: auto;-->
+<!--                                }-->
+
+<!--                                .uploadResult ul li {-->
+<!--                                    list-style: none;-->
+<!--                                    padding: 10px;-->
+<!--                                    margin-left: 2em;-->
+<!--                                }-->
+
+<!--                                .uploadResult ul li img {-->
+<!--                                    width: 100px;-->
+<!--                                }-->
+<!--                            </style>-->
+
+<!--                            <div class="uploadResult">-->
+<!--                                <ul></ul>-->
+<!--                            </div>-->
+<!--                            <button type="submit" class="btn btn-primary mt-3">완료</button>-->
+<!--                        </form>-->
+<!--                    </div>-->
+
                 </div>
+                <!-- Pagination -->
+                <!--                <div class="pagination left blog-grid-page">-->
+                <!--                    <ul class="pagination-list">-->
+                <!--                        <li><a href="javascript:void(0)">Prev</a></li>-->
+                <!--                        <li class="active"><a href="javascript:void(0)">2</a></li>-->
+                <!--                        <li><a href="javascript:void(0)">3</a></li>-->
+                <!--                        <li><a href="javascript:void(0)">4</a></li>-->
+                <!--                        <li><a href="javascript:void(0)">Next</a></li>-->
+                <!--                    </ul>-->
+                <!--                </div>-->
+
+
+
+                <!--<ul class="pagination h-100 justify-content-center align-items-center">
+
+                    <li class="pagination left " th:if="${result.prev}">
+                        <a class="page-link" th:href="@{/blog/blog-grid-sidebar(page= ${result.start -1})}" tabindex="-1">Previous</a>
+                    </li>
+
+                    <li th:class=" 'pagination-list ' + ${result.page == page?'active':''} " th:each="page: ${result.pageList}">
+                        <a class="page-link" th:href="@{/blog/blog-grid-sidebar(page = ${page})}">
+                            [[${page}]]
+                        </a>
+                    </li>
+
+                    <li class="lni lni-chevron-right" th:if="${result.next}">
+                        <a class="page-link" th:href="@{/blog/blog-grid-sidebar(page= ${result.end + 1} )}">Next</a>
+                    </li>
+                </ul>   -->
+
+
+                <!--/ End Pagination -->
             </div>
+            <aside class="col-lg-4 col-md-12 col-12">
+                <div class="sidebar blog-grid-page">
+                    <!-- Start Single Widget -->
+                    <div class="widget search-widget">
+                        <h5 class="widget-title">블로그 검색</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Search Here...">
+                            <button type="submit"><i class="lni lni-search-alt"></i></button>
+                        </form>
+                    </div>
+                    <!-- End Single Widget -->
+                    <!-- Start Single Widget -->
+                    <div class="widget popular-feeds">
+                        <h5 class="widget-title">블로그 인기글</h5>
+                        <div class="popular-feed-loop">
+                            <div class="single-popular-feed">
+                                <div class="feed-desc">
+                                    <a class="feed-img" href="/blog/blog-single-sidebar">
+                                        <img src="/assets/images/blog/blog-sidebar-1.jpg" alt="#">
+                                    </a>
+                                    <h6 class="post-title"><a href="/blog/blog-single-sidebar">What information is
+                                        needed for shipping?</a></h6>
+                                    <span class="time"><i class="lni lni-calendar"></i> 05th Nov 2023</span>
+                                </div>
+                            </div>
+                            <div class="single-popular-feed">
+                                <div class="feed-desc">
+                                    <a class="feed-img" href="/blog/blog-single-sidebar">
+                                        <img src="/assets/images/blog/blog-sidebar-2.jpg" alt="#">
+                                    </a>
+                                    <h6 class="post-title"><a href="/blog/blog-single-sidebar">Interesting fact about
+                                        gaming consoles</a></h6>
+                                    <span class="time"><i class="lni lni-calendar"></i> 24th March 2023</span>
+                                </div>
+                            </div>
+                            <div class="single-popular-feed">
+                                <div class="feed-desc">
+                                    <a class="feed-img" href="/blog/blog-single-sidebar">
+                                        <img src="/assets/images/blog/blog-sidebar-3.jpg" alt="#">
+                                    </a>
+                                    <h6 class="post-title"><a href="/blog/blog-single-sidebar">Electronics,
+                                        instrumentation & control engineering </a></h6>
+                                    <span class="time"><i class="lni lni-calendar"></i> 30th Jan 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Widget -->
+                    <!-- Start Single Widget -->
+                    <div class="widget categories-widget">
+                        <h5 class="widget-title">인기 카테고리</h5>
+                        <ul class="custom">
+                            <li>
+                                <a href="javascript:void(0)">Editor's Choice</a><span>(24)</span>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">Electronics</a><span>(12)</span>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">Industrial Design</a><span>(5)</span>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">Secure Payments Online</a><span>(15)</span>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">Online Shopping</a><span>(7)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Single Widget -->
+                    <!-- Start Single Widget -->
+                    <div class="widget popular-tag-widget">
+                        <h5 class="widget-title">인기 태그</h5>
+                        <div class="tags">
+                            <a href="javascript:void(0)">#electronics</a>
+                            <a href="javascript:void(0)">#cpu</a>
+                            <a href="javascript:void(0)">#gadgets</a>
+                            <a href="javascript:void(0)">#wearables</a>
+                            <a href="javascript:void(0)">#smartphones</a>
+                        </div>
+                    </div>
+                    <!-- End Single Widget -->
+                </div>
+            </aside>
         </div>
     </div>
 </section>
@@ -839,43 +782,141 @@
 <script src="/assets/js/main.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const blogId = [[${blogDTO.bno}]]; // Thymeleaf를 사용하여 블로그 ID를 삽입
-    fetch(`/blog/${blogId}/reviews`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // 데이터 확인을 위한 로그
-            if (Array.isArray(data)) {
-                const reviewsContainer = document.querySelector('.comments-list');
-                reviewsContainer.innerHTML = ""; // 기존 내용을 초기화
-                data.forEach(review => {
-                    const reviewItem = `
-                        <li>
-                            <div class="comment-img">
-                                <img src="/assets/images/blog/comment-placeholder.jpg" alt="img">
-                            </div>
-                            <div class="comment-desc">
-                                <div class="desc-top">
-                                    <h6>${review.name}</h6>
-                                    <span class="date">${review.regDate}</span>
-                                    <a href="javascript:void(0)" class="reply-link"><i class="lni lni-reply"></i>Reply</a>
-                                </div>
-                                <p>${review.text}</p>
-                            </div>
-                        </li>
-                    `;
-                    reviewsContainer.insertAdjacentHTML('beforeend', reviewItem);
-                });
-            } else {
-                console.error('Data is not an array:', data);
+    var $j = jQuery.noConflict();
+    $j(document).ready(function() {
+
+        var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
+        var maxSize = 10485760; //10MB
+
+        function checkExtension(fileName, fileSize){
+
+            if(fileSize >= maxSize){
+                alert("파일 사이즈 초과");
+                return false;
             }
-        })
-        .catch(error => console.error('Error fetching reviews:', error));
-});
 
+            if(regex.test(fileName)){
+                alert("해당 종류의 파일은 업로드할 수 없습니다.");
+                return false;
+            }
+            return true;
+        }
+
+        $j(".custom-file-input").on("change", function() {
+
+            var fileName = $j(this).val().split("\\").pop();
+
+            $j(this).siblings(".custom-file-label").addClass("selected").text(fileName);
+            var formData = new FormData();
+
+            var inputFile = $j(this);
+
+            var files = inputFile[0].files;
+
+            var appended = false;
+
+            for (var i = 0; i < files.length; i++) {
+
+                if(!checkExtension(files[i].name, files[i].size) ){
+                    return false;
+                }
+
+                  console.log("Selected file:", files[i]); // 파일 정보 출력
+                formData.append("uploadFiles", files[i]);
+                appended = true;
+            }
+
+            // 업로드를 하지 않는다.
+            if (!appended) {
+                return;
+            }
+
+            for (var value of formData.values()) {
+        console.log("FormData contains:", value); // FormData 내용 출력
+            }
+
+            // Ajax 호출 전 로그 추가
+    console.log("Uploading files...");
+
+            //실제 업로드 부분
+            //upload ajax
+            $j.ajax({
+                url: '/uploadAjax',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                dataType:'json',
+                success: function(result){
+            console.log("Upload success, server response:", result); // 응답 결과 출력
+                    showResult(result);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+            console.log("Upload failed:", textStatus, errorThrown); // 오류 발생 시 로그 출력
+                }
+            }); //$j.ajax
+        }); //end change event
+
+        function showResult(uploadResultArr) {
+            var uploadUL = $j(".uploadResult ul");
+            var str = "";
+
+            $j(uploadResultArr).each(function(i, obj) {
+                str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
+                str += " <div>";
+                str += "<button type='button' data-file='" + obj.imageURL + "' "
+                str += "class='btn-warning btn-sm'>X</button><br>";
+                str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+                str += "</div>";
+                str += "</li>";
+            });
+
+            uploadUL.append(str);
+        }
+
+        $j(".uploadResult").on("click", "li button", function(e) {
+            console.log("delete file");
+
+            var targetFile = $j(this).data("file");
+
+            var targetLi = $j(this).closest("li");
+
+            $j.ajax({
+                url: '/removeFile',
+                data: {fileName: targetFile},
+                dataType:'text',
+                type: 'POST',
+                success: function(result){
+                    alert(result);
+
+                    targetLi.remove();
+                }
+            }); //$j.ajax
+        });
+
+        //prevent submit
+        $j(".btn-primary").on("click", function(e) {
+            e.preventDefault();
+
+            var str = "";
+
+            $j(".uploadResult li").each(function(i,obj){
+                var target = $j(obj);
+
+                str += "<input type='hidden' name='imageDTOList["+i+"].imgName' value='"+target.data('name') +"'>";
+
+                str += "<input type='hidden' name='imageDTOList["+i+"].path' value='"+target.data('path')+"'>";
+
+                str += "<input type='hidden' name='imageDTOList["+i+"].uuid' value='"+target.data('uuid')+"'>";
+
+            });
+
+            // 태그들이 추가된 것을 확인한 후에 comment를 제거
+            $j(".box").html(str);
+            $j("form").submit();
+        });
+    }); // document ready
 </script>
-
-
 </body>
 
 </html>

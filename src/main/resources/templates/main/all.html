@@ -184,8 +184,8 @@
                                         <i class="lni lni-user"></i>
                                         회원님 반갑습니다!
                                         <!-- ADMIN ROLE이 있는 경우에만 보임 -->
-                                        <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
-                                        <!-- ADMIN ROLE은 없고 MANAGER ROLE이 있는 경우에만 보임 -->
+          <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
+                                        <!--&lt;!&ndash; ADMIN ROLE은 없고 MANAGER ROLE이 있는 경우에만 보임 -->
                                         <div sec:authorize="hasRole('MANAGER') and !hasRole('ADMIN') and hasRole('USER')">메니저 모드 On</div>
                                         <!-- ADMIN ROLE, MANAGER ROLE은 없고 USER ROLE만 있는 경우에만 보임 -->
                                         <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">오늘은 어디로 떠날 준비를 할까요?</div>
@@ -502,7 +502,7 @@
                                 </div>
                             </div>
                             <div class="product-info">
-                                <span class="category">Watches</span>
+                                <span class="category">Category</span>
                                 <h4 class="title">
                                     <!--                                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>-->
                                     <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>

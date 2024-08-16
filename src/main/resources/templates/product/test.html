@@ -1,33 +1,33 @@
-<div class="single-product">
-    <div class="product-image">
-        <!--                                            <img src="/assets/images/products/product-1.jpg" alt="#">-->
-        <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>
-        <div class="button">
-            <!--                                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>-->
-            <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>
-        </div>
-    </div>
-    <div class="product-info">
-        <span class="category">Watches</span>
-        <h4 class="title">
-            <!--                                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>-->
-            <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>
-        </h4>
-        <ul class="review">
-            <li th:each="i : ${#numbers.sequence(1, 5)}">
-                <!--                                                    <i th:class="'lni lni-star' + (${dto.avg} >= i.doubleValue() ? '-filled' : '')"></i>-->
-                <i th:class="${dto.avg} >= ${i} ? 'lni lni-star-filled' : 'lni lni-star'"></i>
-            </li>
-            <li><span>[[${dto.avg}]] Rating</span></li>
-        </ul>
-        <div class="price">
-            <span>[[${dto.price}]] ￦</span>
-        </div>
-        <div class="reviewCnt">
-            <span>리뷰수 : [[${dto.reviewCnt}]]</span>
-        </div>
-        <div class="Regdate">
-            <span>등록일 : [[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>
-        </div>
-    </div>
-</div>
+<!--<div class="single-product">-->
+<!--    <div class="product-image">-->
+<!--        &lt;!&ndash;                                            <img src="/assets/images/products/product-1.jpg" alt="#">&ndash;&gt;-->
+<!--        <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>-->
+<!--        <div class="button">-->
+<!--            &lt;!&ndash;                                                <a href="/product/product-details" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>&ndash;&gt;-->
+<!--            <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}" class="btn"><i class="lni lni-cart"></i> View Details</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="product-info">-->
+<!--        <span class="category">Watches</span>-->
+<!--        <h4 class="title">-->
+<!--            &lt;!&ndash;                                                <a href="/product/product-grids">Xiaomi Mi Band 5</a>&ndash;&gt;-->
+<!--            <a th:href="@{/product/product-details(mno=${dto.mno}, page=${result.page})}">[[${dto.title}]]</a>-->
+<!--        </h4>-->
+<!--        <ul class="review">-->
+<!--            <li th:each="i : ${#numbers.sequence(1, 5)}">-->
+<!--                &lt;!&ndash;                                                    <i th:class="'lni lni-star' + (${dto.avg} >= i.doubleValue() ? '-filled' : '')"></i>&ndash;&gt;-->
+<!--                <i th:class="${dto.avg} >= ${i} ? 'lni lni-star-filled' : 'lni lni-star'"></i>-->
+<!--            </li>-->
+<!--            <li><span>[[${dto.avg}]] Rating</span></li>-->
+<!--        </ul>-->
+<!--        <div class="price">-->
+<!--            <span>[[${dto.price}]] ￦</span>-->
+<!--        </div>-->
+<!--        <div class="reviewCnt">-->
+<!--            <span>리뷰수 : [[${dto.reviewCnt}]]</span>-->
+<!--        </div>-->
+<!--        <div class="Regdate">-->
+<!--            <span>등록일 : [[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
