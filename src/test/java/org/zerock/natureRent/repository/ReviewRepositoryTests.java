@@ -36,7 +36,7 @@ public class ReviewRepositoryTests {
                     .member(member)
                     .product(Product.builder().mno(mno).build())
                     .grade((int)(Math.random()* 5) + 1)
-                    .text("이 영화에 대한 느낌..."+i)
+                    .text("이 장비에 대한 경험..."+i)
                     .build();
 
             reviewRepository.save(productReview);

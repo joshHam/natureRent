@@ -1,6 +1,8 @@
 package org.zerock.natureRent.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BlogServiceImpl implements BlogService {
+    private static final Logger logger = LoggerFactory.getLogger(BlogServiceImpl.class);
 
     private final BlogRepository blogRepository;
     private final ProductImageRepository imageRepository; // 이미지 저장을 위한 리포지토리
@@ -59,19 +62,36 @@ public class BlogServiceImpl implements BlogService {
         return blogRepository.findAll(pageable);  // Repository 메서드를 호출하여 페이징된 결과를 반환
     }
 
+    @Override
+    public Page<BlogDTO> getBlogListWithImages(Pageable pageable) {
+        return null;
+    }
+
     // 새로운 메서드 추가
     public BlogDTO getBlogWithImages(Long bno) {
         // 블로그와 관련된 모든 데이터를 가져오기
         List<Object[]> result = blogRepository.getBlogWithAll(bno);
 
-        Blog blog = (Blog) result.get(0)[0];
+        if (result.isEmpty()) {
+            // 결과가 없을 때 빈 BlogDTO 반환
+            return BlogDTO.builder().build();
+        }
 
+        Blog blog = (Blog) result.get(0)[0];
         List<ProductImage> productImageList = new ArrayList<>();
+
 
         result.forEach(arr -> {
             ProductImage productImage = (ProductImage) arr[1];
-            productImageList.add(productImage);
+            if (productImage != null) {
+                logger.info("Found image: {}", productImage.getImgName());
+                productImageList.add(productImage);
+            } else {
+                logger.warn("No image found for blog with id: {}", bno);
+            }
         });
+
+
 
         return entitiesToDTO(blog, productImageList);
     }

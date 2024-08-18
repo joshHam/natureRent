@@ -199,13 +199,13 @@ public String getBlogById(@PathVariable Long id, Model model) {
         log.info("exBlogGridSidebar..........");
 
 //        // Blog 엔티티를 가져오는 서비스 메서드 호출 (예시로 가정)
-//        List<Blog> blogList = blogService.findAllBlogs(); // 모든 Blog 엔티티를 가져오는 메서드
+//        List<Blog> blogList = blogService.getBlogListWithImages(); // 모든 Blog 엔티티를 가져오는 메서드
+
         // 페이지 사이즈를 9로 설정
         pageRequestDTO.setSize(6);
 
         // Pageable 객체를 PageRequestDTO에서 가져옴
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("bno").descending());
-
 
         // Page 객체로 Blog 엔티티를 가져오는 서비스 메서드 호출
         Page<Blog> result = blogService.findAllBlogs(pageable); // pageable을 사용하여 페이징 처리
@@ -225,7 +225,8 @@ public String getBlogById(@PathVariable Long id, Model model) {
                         .build()
         );
 
-
+        log.info("PageResultDTO: " + pageResultDTO);
+        pageResultDTO.getDtoList().forEach(dto -> log.info("BlogDTO: " + dto));
 
 //        PageResultDTO<BlogDTO, Blog> result = blogService.getList(pageRequestDTO);
 

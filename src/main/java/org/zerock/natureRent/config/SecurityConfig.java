@@ -50,7 +50,7 @@ public class SecurityConfig {
 
 //        http.formLogin();
         http.csrf().disable();
-
+//        http.csrf();
 
 
         // 권한 설정
