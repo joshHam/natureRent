@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -421,10 +421,10 @@
 <!--                                           위에추가 -------------------------->
                             <div class="post-thumbnils">
                                 <main id="gallery">
-                                    <div class="main-img">
+                                    <!--<div class="main-img">
                                         <img th:if="${blogDTO != null and blogDTO.imageDTOList != null and #lists.size(blogDTO.imageDTOList) > 0}"
                                              th:src="@{|/display?fileName=${blogDTO.imageDTOList[0].getImageURL()}|}" alt="#" id="current"/>
-                                    </div>
+                                    </div>-->
                                     <div class="images">
 
                                         <img th:each="image : ${blogDTO.imageDTOList}" class="img"
@@ -500,8 +500,8 @@
                                     <!-- Start Post Tag -->
                                     <div class="post-tag">
                                         <ul>
-                                            <li><a href="javascript:void(0)">#electronics,</a></li>
-                                            <li><a href="javascript:void(0)">#gadgets</a></li>
+                                            <li><a href="javascript:void(0)">#camping,</a></li>
+                                            <li><a href="javascript:void(0)">#adventures</a></li>
                                         </ul>
                                     </div>
                                     <!-- End Post Tag -->
@@ -618,7 +618,7 @@
 
 
                         <!--<div class="comment-form">
-                            <h3 class="comment-reply-title">Leave a comment</h3>
+                            <h3 class="comment-reply-title">댓글 달기</h3>
                             <form action="#" method="POST">
                                 <div class="row">
                                     <div class="col-lg-6 col-12">
@@ -630,13 +630,13 @@
                                     <div class="col-lg-6 col-12">
                                         <div class="form-box form-group">
                                             <input type="text" name="email" class="form-control form-control-custom"
-                                                   placeholder="Your Name" />
+                                                   placeholder="이름" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-12">
                                         <div class="form-box form-group">
                                             <input type="email" name="email"
-                                                   class="form-control form-control-custom" placeholder="Your Email" />
+                                                   class="form-control form-control-custom" placeholder="이메일" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-12">
@@ -648,19 +648,19 @@
                                     <div class="col-12">
                                         <div class="form-box form-group">
                                                 <textarea name="#" class="form-control form-control-custom"
-                                                          placeholder="Your Comments"></textarea>
+                                                          placeholder="댓글"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="button">
-                                            <button type="submit" class="btn">Post Comment</button>
+                                            <button type="submit" class="btn">댓글 등록</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>-->
                         <div class="comment-form">
-                            <h3 class="comment-reply-title">Leave a comment</h3>
+                            <h3 class="comment-reply-title">댓글 달기</h3>
                             <form action="/blog/reviews/add" method="POST">
                                 <div class="row">
 
@@ -668,22 +668,22 @@
                                     <input type="hidden" name="blogId" th:value ="${blogDTO.bno}" />
                                     <div class="col-lg-6 col-12">
                                         <div class="form-box form-group">
-                                            <input type="text" name="name" class="form-control form-control-custom" placeholder="Your Name" />
+                                            <input type="text" name="name" class="form-control form-control-custom" placeholder="이름" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-12">
                                         <div class="form-box form-group">
-                                            <input type="email" name="email" class="form-control form-control-custom" placeholder="Your Email" />
+                                            <input type="email" name="email" class="form-control form-control-custom" placeholder="이메일" />
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-box form-group">
-                                            <textarea name="text" class="form-control form-control-custom" placeholder="Your Comments"></textarea>
+                                            <textarea name="text" class="form-control form-control-custom" placeholder="댓글"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="button">
-                                            <button type="submit" class="btn">Post Comment</button>
+                                            <button type="submit" class="btn">댓글 등록</button>
                                         </div>
                                     </div>
                                 </div>

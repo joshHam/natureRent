@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -110,17 +110,37 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
-                            <div class="user">
-                                <i class="lni lni-user"></i>
-                                Hello
+                            <!-- 로그인된 상태라면 사용자 정보를 보여주는 영역 -->
+                            <div sec:authorize="isAuthenticated()">
+                                <div class="user">
+                                    <!--                                    <i class="lni lni-user"></i>-->
+                                    <ul class="user-login">
+                                        <!--                                        <li><div sec:authentication="name"></div></li>-->
+                                        <li><i class="lni lni-user"></i>회원님 반갑습니다!</li>
+                                        <li> <!-- ADMIN, MANAGER, USER 역할을 모두 가진 경우 -->
+                                            <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
+                                            <!-- MANAGER, USER 역할을 가진 경우 -->
+                                            <div sec:authorize="hasRole('MANAGER') and !hasRole('ADMIN') and hasRole('USER')">메니저 모드 On</div>
+                                            <!-- USER 역할만 가진 경우 -->
+                                            <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">오늘은 어디로 떠날 준비를 할까요?</div>
+                                        </li>
+                                        <li><a href="../logout">Sign Out</a></li>
+                                    </ul>
+                                </div>
+                                <!--<ul class="user-login">
+
+                                </ul>-->
                             </div>
-                            <ul class="user-login">
-                                <li>
-                                    <a href="/login">Sign In</a>
-                                </li>
-                                <li>
-                                    <a href="/register">Register</a>
-                                </li>
+
+                            <!-- 로그인이 안된 상태라면 Sign In/ Register 버튼을 보여주는 영역 -->
+                            <ul class="user-login" sec:authorize="!isAuthenticated()">
+                                <div class="user">
+                                    <i class="lni lni-user"></i>
+                                    Hello
+                                </div>
+                                <!--                                <i class="lni lni-user"></i>-->
+                                <li><a href="../login">Sign In</a></li>
+                                <li><a href="/register">Register</a></li>
                             </ul>
                         </div>
                     </div>
@@ -191,7 +211,7 @@
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
                                             <span>2 Items</span>
-                                            <a href="/main/cart">View Cart</a>
+                                            <a href="/main/cart/items">View Cart</a>
                                         </div>
                                         <ul class="shopping-list">
                                             <li>
@@ -314,7 +334,7 @@
                                             <li class="nav-item"><a href="/product/product-list">Shop List</a></li>
                                             <li class="nav-item active"><a href="/product/product-details">shop Single</a>
                                             </li>
-                                            <li class="nav-item"><a href="/main/cart">Cart</a></li>
+                                            <li class="nav-item"><a href="/main/cart/items">Cart</a></li>
                                             <li class="nav-item"><a href="/main/checkout">Checkout</a></li>
                                         </ul>
                                     </li>
@@ -396,35 +416,26 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-<!--                                    <img src="/assets/images/product-details/01.jpg" id="current" alt="#">-->
-<!--                                    <img  th:if="${productImage.path != null}" th:src="|/display?fileName=${productImage.getThumbnailURL()}|">-->
-                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getImageURL()}|}" alt="#"
+                                  <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getImageURL()}|}" alt="#"
                                          id="current" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>
                                 </div>
                                 <div class="images">
-<!--                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList.size() > 0 }"/>-->
-<!--                                    <img th:src="@{|/display?fileName=${dto.imageDTOList[0].getThumbnailURL()}|}" alt="#" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>-->
-
-<!--                                    <li th:each="productImage: ${dto.imageDTOList}" th:data-file="${productImage.getThumbnailURL()}">-->
-<!--                                        <img  th:if="${productImage.path != null}" th:src="|/display?fileName=${productImage.getThumbnailURL()}|">-->
                                         <img th:each="image : ${dto.imageDTOList}" class="img"
                                              th:src="@{|/display?fileName=${image.getImageURL()}|}" alt="#" th:if="${dto.imageDTOList != null and #lists.size(dto.imageDTOList) > 0}"/>
-
-<!--                                    </li>-->
-
-                                   <!-- <img src="/assets/images/product-details/01.jpg" class="img" alt="#">
-                                    <img src="/assets/images/product-details/02.jpg" class="img" alt="#">
-                                    <img src="/assets/images/product-details/03.jpg" class="img" alt="#">
-                                    <img src="/assets/images/product-details/04.jpg" class="img" alt="#">
-                                    <img src="/assets/images/product-details/05.jpg" class="img" alt="#">-->
                                 </div>
                             </main>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
-                            <form th:action="@{/product/register}" th:method="post">
-                            <h2 class="title">[[${dto.title}]]</h2>
+<!--                            <form th:action="@{/product/register}" th:method="post">-->
+                            <form th:action="@{/cart/add}" th:method="post">
+                                <input type="hidden" name="productMno" th:value="${dto.mno}" />
+                                <input type="hidden" name="rentalReserveStartDate" />
+                                <input type="hidden" name="rentalReserveEndDate" />
+<!--                                <input type="datetime-local" name="rentalReserveStartDate">-->
+<!--                                <input type="datetime-local" name="rentalReserveEndDate">-->
+                                <h2 class="title">[[${dto.title}]]</h2>
                             <p class="category"><i class="lni lni-tag"></i> Drones:<a href="javascript:void(0)">Action
                                     cameras</a></p>
                             <h3 class="price">[[${dto.price}]]₩<span>945₩</span></h3>
@@ -459,42 +470,10 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!--<div class="col-lg-4 col-md-4 col-12">
-                                    <div class="form-group color-option">
-                                        <label class="title-label" for="size">Choose color</label>
-                                        <div class="single-checkbox checkbox-style-1">
-                                            <input type="checkbox" id="checkbox-1" checked>
-                                            <label for="checkbox-1"><span></span></label>
-                                        </div>
-                                        <div class="single-checkbox checkbox-style-2">
-                                            <input type="checkbox" id="checkbox-2">
-                                            <label for="checkbox-2"><span></span></label>
-                                        </div>
-                                        <div class="single-checkbox checkbox-style-3">
-                                            <input type="checkbox" id="checkbox-3">
-                                            <label for="checkbox-3"><span></span></label>
-                                        </div>
-                                        <div class="single-checkbox checkbox-style-4">
-                                            <input type="checkbox" id="checkbox-4">
-                                            <label for="checkbox-4"><span></span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="color">Battery capacity</label>
-                                        <select class="form-control" id="color">
-                                            <option>5100 mAh</option>
-                                            <option>6200 mAh</option>
-                                            <option>8000 mAh</option>
-                                        </select>
-                                    </div>
-                                </div>-->
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="form-group quantity">
-                                        <label for="color">Quantity</label>
-                                        <select class="form-control">
+                                        <label for="quantity">Quantity</label>
+                                        <select id="quantity" name="quantity" class="form-control">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -508,7 +487,8 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="button cart-button">
-                                            <button class="btn" style="width: 100%;">Add to Cart</button>
+                                            <button type="submit" class="btn" style="width: 100%;">Add to Cart</button>
+<!--                                            <button class="btn" style="width: 100%;">Add to Cart</button>-->
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
@@ -535,39 +515,9 @@
                             <div class="info-body custom-responsive-margin">
                                 <h4>상세설명</h4>
                                 <p>[[${dto.detail}]]</p>
-<!--                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-<!--                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud-->
-<!--                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute-->
-<!--                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>-->
-<!--                                <h4>Features</h4>-->
-<!--                                <ul class="features">-->
-<!--                                    <li>Capture 4K30 Video and 12MP Photos</li>-->
-<!--                                    <li>Game-Style Controller with Touchscreen</li>-->
-<!--                                    <li>View Live Camera Feed</li>-->
-<!--                                    <li>Full Control of HERO6 Black</li>-->
-<!--                                    <li>Use App for Dedicated Camera Operation</li>-->
-<!--                                </ul>-->
                             </div>
                         </div>
-                        <!--<div class="col-lg-6 col-12">
-                            <div class="info-body">
-                                <h4>Specifications</h4>
-                                <ul class="normal-list">
-                                    <li><span>Weight:</span> 35.5oz (1006g)</li>
-                                    <li><span>Maximum Speed:</span> 35 mph (15 m/s)</li>
-                                    <li><span>Maximum Distance:</span> Up to 9,840ft (3,000m)</li>
-                                    <li><span>Operating Frequency:</span> 2.4GHz</li>
-                                    <li><span>Manufacturer:</span> GoPro, USA</li>
-                                </ul>
-                                <h4>Shipping Options:</h4>
-                                <ul class="normal-list">
-                                    <li><span>Courier:</span> 2 - 4 days, $22.50</li>
-                                    <li><span>Local Shipping:</span> up to one week, $10.00</li>
-                                    <li><span>UPS Ground Shipping:</span> 4 - 6 days, $18.00</li>
-                                    <li><span>Unishop Global Export:</span> 3 - 4 days, $25.00</li>
-                                </ul>
-                            </div>
-                        </div>-->
+
                     </div>
                 </div>
             </div>
@@ -588,14 +538,14 @@
                             </ul>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn review-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Leave a Review
+                                리뷰 남기기
                             </button>
                         </div>
                     </div>
                     <div class="col-lg-8 col-12">
                         <div class="single-block">
                             <div class="reviews">
-                                <h4 class="title">Latest Reviews</h4>
+                                <h4 class="title">최신 리뷰</h4>
                                 <!-- Reviews will be dynamically loaded here -->
                                 <div id="latest-reviews">Loading...</div>
                             </div>
@@ -613,20 +563,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">리뷰 남기기</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="review-name">Your Name</label>
+                                <label for="review-name">이름</label>
                                 <input class="form-control" type="text" id="review-name" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="review-email">Your Email</label>
+                                <label for="review-email">이메일</label>
                                 <input class="form-control" type="email" id="review-email" required>
                             </div>
                         </div>
@@ -634,13 +584,13 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="review-subject">Subject</label>
+                                <label for="review-subject">제목</label>
                                 <input class="form-control" type="text" id="review-subject" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="review-rating">Rating</label>
+                                <label for="review-rating">별점</label>
                                 <select class="form-control" id="review-rating">
                                     <option value="5">5 Stars</option>
                                     <option value="4">4 Stars</option>
@@ -652,12 +602,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="review-message">Review</label>
+                        <label for="review-message">리뷰</label>
                         <textarea class="form-control" id="review-message" rows="8" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer button">
-                    <button type="button" class="btn" id="submit-review">Submit Review</button>
+                    <button type="button" class="btn" id="submit-review">리뷰등록</button>
                 </div>
             </div>
         </div>
@@ -790,7 +740,7 @@
                         <div class="col-lg-4 col-12">
                             <div class="copyright">
                                 <p>Designed and Developed by<a href="https://graygrids.com/" rel="nofollow"
-                                        target="_blank">GrayGrids</a></p>
+                                        target="_blank">JoshHam</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
@@ -868,7 +818,7 @@
                         });
 
                         const averageRating = (overallRatingValue / data.length).toFixed(1);
-                        document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
+                        document.getElementById('overall-rating').textContent = `${averageRating} (평균)`;
 
                         let summaryHTML = '';
                         for (let i = 4; i >= 0; i--) {
@@ -1112,218 +1062,26 @@
                 }
             });
         });
-    </script>
 
+    //cart에 retalDate전송
+    document.getElementById('confirmDates').addEventListener('click', function () {
+    var rentalReserveStartDate = $(this).data('rentalReserveStartDate');
+    var rentalReserveEndDate = $(this).data('rentalReserveEndDate');
 
-
-
-
-    <!--
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // URL에서 mno 추출
-        const urlParams = new URLSearchParams(window.location.search);
-        const mno = urlParams.get('mno'); // mno 값을 URL에서 가져옵니다
-
-        // 리뷰 가져오기 함수
-        const fetchReviews = async () => {
-            try {
-                const response = await fetch(`/reviews/${mno}/all`);
-                const data = await response.json();
-
-                if (data && data.length > 0) {
-                    let overallRatingValue = 0;
-                    let ratingCount = [0, 0, 0, 0, 0];
-
-                    // 리뷰 데이터를 순회하며 필요한 정보 계산
-                    data.forEach(review => {
-                        overallRatingValue += review.grade;
-                        ratingCount[review.grade - 1]++;
-                    });
-
-                    const averageRating = (overallRatingValue / data.length).toFixed(1);
-                    document.getElementById('overall-rating').textContent = `${averageRating} (Overall)`;
-
-
-     // 평점 요약 업데이트
-    let summaryHTML = '';
-    for (let i = 4; i >= 0; i&#45;&#45;) {
-    summaryHTML += `
-    <li>
-        <span>${i + 1} stars - ${ratingCount[i]}</span>
-        ${generateStars(i + 1)}
-    </li>`;
+    if (rentalReserveStartDate && rentalReserveEndDate) {
+        $('input[name="rentalReserveStartDate"]').val(rentalReserveStartDate);
+        $('input[name="rentalReserveEndDate"]').val(rentalReserveEndDate);
+        $('#calendarModal').modal('hide');
+    } else {
+        alert('Please select a valid date range.');
     }
-    document.getElementById('rating-summary').innerHTML = summaryHTML;
+});
+
+</script>
 
 
 
-                    // 최신 리뷰 업데이트
-                    let reviewsHTML = '';
-                    data.forEach(review => {
-                        reviewsHTML += `
-                            <div class="single-review">
-                                <img src="https://via.placeholder.com/50" alt="#">
-                                <div class="review-info">
-                                    <h4>${review.text} <span>${review.member_email}</span></h4>
-                                    <ul class="stars">${generateStars(review.grade)}</ul>
-                                    <p>${review.text}</p>
-                                </div>
-                            </div>`;
-                    });
-                    document.getElementById('latest-reviews').innerHTML = reviewsHTML;
-                } else {
-                    document.getElementById('overall-rating').textContent = 'No reviews yet';
-                    document.getElementById('rating-summary').innerHTML = '';
-                    document.getElementById('latest-reviews').innerHTML = 'No reviews available';
-                }
-            } catch (error) {
-                console.error('Error fetching reviews:', error);
-                document.getElementById('overall-rating').textContent = 'Error loading reviews';
-                document.getElementById('rating-summary').innerHTML = '';
-                document.getElementById('latest-reviews').innerHTML = 'Failed to load reviews';
-            }
-        };
 
-        // 별점 생성 함수
-        const generateStars = (rating) => {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-             const color = i <= rating ? '#FFD700' : '#d3d3d3'; // 채워진 별은 금색, 비어 있는 별은 회색
-            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}" style="color: ${color};"></i>`;
-    &lt;!&ndash;            stars += `<i class="lni lni-star${i <= rating ? '-filled' : ''}"></i>`;&ndash;&gt;
-            }
-            return stars;
-        };
-
-        // 페이지 로드 시 리뷰를 가져옵니다
-        fetchReviews();
-
-        // 리뷰 등록 버튼 클릭 이벤트 핸들러
-        document.getElementById('submit-review').addEventListener('click', async () => {
-            const name = document.getElementById('review-name').value;
-            const email = document.getElementById('review-email').value;
-            const subject = document.getElementById('review-subject').value;
-            const rating = document.getElementById('review-rating').value;
-            const message = document.getElementById('review-message').value;
-
-            if (!mno) {
-                console.error('mno is not defined');
-                alert('Failed to submit review. Product ID is missing.');
-                return;
-            }
-
-            const reviewData = {
-                mno: mno,
-                nickname: name,
-                grade: rating,
-                text: message,
-                member_email: email
-            };
-
-            try {
-                const response = await fetch(`/reviews/${mno}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(reviewData),
-                });
-
-                if (response.ok) {
-                    fetchReviews(); // 리뷰 목록을 다시 가져와서 업데이트
-                    alert('Review submitted successfully!');
-                  /*  $('#exampleModal').modal('hide'); // 모달 닫기*/
-                      const modal = document.getElementById('exampleModal');
-                    const bootstrapModal = new bootstrap.Modal(modal);
-                    bootstrapModal.hide();
-                } else {
-                    alert('Failed to submit review.');
-                }
-            } catch (error) {
-                console.error('Error submitting review:', error);
-                alert('Error submitting review.');
-            }
-        });
-    });
-
-    </script>
-
-        <script>
-    // $(document).ready(function() {
-            document.addEventListener('DOMContentLoaded', function() {
-                // 서버에서 전달된 예약 불가능한 날짜 범위 (rentalStartDate와 rentalEndDate)
-                       var rentedDates = /*[[${rentedDates}]]*/ [];
-
-             // [{ start: '2024-08-20', end: '2024-08-25' }, ...]
-
-
-
-                // 예약 불가능한 날짜 범위를 이벤트로 추가
-                var events = rentedDates.map(function(date){
-                    return {
-                        start: date,
-                        end: date,
-                        display: 'background',
-                        color: '#ff9f89' // 붉은 색으로 표시
-                    };
-                });
-
-                var calendarEl = document.getElementById('calendar');
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    selectable: true,
-                    select: function(info) {
-                        var rentalReserveStart = info.startStr;
-                        var rentalReserveEnd = info.endStr;
-
-                        // 선택된 날짜를 표시하거나 저장
-                        $('#confirmDates').data('rentalReserveStart', rentalReserveStart);
-                        $('#confirmDates').data('rentalReserveEnd', rentalReserveEnd);
-                    },
-                    events: events,
-                    eventOverlap: false, // 예약 불가능한 기간은 겹치지 않도록 설정
-                    selectOverlap: function(event) {
-                        return event.display !== 'background'; // 예약 불가능한 날짜는 선택할 수 없도록 함
-                    }
-                });
-                calendar.render();
-
-                // 확인 버튼 클릭 시
-                $('#confirmDates').click(function() {
-                    var rentalReserveStart = $(this).data('rentalReserveStart');
-                    var rentalReserveEnd = $(this).data('rentalReserveEnd');
-
-                    if (rentalReserveStart && rentalReserveEnd) {
-                        // 기존 폼에 선택된 날짜를 추가
-                        $('input[name="rentalReserveStart"]').val(rentalReserveStart);
-                        $('input[name="rentalReserveEnd"]').val(rentalReserveEnd);
-
-                        // 모달 닫기
-                        $('#calendarModal').modal('hide');
-                    } else {
-                        alert('Please select a valid date range.');
-                    }
-                });
-            });
-
-
-            $(document).ready(function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            selectable: true,
-            height: 'auto', // 높이를 자동으로 설정
-            events: events // 기존 이벤트를 여기에 추가
-        });
-        calendar.render();
-
-        // 창 크기 조정 시 강제로 리프레시
-        $(window).resize(function() {
-            calendar.updateSize();
-        });
-    });
-        </script>-->
 
     <!--설명
     var rentedDates = /*[[${rentedDates}]]*/ [];: Thymeleaf를 사용하여 서버에서 전달된 예약 불가능한 날짜를 JavaScript 배열로 설정합니다.

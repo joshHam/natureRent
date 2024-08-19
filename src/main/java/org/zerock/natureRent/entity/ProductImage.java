@@ -28,4 +28,7 @@ public class ProductImage  {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Blog blog;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cart cart;
 }

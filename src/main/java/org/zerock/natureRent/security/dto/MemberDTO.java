@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.zerock.natureRent.entity.Member;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Log4j2
@@ -32,44 +34,79 @@ public class MemberDTO extends User  implements OAuth2User {
 
     private boolean fromSocial;
 
+    @Getter
+    private Member member; // Member 엔티티
     private Map<String, Object> attr;
 
-    public MemberDTO() {
-        super("defaultUsername", "defaultPassword", new ArrayList<>());
-    }
 
-    // 이 생성자는 아래 생성자를 호출하는데, 시그니처가 정확해야 함
-    public MemberDTO(String username, String password, boolean fromSocial,
-                     Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
-        this(username,password, fromSocial, authorities);
-        this.attr = attr;
-    }
-//
-    public MemberDTO(String username, String password, boolean fromSocial,
-                     Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-        this.email = username;
-        this.password = password;
-        this.fromSocial = fromSocial;
-
-    }
-
-
-
-//    public MemberDTO(String username, String password, String name, String nickname, boolean fromSocial,
+//    // 새 생성자 추가
+//    public MemberDTO(String username, String password, boolean fromSocial,
 //                     Collection<? extends GrantedAuthority> authorities) {
 //        super(username, password, authorities);
 //        this.email = username;
 //        this.password = password;
-//        this.name = name;
-//        this.nickname = nickname;
 //        this.fromSocial = fromSocial;
+//        this.attr = Collections.emptyMap(); // 속성 초기화
 //    }
+
+//    public MemberDTO() {
+//        super("defaultUsername", "defaultPassword", new ArrayList<>());
+//    }
+//
+//    // 이 생성자는 아래 생성자를 호출하는데, 시그니처가 정확해야 함
+//    public MemberDTO(String username, String password, boolean fromSocial,
+//                     Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
+//        this(username,password, fromSocial, authorities);
+////        this.attr = attr;
+//        this.attr = attr != null ? attr : Collections.emptyMap(); // 속성 초기화
+//
+//    }
+
+// Member 엔티티를 사용하는 기존 생성자
+public MemberDTO(Member member, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
+    super(member.getEmail(), member.getPassword(), authorities);
+    this.member = member;
+    this.email = member.getEmail();
+    this.password = member.getPassword();
+    this.name = member.getName();
+    this.nickname = member.getNickname();
+    this.fromSocial = member.isFromSocial();
+    this.attr = attr != null ? attr : Collections.emptyMap(); // 속성 초기화
+}
+//
+//    public MemberDTO(String username, String password, boolean fromSocial,
+//                     Collection<? extends GrantedAuthority> authorities) {
+//        super(username, password, authorities);
+//        this.email = username;
+//        this.password = password;
+//        this.fromSocial = fromSocial;
+//        this.attr = Collections.emptyMap(); // 속성 초기화
+//
+//    }
+public MemberDTO(Member member, Collection<? extends GrantedAuthority> authorities) {
+    this(member, authorities, null); // attr을 null로 전달
+}
+
+    // 새로운 생성자 추가 (현재 발생하는 오류 해결용)
+    public MemberDTO(String username, String password, boolean fromSocial,
+                     Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
+        super(username, password, authorities);
+        this.email = username;
+        this.password = password;
+        this.fromSocial = fromSocial;
+        this.attr = attr != null ? attr : Collections.emptyMap(); // 속성 초기화
+    }
+
+    public MemberDTO(String username, String password, boolean fromSocial,
+                     Collection<? extends GrantedAuthority> authorities) {
+        this(username, password, fromSocial, authorities, null); // attr을 null로 전달
+    }
 
 
     @Override
     public Map<String, Object> getAttributes() {
         return this.attr;
     }
+
 
 }

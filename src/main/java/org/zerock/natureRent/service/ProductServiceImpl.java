@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.dto.PageResultDTO;
+import org.zerock.natureRent.dto.ProductImageDTO;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.ProductImage;
 import org.zerock.natureRent.repository.ProductImageRepository;
@@ -49,7 +50,6 @@ public class ProductServiceImpl implements ProductService{
 
         return product.getMno();
     }
-
     @Override
     public PageResultDTO<ProductDTO, Object[]> getList(PageRequestDTO requestDTO) {
 
@@ -73,6 +73,50 @@ public class ProductServiceImpl implements ProductService{
         return new PageResultDTO<>(result, fn);
     }
 
+
+//    @Override
+//    public PageResultDTO<ProductDTO, Object[]> getList(PageRequestDTO requestDTO) {
+//
+//        Pageable pageable = requestDTO.getPageable(Sort.by("mno").descending());
+//
+//        Page<Object[]> result = productRepository.getListPage(pageable);
+//
+//        log.info("==============================================");
+//        result.getContent().forEach(arr -> {
+//            log.info(Arrays.toString(arr));
+//        });
+//
+//
+//        Function<Object[], ProductDTO> fn = (arr -> entitiesToDTO(
+//                (Product)arr[0] ,
+//                (List<ProductImageDTO>)(Arrays.asList((ProductImage)arr[1])),
+//                (Double) arr[2],
+//                (Long)arr[3])
+//        );
+//
+//        return new PageResultDTO<>(result, fn);
+//    }
+
+//    @Override
+//    public ProductDTO getProduct(Long mno) {
+//
+//        List<Object[]> result = productRepository.getProductWithAll(mno);
+//
+//        Product product = (Product) result.get(0)[0];
+//
+//        List<ProductImage> productImageList = new ArrayList<>();
+//
+//        result.forEach(arr -> {
+//            ProductImage  productImage = (ProductImage)arr[1];
+//            productImageList.add(productImage);
+//        });
+//
+//        Double avg = (Double) result.get(0)[2];
+//        Long reviewCnt = (Long) result.get(0)[3];
+//
+//        return entitiesToDTO(product, productImageList, avg, reviewCnt);
+//    }
+
     @Override
     public ProductDTO getProduct(Long mno) {
 
@@ -93,45 +137,6 @@ public class ProductServiceImpl implements ProductService{
         return entitiesToDTO(product, productImageList, avg, reviewCnt);
     }
 
-//    @Override
-//    public List<LocalDateTime> getRentedDatesByProductId(Long mno) {
-//        log.info("Fetching rented dates for product: " + mno);
-//
-////        List<Object[]> rentalPeriods = productRepository.findRentalPeriodsByProductId(mno);
-//
-////        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        log.info("Fetched rental periods: " + rentalPeriods);
-//        // 기간별 날짜 리스트 생성
-//        List<LocalDateTime> rentedDates = rentalPeriods.stream()
-//                .flatMap(period -> Stream.of((LocalDateTime) period[0], (LocalDateTime) period[1]))
-//                .collect(Collectors.toList());
-//
-//        log.info("Converted rented dates: " + rentedDates);
-//
-////        List<String> rentedDates = rentalPeriods.stream()
-////                .flatMap(period -> {
-////                    LocalDateTime start = (LocalDateTime) period[0];
-////                    LocalDateTime end = (LocalDateTime) period[1];
-////                    return start.toLocalDate().datesUntil(end.toLocalDate().plusDays(1)).map(date -> date.format(formatter));
-////                })
-////                .collect(Collectors.toList());
-//
-//
-////        List<LocalDateTime> rentedDates = new ArrayList<>();
-////        for (Object[] period : rentalPeriods) {
-////            LocalDateTime start = (LocalDateTime) period[0];
-////            LocalDateTime end = (LocalDateTime) period[1];
-////
-////            // start부터 end까지의 날짜를 모두 리스트에 추가
-////            while (!start.isAfter(end)) {
-////                rentedDates.add(start);
-////                start = start.plusDays(1); // 하루씩 추가
-////            }
-////        }
-//
-////        return rentedDates;
-//        return rentalRepository.findRentedDatesByProductId(productId);
-//    }
 
 }
 

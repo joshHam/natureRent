@@ -2,17 +2,32 @@ package org.zerock.natureRent.controller;
 
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.zerock.natureRent.entity.Cart;
+import org.zerock.natureRent.entity.Member;
+import org.zerock.natureRent.entity.Product;
+import org.zerock.natureRent.repository.CartRepository;
+import org.zerock.natureRent.repository.ProductRepository;
 import org.zerock.natureRent.security.dto.MemberDTO;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
 import org.zerock.natureRent.dto.PageResultDTO;
+import org.zerock.natureRent.service.CartService;
 import org.zerock.natureRent.service.ProductService;
+import org.zerock.natureRent.dto.CartDTO;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Log4j2
@@ -20,9 +35,15 @@ import org.zerock.natureRent.service.ProductService;
 public class MainController {
 
     private final ProductService productService;
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
+    private final CartService cartService;
 
-    public MainController(ProductService productService) {
+    public MainController(ProductService productService, CartRepository cartRepository, ProductRepository productRepository, CartService cartService) {
         this.productService = productService;
+        this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
+        this.cartService = cartService;
     }
 
     @GetMapping("/login")
@@ -82,34 +103,6 @@ public class MainController {
     }
 
 
-//    @GetMapping("/member")
-//    public void exMember(){
-//        log.info("exMember..........");
-//    }
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping("admin")
-//    public String exAdmin(){
-//        log.info("exAdmin..........");
-//        return "/main/admin"; // 명시적으로 뷰 이름을 반환
-//
-//    }
-
-
-
-
-//
-//    @PreAuthorize("hasRole('USER')")
-//    @GetMapping("member")
-//    public String exMember(@AuthenticationPrincipal MemberDTO clubAuthMember){
-//
-//        log.info("exMember..........");
-//
-//        log.info("-------------------------------");
-//        log.info(clubAuthMember);
-//        return "/main/member"; // 명시적으로 뷰 이름을 반환
-//    }
-
-
     //로그인한 사용자중에 user95@zerock.org만 접근가능하도록//
     @PreAuthorize("#clubAuthMember != null && #clubAuthMember.username eq \"user95@zerock.org\"")
     @GetMapping("/exOnly")
@@ -120,5 +113,118 @@ public class MainController {
 
         return "/main/admin";
     }
+
+
+
+
+
+
+    @PostMapping("/cart/add")
+    public ResponseEntity<String> addToCart(
+            @AuthenticationPrincipal MemberDTO authMember, // 로그인한 사용자 정보
+            @RequestParam("productMno") Long productMno,
+//            @RequestParam("rentalReserveStartDate") LocalDateTime rentalReserveStartDate,
+//            @RequestParam("rentalReserveEndDate") LocalDateTime rentalReserveEndDate,
+            @RequestParam("rentalReserveStartDate") LocalDate rentalReserveStartDate,  // 변경된 부분
+            @RequestParam("rentalReserveEndDate") LocalDate rentalReserveEndDate,      // 변경된 부분
+            @RequestParam("quantity") int quantity) {
+
+        // 필요에 따라 LocalDate를 LocalDateTime으로 변환할 수도 있음
+        LocalDateTime startDateTime = rentalReserveStartDate.atStartOfDay();
+        LocalDateTime endDateTime = rentalReserveEndDate.atStartOfDay();
+
+
+        // 현재 로그인한 사용자 정보 가져오기
+        Member member = authMember.getMember();
+        // 선택된 제품 정보 가져오기
+        Product product = productRepository.findById(productMno).orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
+
+        // Cart 엔티티 생성 및 저장
+        Cart cart = Cart.builder()
+                .member(member)// Member 객체 설정
+                .product(product)
+                .rentalStartDate(startDateTime)
+                .rentalEndDate(endDateTime)
+                .quantity(quantity)
+                .build();
+
+        cartRepository.save(cart);
+
+        return ResponseEntity.ok("Item added to cart successfully.");
+    }
+
+
+    @GetMapping("/cart/items")
+    public String getCartList(Model model, @AuthenticationPrincipal MemberDTO authMember) {
+        log.info("Entering getCartList method"); // 메서드 진입 확인
+
+        // 현재 로그인한 사용자 가져오기
+        if (authMember == null) {
+            log.warn("authMember is null");
+        } else {
+            log.info("Fetching cart for user: {}", authMember.getEmail());
+        }
+        Member member = authMember.getMember();
+
+        if (member != null) {
+            // 해당 사용자의 Cart 데이터 가져오기
+            log.info("Member found: {}", member.getEmail());
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+
+            if (cartList.isEmpty()) {
+                log.info("No cart items found for user: {}", member.getEmail());
+            } else {
+                log.info("Number of cart items found: {}", cartList.size());
+
+                // 각 카트 아이템의 상세 정보를 로그로 출력
+                cartList.forEach(cart -> {
+                    log.info("Cart Item: {}", cart);
+                    if (cart.getProductDTO() != null) {
+                        log.info("Product in Cart: {}", cart.getProductDTO());
+                        log.info("Product MNO: {}", cart.getProductDTO().getMno());
+
+                        // 이미지 리스트 정보 로그 출력
+                        if (cart.getProductDTO().getImageDTOList() != null && !cart.getProductDTO().getImageDTOList().isEmpty()) {
+                            log.info("Number of images in product: {}", cart.getProductDTO().getImageDTOList().size());
+                            cart.getProductDTO().getImageDTOList().forEach(imageDTO -> {
+                                log.info("Image Thumbnail URL: {}", imageDTO.getThumbnailURL());
+                            });
+                        } else {
+                            log.warn("Image list is null or empty for product: {}", cart.getProductDTO().getMno());
+                        }
+                    } else {
+                        log.warn("Product in cart is null for cart ID: {}", cart.getCno());
+                    }
+                });
+
+            }
+//            // DTO 리스트로 변환
+//            List<CartDTO> cartDTOList = cartList.stream().map(cart -> {
+//                // 상품 DTO 가져오기
+//                ProductDTO productDTO = productService.getProduct(cart.getProduct().getMno());
+//                // CartDTO 빌드
+//                return CartDTO.builder()
+//                        .productDTO(productDTO)
+//                        .quantity(cart.getQuantity())
+//                        .build();
+//            }).collect(Collectors.toList());
+//
+//            log.info("Number of cart items found: {}", cartDTOList.size());
+//
+
+            // 모델에 Cart 리스트 추가
+            model.addAttribute("cartList", cartList);
+        }else {
+            log.warn("No member found for the current session");
+        }
+
+        return "main/cart";// cart.html로 렌더링
+    }
+
+
+
+
+
+
 
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.zerock.natureRent.entity.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -28,6 +29,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             " left outer join Review  r on r.product = m "+
             " where m.mno = :mno group by mi")
     List<Object[]> getProductWithAll(Long mno);
+
+    @SuppressWarnings("unused")
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.imageList WHERE p.mno = :mno")
+    Optional<Product> findByIdWithImages(@Param("mno") Long mno);
 
 //    @Query("SELECT p.rentalStartDate, p.rentalEndDate FROM Product p WHERE p.mno = :mno")
 //    List<Object[]> findRentalPeriodsByProductId(@Param("mno") Long mno);

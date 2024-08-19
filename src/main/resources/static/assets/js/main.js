@@ -1,6 +1,6 @@
 /*
 Template Name: JoshHam - Bootstrap 5 eCommerce HTML Template.
-Author: GrayGrids
+Author: JoshHam
 */
 
 (function () {

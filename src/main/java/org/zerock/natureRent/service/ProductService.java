@@ -1,5 +1,6 @@
 package org.zerock.natureRent.service;
 
+import org.hibernate.Hibernate;
 import org.zerock.natureRent.dto.ProductDTO;
 import org.zerock.natureRent.dto.ProductImageDTO;
 import org.zerock.natureRent.dto.PageRequestDTO;
@@ -7,7 +8,6 @@ import org.zerock.natureRent.dto.PageResultDTO;
 import org.zerock.natureRent.entity.Product;
 import org.zerock.natureRent.entity.ProductImage;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +26,7 @@ public interface ProductService {
 //    Page<Blog> findAllProducts(Pageable pageable);
 
     default ProductDTO entitiesToDTO(Product product, List<ProductImage> productImages, Double avg, Long reviewCnt){
+        Hibernate.initialize(product.getRegDate());
         ProductDTO productDTO = ProductDTO.builder()
                 .mno(product.getMno())
                 .title(product.getTitle())
@@ -33,7 +34,9 @@ public interface ProductService {
                 .modDate(product.getModDate())
 //                .rentalStartDate(product.getRentalStartDate())
 //                .rentalEndDate(product.getRentalEndDate())
+                .avg((avg != null) ? avg : 0.0)  // Null일 경우 기본값 사용
                 .isAvailable(product.isAvailable())
+                .reviewCnt((reviewCnt != null) ? reviewCnt.intValue() : 0)  // Null일 경우 기본값 사용
                 .price(product.getPrice())  // price 필드 설정
                 .build();
 
@@ -45,8 +48,8 @@ public interface ProductService {
         }).collect(Collectors.toList());
 
         productDTO.setImageDTOList(productImageDTOList);
-        productDTO.setAvg(avg);
-        productDTO.setReviewCnt(reviewCnt.intValue());
+//        productDTO.setAvg(avg);
+//        productDTO.setReviewCnt(reviewCnt.intValue());
 
 
 

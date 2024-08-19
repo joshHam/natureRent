@@ -3,9 +3,12 @@ package org.zerock.natureRent.entity;
 import lombok.*;
 
 import jakarta.persistence.*;
+import org.zerock.natureRent.dto.ProductImageDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @ToString
+@Access(AccessType.FIELD)
 public class Product extends BaseEntity {
 
     @Id
@@ -39,4 +43,12 @@ public class Product extends BaseEntity {
     // 상품 상세 설명을 위한 필드 추가
     @Lob
     private String detail;
+
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductImage> imageList;
+//            = new ArrayList<>();
+
+
+
 }

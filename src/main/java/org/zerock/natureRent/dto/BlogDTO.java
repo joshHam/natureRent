@@ -1,6 +1,7 @@
 package org.zerock.natureRent.dto;
 
 import lombok.*;
+import org.zerock.natureRent.entity.ProductImage;
 import org.zerock.natureRent.security.dto.MemberDTO;
 
 import java.time.LocalDateTime;

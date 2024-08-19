@@ -40,7 +40,7 @@
                                     <li><i class="lni lni-star-filled"></i></li>
                                     <li><i class="lni lni-star-filled"></i></li>
                                     <li><i class="lni lni-star"></i></li>
-                                    <li><span>[[${dto.avg}]] Rating</span></li>
+                                    <li><span>[[${dto.avg}]] 별점</span></li>
                                 </ul>
                                 <div class="price">
                                     <span>Review Count: [[${dto.reviewCnt}]]</span>

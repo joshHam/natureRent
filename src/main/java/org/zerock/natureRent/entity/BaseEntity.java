@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @EntityListeners(value = { AuditingEntityListener.class })
 @Getter
 @Setter // 추가: 필드의 setter 메서드를 자동으로 생성
-abstract class BaseEntity {
+public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name = "regdate" , updatable = false)

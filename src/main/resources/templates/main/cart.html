@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -390,9 +390,7 @@
             <!-- Cart List Title -->
             <div class="cart-list-title">
                 <div class="row">
-                    <div class="col-lg-1 col-md-1 col-12">
-
-                    </div>
+                    <div class="col-lg-1 col-md-1 col-12"></div>
                     <div class="col-lg-4 col-md-3 col-12">
                         <p>Product Name</p>
                     </div>
@@ -402,9 +400,9 @@
                     <div class="col-lg-2 col-md-2 col-12">
                         <p>Subtotal</p>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>Discount</p>
-                    </div>
+<!--                    <div class="col-lg-2 col-md-2 col-12">-->
+<!--                        <p>Discount</p>-->
+<!--                    </div>-->
                     <div class="col-lg-1 col-md-2 col-12">
                         <p>Remove</p>
                     </div>
@@ -412,116 +410,53 @@
             </div>
             <!-- End Cart List Title -->
             <!-- Cart Single List list -->
+            <div th:each="cart : ${cartList}">
             <div class="cart-single-list">
                 <div class="row align-items-center">
                     <div class="col-lg-1 col-md-1 col-12">
-                        <a href="/product/product-details"><img src="/assets/images/cart/01.jpg" alt="#"></a>
+                        <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}">
+                            <img th:src="@{|/display?fileName=${cart.productDTO.imageDTOList[0].getThumbnailURL()}|}" alt="#"
+                                 th:if="${cart.productDTO.imageDTOList != null and cart.productDTO.imageDTOList.size() > 0}"/>
+
+<!--                            <img th:if="${cart.product.productImages != null and cart.product.productImages.size() > 0}"-->
+<!--                                 th:src="@{|/display?fileName=${cart.product.productImages[0].getThumbnailURL()}|}"-->
+<!--                                 alt="Product Image"  />-->
+                        </a>
                     </div>
                     <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="/product/product-details">
-                            Canon EOS M50 Mirrorless Camera</a></h5>
+                        <h5 class="product-name"><a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}">[[${cart.productDTO.title}]]</a>
+                        </h5>
                         <p class="product-des">
+<!--                            <span><em>Type:</em> [[${cart.rentalStartDate}]]</span>-->
+<!--                            <span><em>Color:</em> [[${cart.rentalEndDate}]]</span>-->
                             <span><em>Type:</em> Mirrorless</span>
                             <span><em>Color:</em> Black</span>
                         </p>
                     </div>
                     <div class="col-lg-2 col-md-2 col-12">
                         <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select class="form-control" th:value="${cart.quantity}">
+                                <option th:value="1" th:selected="${cart.quantity == 1}">1</option>
+                                <option th:value="2" th:selected="${cart.quantity == 2}">2</option>
+                                <option th:value="3" th:selected="${cart.quantity == 3}">3</option>
+                                <option th:value="4" th:selected="${cart.quantity == 4}">4</option>
+                                <option th:value="5" th:selected="${cart.quantity == 5}">5</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-12">
-                        <p>$910.00</p>
+                        <p>[[${#numbers.formatCurrency(cart.productDTO.price * cart.quantity)}]]</p>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$29.00</p>
-                    </div>
+                   <!-- <div class="col-lg-2 col-md-2 col-12">
+
+                    </div>-->
                     <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
+                        <a class="remove-item" th:href="@{/cart/remove(cno=${cart.cno})}"><i class="lni lni-close"></i></a>
                     </div>
                 </div>
             </div>
-            <!-- End Single List list -->
-            <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
-                        <a href="/product/product-details"><img src="/assets/images/cart/02.jpg" alt="#"></a>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="/product/product-details">
-                            Apple iPhone X 256 GB Space Gray</a></h5>
-                        <p class="product-des">
-                            <span><em>Memory:</em> 256 GB</span>
-                            <span><em>Color:</em> Space Gray</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$1100.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>—</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single List list -->
-            <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
-                        <a href="/product/product-details"><img src="/assets/images/cart/03.jpg" alt="#"></a>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="/product/product-details">HP LaserJet Pro Laser Printer</a></h5>
-                        <p class="product-des">
-                            <span><em>Type:</em> Laser</span>
-                            <span><em>Color:</em> White</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$550.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>—</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single List list -->
         </div>
+
         <div class="row">
             <div class="col-12">
                 <!-- Total Amount -->
