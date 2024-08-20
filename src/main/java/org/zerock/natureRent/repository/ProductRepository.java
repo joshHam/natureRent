@@ -30,6 +30,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             " where m.mno = :mno group by mi")
     List<Object[]> getProductWithAll(Long mno);
 
+//    @Query("select m, mi, avg(coalesce(r.grade,0)), count(r) " +
+//            "from Product m " +
+//            "left join ProductImage mi on mi.product = m " +
+//            "left join Review r on r.product = m " +
+//            "where m.mno = :mno")
+//    List<Object[]> getProductWithAll(@Param("mno") Long mno);
+
     @SuppressWarnings("unused")
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.imageList WHERE p.mno = :mno")
     Optional<Product> findByIdWithImages(@Param("mno") Long mno);

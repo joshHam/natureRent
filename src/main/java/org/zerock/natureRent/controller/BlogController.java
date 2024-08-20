@@ -19,11 +19,8 @@ import org.zerock.natureRent.entity.Blog;
 import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.repository.MemberRepository;
 import org.zerock.natureRent.security.dto.MemberDTO;
-import org.zerock.natureRent.service.BlogService;
+import org.zerock.natureRent.service.*;
 //import org.zerock.natureRent.service.BlogService2;
-import org.zerock.natureRent.service.BlogServiceImpl;
-import org.zerock.natureRent.service.ProductService;
-import org.zerock.natureRent.service.ReviewService;
 
 import javax.xml.transform.Result;
 import java.time.format.DateTimeFormatter;
@@ -41,15 +38,17 @@ public class BlogController {
     private final MemberRepository memberRepository;
     private final BlogService blogService;
     private final UploadController uploadController;
+    private final CartService cartService;
 
 
     private final ProductService productService;
 
-    public BlogController(ReviewService reviewService, MemberRepository memberRepository, BlogService blogService, UploadController uploadController, ProductService productService) {
+    public BlogController(ReviewService reviewService, MemberRepository memberRepository, BlogService blogService, UploadController uploadController, CartService cartService, ProductService productService) {
         this.reviewService = reviewService;
         this.memberRepository = memberRepository;
         this.blogService = blogService;
         this.uploadController = uploadController;
+        this.cartService = cartService;
         this.productService = productService;
     }
 
@@ -90,7 +89,8 @@ public class BlogController {
     public String writeBlog2(Blog blog,
                              @AuthenticationPrincipal MemberDTO memberDTO,
                              @RequestParam("uploadFiles") MultipartFile[] uploadFiles,
-                             Model model) {
+                             Model model,
+                             @AuthenticationPrincipal MemberDTO authMember) {
 
         // 업로드된 파일 처리
         List<UploadResultDTO> uploadResultDTOList = uploadController.uploadFile(uploadFiles).getBody();
@@ -123,6 +123,12 @@ public class BlogController {
         blog.setMember(member);
 //        blog.setMember(Member.builder().email(memberDTO.getEmail()).build());
         blogService.saveBlog(blog, memberDTO, imageDTOList);
+
+
+        Member member2 = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member2.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
+
         return "blog/blog-single-sidebar";
     }
 
@@ -195,7 +201,7 @@ public String getBlogById(@PathVariable Long id, Model model) {
 //    }
 
     @GetMapping("blog-grid-sidebar")
-    public String exBlogGridSidebar(PageRequestDTO pageRequestDTO, Model model) {
+    public String exBlogGridSidebar(PageRequestDTO pageRequestDTO, Model model,@AuthenticationPrincipal MemberDTO authMember) {
         log.info("exBlogGridSidebar..........");
 
 //        // Blog 엔티티를 가져오는 서비스 메서드 호출 (예시로 가정)
@@ -232,6 +238,10 @@ public String getBlogById(@PathVariable Long id, Model model) {
 
         model.addAttribute("result", pageResultDTO);
 
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
+
         return "blog/blog-grid-sidebar"; // 명시적으로 뷰 이름을 반환
     }
 
@@ -243,7 +253,8 @@ public String getBlogById(@PathVariable Long id, Model model) {
 //    }
 
     @GetMapping("/blog/blog-single")
-    public String getBlogSingle(@RequestParam("bno") Long bno, @RequestParam("page") int page, Model model) {
+    public String getBlogSingle(@RequestParam("bno") Long bno, @RequestParam("page") int page, Model model,
+                                @AuthenticationPrincipal MemberDTO authMember) {
         // 서비스 메서드를 호출하여 블로그 데이터를 가져옴
         Blog blog = blogService.findBlogById(bno);
 
@@ -256,6 +267,10 @@ public String getBlogById(@PathVariable Long id, Model model) {
             String formattedRegDate = blog.getRegDate() != null ? blog.getRegDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "No date available";
             model.addAttribute("formattedRegDate", formattedRegDate);
         }
+
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
 
         return "blog/blog-single";
     }

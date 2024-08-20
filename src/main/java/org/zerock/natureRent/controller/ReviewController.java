@@ -4,10 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.natureRent.dto.CartDTO;
 import org.zerock.natureRent.dto.ReviewDTO;
+import org.zerock.natureRent.entity.Member;
+import org.zerock.natureRent.security.dto.MemberDTO;
+import org.zerock.natureRent.service.CartService;
 import org.zerock.natureRent.service.ReviewService;
 
 import java.util.List;
@@ -20,7 +26,7 @@ import java.util.List;
     public class ReviewController {
 
     private final ReviewService reviewService;
-
+    private final CartService cartService;
 //    public ReviewController(ReviewService reviewService) {
 //        this.reviewService = reviewService;
 //    }
@@ -68,8 +74,12 @@ import java.util.List;
 
 
     @GetMapping("/blog/{blogId}")
-    public ResponseEntity<List<ReviewDTO>> getReviewsByBlogId(@PathVariable Long blogId) {
+    public ResponseEntity<List<ReviewDTO>> getReviewsByBlogId(@PathVariable Long blogId, @AuthenticationPrincipal MemberDTO authMember
+    , Model model) {
         List<ReviewDTO> reviews = reviewService.getListOfBlog(blogId);
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 

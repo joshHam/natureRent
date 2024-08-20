@@ -182,46 +182,45 @@
                             <div class="cart-items">
                                 <a href="javascript:void(0)" class="main-btn">
                                     <i class="lni lni-cart"></i>
-                                    <span class="total-items">2</span>
+                                    <span class="total-items" th:text="${cartList.size()}"></span>
                                 </a>
                                 <!-- Shopping Item -->
                                 <div class="shopping-item">
                                     <div class="dropdown-cart-header">
-                                        <span>2 Items</span>
-                                        <a href="cart">View Cart</a>
+                                        <!-- cartList의 크기를 동적으로 표시 -->
+                                        <span th:text="${cartList.size()} + ' Items'">0 Items</span>
+                                        <a href="/main/cart/items">View Cart
                                     </div>
                                     <ul class="shopping-list">
-                                        <li>
-                                            <a href="javascript:void(0)" class="remove" title="Remove this item"><i
-                                                    class="lni lni-close"></i></a>
+                                        <!-- cartList의 각 항목을 반복 -->
+                                        <li th:each="cart : ${cartList}">
+                                            <a href="javascript:void(0)" class="remove" title="Remove this item">
+                                                <i class="lni lni-close"></i>
+                                            </a>
                                             <div class="cart-img-head">
-                                                <a class="cart-img" href="/product/product-details"><img
-                                                        src="/assets/images/header/cart-items/item1.jpg" alt="#"></a>
-                                            </div>
-
-                                            <div class="content">
-                                                <h4><a href="/product/product-details">
-                                                    Apple Watch Series 6</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" class="remove" title="Remove this item"><i
-                                                    class="lni lni-close"></i></a>
-                                            <div class="cart-img-head">
-                                                <a class="cart-img" href="/product/product-details"><img
-                                                        src="/assets/images/header/cart-items/item2.jpg" alt="#"></a>
+                                                <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}" class="cart-img">
+                                                    <img th:src="@{|/display?fileName=${cart.productDTO.imageDTOList[0].getThumbnailURL()}|}"
+                                                         alt="#"
+                                                         th:if="${cart.productDTO.imageDTOList != null and cart.productDTO.imageDTOList.size() > 0}" />
+                                                </a>
                                             </div>
                                             <div class="content">
-                                                <h4><a href="/product/product-details">Wi-Fi Smart Camera</a></h4>
-                                                <p class="quantity">1x - <span class="amount">20000₩</span></p>
+                                                <h4>
+                                                    <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}">
+                                                        [[${cart.productDTO.title}]]
+                                                    </a>
+                                                </h4>
+                                                <p class="quantity">
+                                                    <span th:text="${cart.quantity}"></span> x -
+                                                    <span class="amount">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>
+                                                </p>
                                             </div>
                                         </li>
                                     </ul>
                                     <div class="bottom">
                                         <div class="total">
                                             <span>Total</span>
-                                            <span class="total-amount">$134.00</span>
+                                            <span id="you-pay">$134.00</span>
                                         </div>
                                         <div class="button">
                                             <a href="checkout" class="btn animate">Checkout</a>
@@ -400,11 +399,11 @@
                     <div class="col-lg-2 col-md-2 col-12">
                         <p>Subtotal</p>
                     </div>
-<!--                    <div class="col-lg-2 col-md-2 col-12">-->
-<!--                        <p>Discount</p>-->
-<!--                    </div>-->
                     <div class="col-lg-1 col-md-2 col-12">
                         <p>Remove</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <p>Discount</p>
                     </div>
                 </div>
             </div>
@@ -417,20 +416,16 @@
                         <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}">
                             <img th:src="@{|/display?fileName=${cart.productDTO.imageDTOList[0].getThumbnailURL()}|}" alt="#"
                                  th:if="${cart.productDTO.imageDTOList != null and cart.productDTO.imageDTOList.size() > 0}"/>
-
-<!--                            <img th:if="${cart.product.productImages != null and cart.product.productImages.size() > 0}"-->
-<!--                                 th:src="@{|/display?fileName=${cart.product.productImages[0].getThumbnailURL()}|}"-->
-<!--                                 alt="Product Image"  />-->
                         </a>
                     </div>
                     <div class="col-lg-4 col-md-3 col-12">
                         <h5 class="product-name"><a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}">[[${cart.productDTO.title}]]</a>
                         </h5>
                         <p class="product-des">
-<!--                            <span><em>Type:</em> [[${cart.rentalStartDate}]]</span>-->
-<!--                            <span><em>Color:</em> [[${cart.rentalEndDate}]]</span>-->
-                            <span><em>Type:</em> Mirrorless</span>
-                            <span><em>Color:</em> Black</span>
+                            <span><em>Rental Start Date:</em> [[${cart.rentalStartDate}]]</span>
+                            <span><em>Rental End Date:</em> [[${cart.rentalEndDate}]]</span>
+<!--                            <span><em>Type:</em> Mirrorless</span>-->
+<!--                            <span><em>Color:</em> Black</span>-->
                         </p>
                     </div>
                     <div class="col-lg-2 col-md-2 col-12">
@@ -445,13 +440,20 @@
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-12">
-                        <p>[[${#numbers.formatCurrency(cart.productDTO.price * cart.quantity)}]]</p>
+                        <p class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</p>
+                        <!--                        <p>[[${#numbers.formatCurrency(cart.productDTO.price * cart.quantity)}]]</p>-->
+<!--                     <p class="subtotal" data-price="[[${cart.totalPrice}]]">[[${#numbers.formatCurrency(cart.totalPrice)}]]</p>-->
+<!--                        <p class="subtotal" data-price="${cart.totalPrice}">[[${#numbers.formatCurrency(cart.totalPrice)}]]</p>-->
                     </div>
                    <!-- <div class="col-lg-2 col-md-2 col-12">
-
                     </div>-->
                     <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" th:href="@{/cart/remove(cno=${cart.cno})}"><i class="lni lni-close"></i></a>
+<!--                        <a class="remove-item" th:href="@{/cart/remove(cno=${cart.cno})}"><i class="lni lni-close"></i></a>-->
+
+                    <form action="remove" method="post">
+                        <input type="hidden" name="cno" th:value="${cart.cno}">
+                        <button class="lni lni-close" type="submit">Remove</button>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -468,7 +470,7 @@
                                     <form action="#" target="_blank">
                                         <input name="Coupon" placeholder="Enter Your Coupon">
                                         <div class="button">
-                                            <button class="btn">Apply Coupon</button>
+                                            <button class="btn">쿠폰</button>
                                         </div>
                                     </form>
                                 </div>
@@ -477,14 +479,14 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="right">
                                 <ul>
-                                    <li>Cart Subtotal<span>$2560.00</span></li>
+                                    <li>Cart Subtotal<span id="cart-subtotal"></span></li>
                                     <li>Shipping<span>Free</span></li>
-                                    <li>You Save<span>$29.00</span></li>
-                                    <li class="last">You Pay<span>$2531.00</span></li>
+                                    <li>You Save<span>50,000</span></li>
+                                    <li class="last">You Pay<span  id="you-pay2"></span></li>
                                 </ul>
                                 <div class="button">
-                                    <a href="checkout" class="btn">Checkout</a>
-                                    <a href="/product/product-grids" class="btn btn-alt">Continue shopping</a>
+                                    <a href="checkout" class="btn">결제</a>
+                                    <a href="/product/product-grids" class="btn btn-alt">쇼핑 계속하기</a>
                                 </div>
                             </div>
                         </div>
@@ -494,6 +496,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <!--/ End Shopping Cart -->
 
@@ -654,6 +657,37 @@
 <script src="/assets/js/tiny-slider.js"></script>
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(function(element) {
+
+              let priceText = element.innerText; // 표시된 텍스트를 가져옴
+                          console.log('priceText:', priceText); // 로그로 data-price 확인
+             // ₩ 및 , 제거하고 숫자로 변환
+            let price = parseFloat(priceText.replace(/₩|,/g, ''));
+            console.log('Parsed price:', price); // 로그로 파싱된 값 확인
+            // price가 NaN인지 확인하여 0으로 대체
+            if (isNaN(price)) {
+                price = 0;
+            }
+            total += price;
+        });
+        console.log('Total:', total); // 로그로 합산된 total 확인
+
+        // Cart Subtotal과 You Pay에 합산된 값 표시
+        document.getElementById('cart-subtotal').innerText = new Intl.NumberFormat('ko-KR', {
+            style: 'currency',
+            currency: 'KRW'
+        }).format(total);
+
+        document.getElementById('you-pay', 'you-pay2').innerText = new Intl.NumberFormat('ko-KR', {
+            style: 'currency',
+            currency: 'KRW'
+        }).format(total - 50000); // You Save 금액을 뺀 후 금액 (예제에서 임의로 50,000원을 뺌)
+    });
+</script>
+
 </body>
 
 </html>

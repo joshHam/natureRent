@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.natureRent.dto.PageResultDTO;
-import org.zerock.natureRent.dto.ProductDTO;
-import org.zerock.natureRent.dto.PageRequestDTO;
-import org.zerock.natureRent.dto.RentalDTO;
+import org.zerock.natureRent.dto.*;
 import org.zerock.natureRent.entity.Blog;
+import org.zerock.natureRent.entity.Member;
 import org.zerock.natureRent.entity.Product;
+import org.zerock.natureRent.security.dto.MemberDTO;
+import org.zerock.natureRent.service.CartService;
 import org.zerock.natureRent.service.ProductService;
 import org.zerock.natureRent.service.RentalService;
 
@@ -33,12 +34,8 @@ public class ProductController {
 
     private final ProductService productService; //final
     private final RentalService rentalService;
+    private final CartService cartService;
 
-//    @Autowired
-//    public ProductController(ProductService productService, RentalService rentalService) {
-//        this.productService = productService;
-//        this.rentalService = rentalService;
-//    }
 
     @GetMapping("/register")
     public void register(){
@@ -48,26 +45,6 @@ public class ProductController {
     public void test(){
 
     }
-
-//    @GetMapping("/registerOld")
-//    public void registerOld(){
-//
-//    }
-//    @PostMapping("/registerOld")
-//    public String registerOld(@ModelAttribute ProductDTO productDTO, RedirectAttributes redirectAttributes){
-//        log.info("productDTO: " + productDTO);
-//
-//        // Price 값이 제대로 설정되었는지 확인
-//        if (productDTO.getPrice() == null) {
-//            // 오류 처리 로직 추가
-//        }
-//
-//        Long mno = productService.register(productDTO);
-//
-//        redirectAttributes.addFlashAttribute("msg", mno);
-//
-//        return "redirect:/product/registerOld";
-//    }
 
 
     @PostMapping("/register")
@@ -109,7 +86,14 @@ public class ProductController {
 
     /*============================================================================*/
     @GetMapping("/product-details")
-    public void read(@RequestParam("mno") long mno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
+    public void read(@RequestParam("mno") long mno,
+                     @ModelAttribute("requestDTO") PageRequestDTO requestDTO,
+                     Model model,
+                     @AuthenticationPrincipal MemberDTO authMember ){
+
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
 
         log.info("mno: " + mno);
 
@@ -139,62 +123,39 @@ public class ProductController {
                 .stream()
                 .map(LocalDateTime::toString)
                 .collect(Collectors.toList()));
-//        model.addAttribute("dto", productDTO);
-//        model.addAttribute("rentedDates", rentedDates);
-
-//    log.info("exProductDetails..........");
-//    if (mno == null) {
-//        log.warn("mno parameter is missing");
-//        return "redirect:/error"; // 매개변수가 없을 때 예외 처리
-//    }
-//
-//    ProductDTO productDTO = productService.getProduct(mno);
-//    if (productDTO == null) {
-//        log.warn("Product not found with mno: " + mno);
-//        return "redirect:/error"; // 예외 처리
-//    }
-//    log.info("ProductDTO: " + productDTO);
-//    model.addAttribute("dto", productDTO);
-//    return "main/product-details";
 
     }
 
     @GetMapping("/product-list")
-    public String ProductList(PageRequestDTO pageRequestDTO, Model model) {
+    public String ProductList(PageRequestDTO pageRequestDTO, Model model, @AuthenticationPrincipal MemberDTO authMember) {
 
         log.info("pageRequestDTO: " + pageRequestDTO);
 
 
         model.addAttribute("result", productService.getList(pageRequestDTO));
 
-
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return "/product/product-list"; // 명시적으로 뷰 이름을 반환
     }
 
     @GetMapping("/product-grids")
-    public String ProductGrids(PageRequestDTO pageRequestDTO, Model model) {
+    public String ProductGrids(PageRequestDTO pageRequestDTO, Model model, @AuthenticationPrincipal MemberDTO authMember) {
 
         log.info("pageRequestDTO: " + pageRequestDTO);
 
         // 페이지 사이즈를 9로 설정
         pageRequestDTO.setSize(9);
 
-        // Pageable 객체를 PageRequestDTO에서 가져옴
-//        Pageable pageable = pageRequestDTO.getPageable(Sort.by("mno").descending());
-
-//        // PageResultDTO로 Product 엔티티를 가져오는 서비스 메서드 호출
-//        PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
-
-//        // Page 객체로 Blog 엔티티를 가져오는 서비스 메서드 호출
-//        Page<Blog> result = productService.findAllBlogs(pageable); // pageable을 사용하여 페이징 처리
-
-
         PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
 
 
         model.addAttribute("result", productService.getList(pageRequestDTO));
 
-
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return "/product/product-grids"; // 명시적으로 뷰 이름을 반환
     }
 

@@ -1,66 +1,34 @@
-//@Service
-//@Log4j2
-//@RequiredArgsConstructor
-//public class ReviewServiceImpl implements ReviewService {
+//default ProductDTO entitiesToDTO(Product product, List<ProductImage> productImages, Double avg, Long reviewCnt) {
+//    log.info("Converting entities to DTO for product: {}", product.getMno());
 //
-//    private final ReviewRepository reviewRepository;
+//    ProductDTO productDTO = ProductDTO.builder()
+//            .mno(product.getMno())
+//            .title(product.getTitle())
+//            .regDate(product.getRegDate())
+//            .modDate(product.getModDate())
+//            .avg((avg != null) ? avg : 0.0)
+//            .isAvailable(product.isAvailable())
+//            .reviewCnt((reviewCnt != null) ? reviewCnt.intValue() : 0)
+//            .price(product.getPrice())
+//            .build();
 //
-//    @Override
-//    public List<ReviewDTO> getListOfProduct(Long mno){
-//        Product product = Product.builder().mno(mno).build();
-//        List<Review> result = reviewRepository.findByProduct(product);
-//        return result.stream().map(this::entityToDto).collect(Collectors.toList());
+//    List<ProductImageDTO> productImageDTOList = productImages.stream().map(productImage -> {
+//        log.info("Converting ProductImage to ProductImageDTO: UUID = {}, Path = {}", productImage.getUuid(), productImage.getPath());
+//        return ProductImageDTO.builder()
+//                .imgName(productImage.getImgName())
+//                .path(productImage.getPath())
+//                .uuid(productImage.getUuid())
+//                .build();
+//    }).collect(Collectors.toList());
+//
+//    productDTO.setImageDTOList(productImageDTOList);
+//
+//    // 최종적으로 DTO에 이미지가 잘 설정되었는지 확인
+//    if (productDTO.getImageDTOList().isEmpty()) {
+//        log.warn("ImageDTOList is empty after conversion for product: {}", product.getMno());
+//    } else {
+//        log.info("ImageDTOList size after conversion: {}", productDTO.getImageDTOList().size());
 //    }
 //
-//    @Override
-//    public Long register(ReviewDTO productReviewDTO) {
-//        Review productReview = dtoToEntity(productReviewDTO);
-//        reviewRepository.save(productReview);
-//        return productReview.getReviewnum();
-//    }
-//
-//    @Override
-//    public void modify(ReviewDTO productReviewDTO) {
-//        Optional<Review> result = reviewRepository.findById(productReviewDTO.getReviewnum());
-//        result.ifPresent(productReview -> {
-//            productReview.changeGrade(productReviewDTO.getGrade());
-//            productReview.changeText(productReviewDTO.getText());
-//            reviewRepository.save(productReview);
-//        });
-//    }
-//
-//    @Override
-//    public void remove(Long reviewnum) {
-//        reviewRepository.deleteById(reviewnum);
-//    }
-//
-//    @Override
-//    public List<ReviewDTO> getListOfBlog(Long bno) {
-//        Blog blog = Blog.builder().bno(bno).build();
-//        List<Review> result = reviewRepository.findByBlogBno(bno);
-//        return result.stream().map(this::entityToDto).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public Long registerBlogReview(ReviewDTO blogReviewDTO) {
-//        Review blogReview = dtoToEntity(blogReviewDTO);
-//        reviewRepository.save(blogReview);
-//        return blogReview.getReviewnum();
-//    }
-//
-//    @Override
-//    public void modifyBlogReview(ReviewDTO blogReviewDTO) {
-//        Optional<Review> result = reviewRepository.findById(blogReviewDTO.getReviewnum());
-//        result.ifPresent(blogReview -> {
-//            blogReview.changeGrade(blogReviewDTO.getGrade());
-//            blogReview.changeText(blogReviewDTO.getText());
-//            reviewRepository.save(blogReview);
-//        });
-//    }
-//
-//    @Override
-//    public void removeBlogReview(Long reviewnum) {
-//        reviewRepository.deleteById(reviewnum);
-//    }
+//    return productDTO;
 //}
-//

@@ -187,7 +187,7 @@
                                 <div class="shopping-item">
                                     <div class="dropdown-cart-header">
                                         <span>2 Items</span>
-                                        <a href="cart">View Cart</a>
+                                        <a href="/main/cart/items">View Cart</a>
                                     </div>
                                     <ul class="shopping-list">
                                         <li>
@@ -666,6 +666,38 @@
 <script src="/assets/js/tiny-slider.js"></script>
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
-</body>
+<script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+              let total = 0;
+              document.querySelectorAll('.subtotal').forEach(function(element) {
+      console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
+                    let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
+                                console.log('priceText:', priceText); // 로그로 data-price 확인
+                   // ₩ 및 , 제거하고 숫자로 변환
+                  let price = parseFloat(priceText.replace(/₩|,/g, ''));
+                  console.log('Parsed price:', price); // 로그로 파싱된 값 확인
+                  // price가 NaN인지 확인하여 0으로 대체
+                  if (isNaN(price)) {
+                      price = 0;
+                  }
+                  total += price;
+              });
+              console.log('Total:', total); // 로그로 합산된 total 확인
+
+
+  let youPayElement = document.getElementById('you-pay');
+        if (youPayElement) {
+            youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(total - 50000);
+        } else {
+            console.error("Element with id 'you-pay' not found.");
+        }
+    }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에
+             //you-pay 요소를 제대로 찾을 수 있게
+
+
+    </script></body>
 
 </html>

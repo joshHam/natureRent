@@ -52,10 +52,14 @@ public class MainController {
     }
 
     @GetMapping("/all")
-    public String exAll(Model model, PageRequestDTO pageRequestDTO){
+    public String exAll(Model model, PageRequestDTO pageRequestDTO,@AuthenticationPrincipal MemberDTO authMember){
         log.info("exAll..........");
         PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
         model.addAttribute("result", result);
+
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
 
         return "main/all";
     }
@@ -157,6 +161,7 @@ public class MainController {
     @GetMapping("/cart/items")
     public String getCartList(Model model, @AuthenticationPrincipal MemberDTO authMember) {
         log.info("Entering getCartList method"); // 메서드 진입 확인
+//        PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
 
         // 현재 로그인한 사용자 가져오기
         if (authMember == null) {
@@ -189,6 +194,12 @@ public class MainController {
                             cart.getProductDTO().getImageDTOList().forEach(imageDTO -> {
                                 log.info("Image Thumbnail URL: {}", imageDTO.getThumbnailURL());
                             });
+                        // 이제 CartDTO에서 imageDTOList를 직접 사용
+//                        if (cart.getImageDTOList() != null && !cart.getImageDTOList().isEmpty()) {
+//                            log.info("Number of images in cart item: {}", cart.getImageDTOList().size());
+//                            cart.getImageDTOList().forEach(imageDTO -> {
+//                                log.info("Image Thumbnail URL: {}", imageDTO.getThumbnailURL());
+//                            });
                         } else {
                             log.warn("Image list is null or empty for product: {}", cart.getProductDTO().getMno());
                         }
@@ -198,19 +209,6 @@ public class MainController {
                 });
 
             }
-//            // DTO 리스트로 변환
-//            List<CartDTO> cartDTOList = cartList.stream().map(cart -> {
-//                // 상품 DTO 가져오기
-//                ProductDTO productDTO = productService.getProduct(cart.getProduct().getMno());
-//                // CartDTO 빌드
-//                return CartDTO.builder()
-//                        .productDTO(productDTO)
-//                        .quantity(cart.getQuantity())
-//                        .build();
-//            }).collect(Collectors.toList());
-//
-//            log.info("Number of cart items found: {}", cartDTOList.size());
-//
 
             // 모델에 Cart 리스트 추가
             model.addAttribute("cartList", cartList);
@@ -221,7 +219,19 @@ public class MainController {
         return "main/cart";// cart.html로 렌더링
     }
 
+    //일반적으로 HTTP GET 요청은 데이터를 삭제하는 데 사용하지 않는 것이 RESTful 원칙에 맞아
+    @PostMapping("/cart/remove")
+    public String removeItem(@RequestParam("cno") Long cno) {
+        cartService.removeItem(cno);
+        return "redirect:/main/cart/items";  // 장바구니 페이지로 리다이렉트
+    }
 
+
+//    @GetMapping("/remove")
+//    public String removeItem(@RequestParam("cno") Long cno) {
+//        cartService.removeItem(cno);
+//        return "redirect:/cart";  // 장바구니 페이지로 리다이렉트
+//    }
 
 
 

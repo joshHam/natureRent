@@ -12,5 +12,5 @@ public interface CartService {
 
     List<CartDTO> getCartList(String memberEmail); // 회원 이메일을 통해 카트 리스트를 가져오는 메서드
     CartDTO entityToDTO(Cart cart); // Cart 엔티티를 CartDTO로 변환하는 메서드
-
+    void removeItem(Long cno);
 }
