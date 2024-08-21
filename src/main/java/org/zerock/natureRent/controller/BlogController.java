@@ -136,7 +136,7 @@ public class BlogController {
 
 //    @GetMapping("{id}"
 @GetMapping("{id:[0-9]+}")
-public String getBlogById(@PathVariable Long id, Model model) {
+public String getBlogById(@PathVariable Long id, Model model, @AuthenticationPrincipal MemberDTO authMember) {
 //        Blog blog = blogService.findBlogById(id);
     // ID에 해당하는 블로그와 관련된 이미지 데이터를 포함한 DTO를 가져온다.
     BlogDTO blogDTO = blogService.getBlogWithImages(id);
@@ -159,6 +159,11 @@ public String getBlogById(@PathVariable Long id, Model model) {
     // 모델에 블로그 데이터와 포맷된 날짜를 추가
         model.addAttribute("blogDTO", blogDTO);// 여기서 blogDTO로 모델에 추가
         model.addAttribute("formattedRegDate", formattedRegDate);
+
+    Member member = authMember.getMember();
+    List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+    model.addAttribute("cartList", cartList);
+
     // 템플릿 반환
         return "blog/blog-single";
     }
@@ -275,9 +280,16 @@ public String getBlogById(@PathVariable Long id, Model model) {
         return "blog/blog-single";
     }
 
+
     @GetMapping("blog-single-sidebar")
-    public String exBlogSingleSidebar() {
+    public String exBlogSingleSidebar(Model model,
+                                      @AuthenticationPrincipal MemberDTO authMember) {
         log.info("exBlogSingleSidebar..........");
+
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
+
         return "blog/blog-single-sidebar"; // 명시적으로 뷰 이름을 반환
     }
 

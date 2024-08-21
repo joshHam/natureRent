@@ -96,7 +96,6 @@ public class MainController {
     public String exCheckOut(){
         log.info("exCheckOut..........");
         return "/main/checkout"; // 명시적으로 뷰 이름을 반환
-
     }
 
     @GetMapping("faq")
@@ -154,6 +153,7 @@ public class MainController {
 
         cartRepository.save(cart);
 
+//        return "/product/product-grids";
         return ResponseEntity.ok("Item added to cart successfully.");
     }
 

@@ -21,16 +21,32 @@ public class MemberController {
 
     private final ClubUserDetailsService memberService;
     private final CartService cartService;
-    @GetMapping("/register")
-    public String registerForm() {
-        return "register";
-    }
 
+//    @GetMapping("/register")
+//    public String register() {
+//        return "register";
+//    }
+@GetMapping("/register")
+public String register(@AuthenticationPrincipal MemberDTO authMember, Model model) {
+    if (authMember != null) {
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail());
+        model.addAttribute("cartList", cartList);
+    }
+    return "register";
+}
+
+
+
+//    @GetMapping("/register")
     @PostMapping("/register")
-    public String register(MemberDTO memberDTO, @AuthenticationPrincipal MemberDTO authMember, Model model) {
+    public String register(MemberDTO memberDTO,
+                           @AuthenticationPrincipal MemberDTO authMember,
+                           Model model) {
         memberService.register(memberDTO);
         Member member = authMember.getMember();
         List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+
         model.addAttribute("cartList", cartList);
         return "redirect:/login"; // 회원가입 후 로그인 페이지로 리다이렉트
     }

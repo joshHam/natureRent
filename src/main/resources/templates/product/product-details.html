@@ -212,7 +212,7 @@
                                         <div class="dropdown-cart-header">
                                             <!-- cartList의 크기를 동적으로 표시 -->
                                             <span th:text="${cartList.size()} + ' Items'">0 Items</span>
-                                            <a href="/cart/items">View Cart
+                                            <a href="/main/cart/items">View Cart
                                         </div>
                                         <ul class="shopping-list">
                                             <!-- cartList의 각 항목을 반복 -->
@@ -438,7 +438,7 @@
                                 <h2 class="title">[[${dto.title}]]</h2>
                             <p class="category"><i class="lni lni-tag"></i> Drones:<a href="javascript:void(0)">Action
                                     cameras</a></p>
-                            <h3 class="price">[[${dto.price}]]₩<span>945₩</span></h3>
+                            <h3 class="price">[[${dto.price}]]₩<span>94500₩</span></h3>
 <!--                            <p class="info-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod-->
 <!--                                tempor incididunt-->
 <!--                                ut labore et dolore magna aliqua.</p>-->
@@ -491,6 +491,26 @@
 <!--                                            <button class="btn" style="width: 100%;">Add to Cart</button>-->
                                         </div>
                                     </div>
+
+                                    <!-- Add this in your HTML file -->
+                                    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmationModalLabel">확인</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    아이템이 추가되었습니다.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" id="modalConfirmButton">확인</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="wish-button">
                                             <button class="btn"><i class="lni lni-reload"></i> Compare</button>
@@ -1038,6 +1058,14 @@
 
         calendar.render();
 
+  // 모달이 열릴 때마다 updateSize 호출
+   // $('#calendarModal').on('shown.bs.modal', function () {
+  //      calendar.updateSize();
+   // });
+   $('#calendarModal').on('shown.bs.modal', function () {
+    calendar.updateSize();
+    });
+
             // 창 크기 조정 시 캘린더 크기 업데이트
             $(window).resize(function() {
                 calendar.updateSize();
@@ -1076,6 +1104,9 @@
         alert('Please select a valid date range.');
     }
 });
+
+
+
 
 </script>
 
