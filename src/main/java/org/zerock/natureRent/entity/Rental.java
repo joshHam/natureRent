@@ -34,4 +34,28 @@ public class Rental extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "int default 1")
     private int quantity;  // 예약된 상품 수량
+
+    @Column(nullable = false)
+    private int orderPrice;  // 예약 가격
+
+    @Column(nullable = false)
+    private String receiverName;  // 수령인 이름
+
+    @Column(nullable = false)
+    private String phoneNumber;  // 연락처
+
+    @Column(nullable = false, unique = true)
+    private String orderNumber;  // 주문 번호
+
+    @Column(nullable = false)
+    private int zipcode;  // 우편번호
+
+    @Column(nullable = false)
+    private String address;  // 주소
+
+    @Column(nullable = true)
+    private String orderRequired;  // 특별 요청사항
+
+    @Column(nullable = false)
+    private String paymentMethod;  // 결제 방식
 }

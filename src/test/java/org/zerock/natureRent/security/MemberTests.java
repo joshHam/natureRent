@@ -67,7 +67,7 @@ public class MemberTests {
     @Test
     public void testRead() {
 
-        Optional<Member> result = repository.findByEmail("user222@zerock.org", false);
+        Optional<Member> result = repository.findByEmail("user222@zerock.org");
 
         Member member = result.get();
 

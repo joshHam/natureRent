@@ -217,9 +217,13 @@
                                         <ul class="shopping-list">
                                             <!-- cartList의 각 항목을 반복 -->
                                             <li th:each="cart : ${cartList}">
-                                                <a href="javascript:void(0)" class="remove" title="Remove this item">
-                                                    <i class="lni lni-close"></i>
-                                                </a>
+<!--                                                <a href="javascript:void(0)" class="remove" title="Remove this item">-->
+<!--                                                    <i class="lni lni-close"></i>-->
+<!--                                                </a>-->
+                                                <form action="/main/cart/remove" method="post">
+                                                    <input type="hidden" name="cno" th:value="${cart.cno}">
+                                                    <button class="lni lni-close" type="submit">Remove</button>
+                                                </form>
                                                 <div class="cart-img-head">
                                                     <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}" class="cart-img">
                                                         <img th:src="@{|/display?fileName=${cart.productDTO.imageDTOList[0].getThumbnailURL()}|}"

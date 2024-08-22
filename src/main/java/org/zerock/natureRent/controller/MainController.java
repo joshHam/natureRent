@@ -1,6 +1,7 @@
 package org.zerock.natureRent.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -86,23 +87,30 @@ public class MainController {
     }
 
     @GetMapping("about-us")
-    public String exAboutUs(){
+    public String exAboutUs(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exAboutUs..........");
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return "/main/about-us"; // 명시적으로 뷰 이름을 반환
-
     }
 
     @GetMapping("checkout")
-    public String exCheckOut(){
+    public String exCheckOut(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exCheckOut..........");
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return "/main/checkout"; // 명시적으로 뷰 이름을 반환
     }
 
     @GetMapping("faq")
-    public String exFaq(){
+    public String exFaq(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exFaq..........");
+        Member member = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return "/main/faq"; // 명시적으로 뷰 이름을 반환
-
     }
 
 
@@ -123,7 +131,7 @@ public class MainController {
 
 
     @PostMapping("/cart/add")
-    public ResponseEntity<String> addToCart(
+    public String addToCart(
             @AuthenticationPrincipal MemberDTO authMember, // 로그인한 사용자 정보
             @RequestParam("productMno") Long productMno,
 //            @RequestParam("rentalReserveStartDate") LocalDateTime rentalReserveStartDate,
@@ -153,8 +161,9 @@ public class MainController {
 
         cartRepository.save(cart);
 
-//        return "/product/product-grids";
-        return ResponseEntity.ok("Item added to cart successfully.");
+//        return ResponseEntity.ok("/product/product-grids");
+        return "redirect:/product/product-grids";
+//        return ResponseEntity.ok("Item added to cart successfully.");
     }
 
 
@@ -221,17 +230,11 @@ public class MainController {
 
     //일반적으로 HTTP GET 요청은 데이터를 삭제하는 데 사용하지 않는 것이 RESTful 원칙에 맞아
     @PostMapping("/cart/remove")
-    public String removeItem(@RequestParam("cno") Long cno) {
+    public String removeItem(@RequestParam("cno") Long cno, HttpServletRequest request) {
         cartService.removeItem(cno);
-        return "redirect:/main/cart/items";  // 장바구니 페이지로 리다이렉트
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;  // 이전 페이지로 리다이렉트
     }
-
-
-//    @GetMapping("/remove")
-//    public String removeItem(@RequestParam("cno") Long cno) {
-//        cartService.removeItem(cno);
-//        return "redirect:/cart";  // 장바구니 페이지로 리다이렉트
-//    }
 
 
 

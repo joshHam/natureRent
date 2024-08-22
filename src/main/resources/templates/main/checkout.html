@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html class="no-js" lang="zxx">
 
 <head>
@@ -16,6 +16,11 @@
     <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
+
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<!--    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>-->
+    <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.7.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 
@@ -382,6 +387,29 @@
     </div>
 </div>
 <!-- End Breadcrumbs -->
+
+
+
+<div>
+    <button id="cartPay">카드 결제</button>
+    <button id="phonePay">휴대폰 결제</button>
+    <button id="kakaoPay">카카오페이 결제</button>
+</div>
+
+<div>
+    <!-- 결제 정보 입력란 (예: 수취인, 주소 등) -->
+    <input type="text" id="name" placeholder="수취인 이름">
+    <input type="text" id="phone1" placeholder="전화번호">
+    <input type="text" id="add" placeholder="우편번호">
+    <input type="text" id="add2" placeholder="주소">
+    <input type="text" id="ask" placeholder="요청사항">
+
+    <!-- 결제 금액 (예시) -->
+    <input type="hidden" id="paymentPrice" value="1">
+</div>
+
+<button id="pay__do">결제하기</button>
+
 
 <!--====== Checkout Form Steps Part Start ======-->
 
@@ -883,6 +911,13 @@
 </footer>
 <!--/ End Footer Area -->
 
+
+
+
+
+
+
+
 <!-- ========================= scroll-top ========================= -->
 <a href="#" class="scroll-top">
     <i class="lni lni-chevron-up"></i>
@@ -894,36 +929,172 @@
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
 <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-              let total = 0;
-              document.querySelectorAll('.subtotal').forEach(function(element) {
-      console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
-                    let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
-                                console.log('priceText:', priceText); // 로그로 data-price 확인
-                   // ₩ 및 , 제거하고 숫자로 변환
-                  let price = parseFloat(priceText.replace(/₩|,/g, ''));
-                  console.log('Parsed price:', price); // 로그로 파싱된 값 확인
-                  // price가 NaN인지 확인하여 0으로 대체
-                  if (isNaN(price)) {
-                      price = 0;
-                  }
-                  total += price;
-              });
-              console.log('Total:', total); // 로그로 합산된 total 확인
 
 
-  let youPayElement = document.getElementById('you-pay');
-        if (youPayElement) {
-            youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
-                style: 'currency',
-                currency: 'KRW'
-            }).format(total - 50000);
-        } else {
-            console.error("Element with id 'you-pay' not found.");
+    $(document).ready(function() {
+        //$(() =>{
+        let pg = "";
+        let payMethod = "";
+
+        $('#cartPay').on("click", () => {
+            pg = "kcp";
+            payMethod = "card";
+        });
+
+        $('#phonePay').on("click", () => {
+            pg = "danal";
+            payMethod = "MOBILE";
+        });
+
+        $('#kakaoPay').on("click", () => {
+            pg = "kakaopay";
+            payMethod = "card";
+        });
+
+        $(document).on("click", "#pay__do", () => {
+            let name = $("#orderProductNames").text();
+
+            let orders = [];
+            const orderNumber = createOrderNum();
+
+            $('.orderProductPrice').each((i, e) => {
+                let order = {};
+
+                const price = parseInt($(e).text().replace(/[^0-9]/g, ''));
+                let discountRate = parseInt($('.orderProductDiscount').eq(i).text().replace(/[^0-9]/g, ''));
+
+                if (!discountRate) {
+                    discountRate = 0;
+                }
+
+                order.productId = $(".td_wrap").eq(i).data("order-product-id");
+                order.orderPrice = price - (price * (discountRate / 100));
+                order.orderCount = parseInt($('.orderProductCount').eq(i).text().replace(/[^0-9]/g, ''));
+                order.receiverName = $("#name").val();
+                order.phoneNumber = $("#phone1").val();
+                order.orderNumber = orderNumber;
+                order.zipcode = parseInt($("#add").val());
+                order.address = $("#add2").val();
+                order.orderRequired = $("#ask").val();
+                order.paymentMethod = payMethod;
+                orders.push(order);
+            });
+
+            // iamport 초기화 및 결제 요청
+            IMP.init('imp24180825');// 실제 가맹점 식별코드로 교체
+            IMP.request_pay({
+                pg: pg,
+                pay_method : payMethod, // 결제 방법
+                merchant_uid : orderNumber, // 주문 번호
+                name : "상품1", // 상품 이름
+                amount: $("#paymentPrice").val(), // 결제 가격
+                buyer_name : $('#name').val(),
+                buyer_tel : $('#phone1').val(),
+                buyer_postcode : $('#add').val(),
+                buyer_addr : $('#add2').val()
+            }, function(rsp) {
+                if (rsp.success) {
+                    axios({
+                        method: "post",
+                        url: `/payment/validation/${rsp.imp_uid}`
+                    }).then(res => {
+                        if ($("#paymentPrice").val() == res.data.response.amount) {
+                            axios({
+                                url: "/order/payment",
+                                method: "post",
+                                data: orders,
+                                dataType: "json",
+                                headers: {'Content-Type': 'application/json'}
+                            }).then(res => {
+                                let productIds = orders.map(order => order.productId);
+                                axios({
+                                    url: `/cart/delete/pay/success`,
+                                    method: "post",
+                                    data: {
+                                        userIdNo: res.data,
+                                        productIds: productIds
+                                    }
+                                });
+                                let msg = '결제가 완료되었습니다.';
+                                msg += '고유ID : ' + rsp.imp_uid;
+                                msg += '상점 거래ID : ' + rsp.merchant_uid;
+                                msg += '결제 금액 : ' + rsp.paid_amount;
+                                msg += '카드 승인번호 : ' + rsp.apply_num;
+                                alert(msg);
+                            }).catch(error => {
+                                alert("주문정보 저장을 실패 했습니다.");
+                            });
+                        }
+                    }).catch(error => {
+                        alert('결제에 실패하였습니다. ' + rsp.error_msg);
+                    });
+                } else {
+                    alert(rsp.error_msg);
+                }
+            });
+        });
+
+    // 주문번호 생성 함수
+    function createOrderNum() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        let orderNum = year + month + day;
+        for (let i = 0; i < 5; i++) {
+            orderNum += Math.floor(Math.random() * 8);
         }
-    }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에
-             //you-pay 요소를 제대로 찾을 수 있게
+        return parseInt(orderNum);
+    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ///////////////////////////////////////
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                  let total = 0;
+                  document.querySelectorAll('.subtotal').forEach(function(element) {
+          console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
+                        let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
+                                    console.log('priceText:', priceText); // 로그로 data-price 확인
+                       // ₩ 및 , 제거하고 숫자로 변환
+                      let price = parseFloat(priceText.replace(/₩|,/g, ''));
+                      console.log('Parsed price:', price); // 로그로 파싱된 값 확인
+                      // price가 NaN인지 확인하여 0으로 대체
+                      if (isNaN(price)) {
+                          price = 0;
+                      }
+                      total += price;
+                  });
+                  console.log('Total:', total); // 로그로 합산된 total 확인
+
+
+      let youPayElement = document.getElementById('you-pay');
+            if (youPayElement) {
+                youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
+                    style: 'currency',
+                    currency: 'KRW'
+                }).format(total - 50000);
+            } else {
+                console.error("Element with id 'you-pay' not found.");
+            }
+        }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에
+                 //you-pay 요소를 제대로 찾을 수 있게
+});
 
     </script></body>
 

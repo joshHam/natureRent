@@ -1,6 +1,6 @@
 package org.zerock.natureRent.service;
 
-import org.zerock.natureRent.dto.RentalDTO;
+import org.zerock.natureRent.dto.RentalSaveDTO;
 import org.zerock.natureRent.entity.Rental;
 
 import java.time.LocalDateTime;
@@ -9,13 +9,13 @@ import java.util.List;
 public interface RentalService {
 
 
-    Long registerRental(RentalDTO rentalDTO);
+    Long registerRental(RentalSaveDTO rentalSaveDTO);
 
 //    List<RentalDTO> getRentalsByProductId(Long mno);
     List<LocalDateTime> getRentedDatesByProductId(Long mno);
 
-    default RentalDTO entityToDTO(Rental rental){
-        return RentalDTO.builder()
+    default RentalSaveDTO entityToDTO(Rental rental){
+        return RentalSaveDTO.builder()
 //                .rentalId(rental.getRentalId())
 //                .productMno(rental.getProduct().getMno())
                 .rno(rental.getRno())
@@ -26,12 +26,12 @@ public interface RentalService {
                 .build();
     }
 
-    default Rental dtoToEntity(RentalDTO rentalDTO){
+    default Rental dtoToEntity(RentalSaveDTO rentalSaveDTO){
         return Rental.builder()
-                .rno(rentalDTO.getRno())
-                .rentalStartDate(rentalDTO.getRentalStartDate())
-                .rentalEndDate(rentalDTO.getRentalEndDate())
-                .quantity(rentalDTO.getQuantity())
+                .rno(rentalSaveDTO.getRno())
+                .rentalStartDate(rentalSaveDTO.getRentalStartDate())
+                .rentalEndDate(rentalSaveDTO.getRentalEndDate())
+                .quantity(rentalSaveDTO.getQuantity())
                 .build();
     }
 }

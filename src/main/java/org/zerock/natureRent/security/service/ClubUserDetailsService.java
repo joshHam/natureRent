@@ -31,7 +31,7 @@ public class ClubUserDetailsService implements UserDetailsService {
 
         log.info("ClubUserDetailsService loadUserByUsername " + username);
 
-        Optional<Member> result = memberRepository.findByEmail(username, false);
+        Optional<Member> result = memberRepository.findByEmail(username,false);
 //        Optional<Member> result = memberRepository.findByEmailAndFromSocial(username, false);
 
         if(result.isEmpty()){
