@@ -22,7 +22,11 @@ import org.zerock.natureRent.service.PaymentService;
 import org.zerock.natureRent.service.RefundService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -42,13 +46,59 @@ public class PaymentController {
     public void init() {
         this.iamportClient = new IamportClient(apiKey, secretKey);
     }
+
     @PostMapping("/order/payment")
-    public ResponseEntity<String> paymentComplete(@AuthenticationPrincipal MemberDTO authMember/*@Login SessionUser sessionUser*/, @RequestBody List<RentalSaveDTO> orderSaveDtos) throws IOException {
-        String orderNumber = String.valueOf(orderSaveDtos.get(0).getOrderNumber());
+    public ResponseEntity<String> paymentComplete(@AuthenticationPrincipal MemberDTO authMember/*@Login SessionUser sessionUser*/, @RequestBody List<Map<String, Object>> orderSaveDtos) throws IOException {
+        if (orderSaveDtos == null || orderSaveDtos.isEmpty()) {
+            return new ResponseEntity<>("주문 정보가 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+        log.info("orderSaveDtos size: {}", orderSaveDtos.size());
+
+
+
+        List<RentalSaveDTO> rentals = new ArrayList<>();
+
+        for (Map<String, Object> orderMap : orderSaveDtos) {
+            RentalSaveDTO dto = new RentalSaveDTO();
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+            // Map에서 productId 값을 가져와 mno로 설정
+            dto.setMno(Long.valueOf(orderMap.get("productId").toString()));
+            dto.setOrderPrice((Integer) orderMap.get("orderPrice"));
+            dto.setQuantity((Integer) orderMap.get("orderCount"));
+            dto.setReceiverName(orderMap.get("receiverName").toString());
+            dto.setPhoneNumber(orderMap.get("phoneNumber").toString());
+            dto.setOrderNumber(orderMap.get("orderNumber").toString());
+            dto.setZipcode((Integer) orderMap.get("zipcode"));
+            dto.setAddress(orderMap.get("address").toString());
+            dto.setOrderRequired(orderMap.get("orderRequired").toString());
+            dto.setPaymentMethod(orderMap.get("paymentMethod").toString());
+            dto.setRentalStartDate(LocalDateTime.parse(orderMap.get("rentalStartDate").toString(), formatter));
+            dto.setRentalEndDate(LocalDateTime.parse(orderMap.get("rentalEndDate").toString(), formatter));            rentals.add(dto);
+        }
+
+
+
+
+
+
+
+
+
+
+//        for (Map<String, Object> orderMap : orderSaveDtos) {
+//            if (orderMap.getMno() == null) {
+//                log.error("Product ID must not be null or empty");
+//                return new ResponseEntity<>("Product ID가 비어 있습니다.", HttpStatus.BAD_REQUEST);
+//            }
+//        }
+
+        String orderNumber = String.valueOf(rentals.get(0).getOrderNumber());
         try {
             Member member = authMember.getMember();
 //            Long userId = sessionUser.getUserIdNo();
-            paymentService.saveRental(member.getEmail(), orderSaveDtos);
+            paymentService.saveRental(member.getEmail(), rentals);
             log.info("결제 성공 : 주문 번호 {}", orderNumber);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {

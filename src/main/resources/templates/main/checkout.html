@@ -220,6 +220,14 @@
 <!--                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
                                                     <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>
                                                     </p>
+                                                    <div class="td_wrap" th:data-order-product-id="${cart.productDTO.mno}">
+                                                        <!-- 상품 정보 -->
+                                                        <span class="orderProductPrice" th:text="${cart.totalPrice}"></span>
+                                                        <span class="orderProductDiscount">10</span>
+                                                        <span class="orderProductCount" th:text="${cart.quantity}"></span>
+                                                        <span id="rentalStartDate" class="rentalStartDate" th:text="${cart.rentalStartDate}"></span>
+                                                        <span id="rentalEndDate" class="rentalEndDate" th:text="${cart.rentalEndDate}"></span>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -952,33 +960,42 @@
         });
 
         $(document).on("click", "#pay__do", () => {
+          console.log("버튼이 클릭되었습니다.");
             let name = $("#orderProductNames").text();
 
             let orders = [];
-            const orderNumber = createOrderNum();
+            const orderNumber = createOrderNum();// 동일한 주문번호
 
-            $('.orderProductPrice').each((i, e) => {
+           // $('.orderProductPrice').each((i, e) => {
+             $('.td_wrap').each((i, e) => {
                 let order = {};
 
-                const price = parseInt($(e).text().replace(/[^0-9]/g, ''));
+                const price = parseInt($(e).find('.orderProductPrice').text().replace(/[^0-9]/g, ''));
                 let discountRate = parseInt($('.orderProductDiscount').eq(i).text().replace(/[^0-9]/g, ''));
 
                 if (!discountRate) {
                     discountRate = 0;
                 }
 
-                order.productId = $(".td_wrap").eq(i).data("order-product-id");
+                //order.productId = $(".td_wrap").eq(i).data("order-product-id");
+                order.productId = $(e).data("order-product-id");  // // 상품 ID (mno)
                 order.orderPrice = price - (price * (discountRate / 100));
-                order.orderCount = parseInt($('.orderProductCount').eq(i).text().replace(/[^0-9]/g, ''));
-                order.receiverName = $("#name").val();
+               // order.orderCount = parseInt($('.orderProductCount').eq(i).text().replace(/[^0-9]/g, ''));
+                order.orderCount = parseInt($(e).find('.orderProductCount').text().replace(/[^0-9]/g, ''));
+                order.receiverName = $("#name").val();  // 결제창에서 입력된 정보
                 order.phoneNumber = $("#phone1").val();
-                order.orderNumber = orderNumber;
+                order.orderNumber = orderNumber;  // 모든 상품에 동일한 주문번호
                 order.zipcode = parseInt($("#add").val());
                 order.address = $("#add2").val();
                 order.orderRequired = $("#ask").val();
                 order.paymentMethod = payMethod;
+                order.rentalStartDate = $(e).find('.rentalStartDate').text(); // 각 td_wrap 내에서 찾기
+                order.rentalEndDate = $(e).find('.rentalEndDate').text();
                 orders.push(order);
+
             });
+                    console.log(orders); // orders 배열의 내용을 출력
+                    console.log(JSON.stringify(orders));
 
             // iamport 초기화 및 결제 요청
             IMP.init('imp24180825');// 실제 가맹점 식별코드로 교체
@@ -1006,6 +1023,7 @@
                                 dataType: "json",
                                 headers: {'Content-Type': 'application/json'}
                             }).then(res => {
+                            console.log("응답 성공", res);
                                 let productIds = orders.map(order => order.productId);
                                 axios({
                                     url: `/cart/delete/pay/success`,
@@ -1015,12 +1033,14 @@
                                         productIds: productIds
                                     }
                                 });
-                                let msg = '결제가 완료되었습니다.';
-                                msg += '고유ID : ' + rsp.imp_uid;
-                                msg += '상점 거래ID : ' + rsp.merchant_uid;
-                                msg += '결제 금액 : ' + rsp.paid_amount;
-                                msg += '카드 승인번호 : ' + rsp.apply_num;
-                                alert(msg);
+                              let msg = '결제가 완료되었습니다.\n';
+                             // msg += '고유ID : ' + rsp.imp_uid + '\n';
+                             msg += '결제상점 : 네이쳐렌트 \n';
+                            //  msg += '상점 거래ID : ' + rsp.merchant_uid + '\n';
+                             msg += '해당 결제ID : ' + rsp.merchant_uid + '\n';
+                              msg += '결제 금액 : ' + rsp.paid_amount + '\n';
+                              msg += '카드 승인번호 : ' + rsp.apply_num;
+                              alert(msg);
                             }).catch(error => {
                                 alert("주문정보 저장을 실패 했습니다.");
                             });

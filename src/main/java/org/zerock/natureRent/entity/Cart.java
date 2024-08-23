@@ -29,6 +29,7 @@ public class Cart extends BaseEntity {
     @JoinColumn(name = "product_mno")
     private Product product;
 
+
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<ProductImage> productImages = new ArrayList<>();
 

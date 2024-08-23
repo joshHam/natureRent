@@ -44,7 +44,7 @@ public class Rental extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;  // 연락처
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String orderNumber;  // 주문 번호
 
     @Column(nullable = false)

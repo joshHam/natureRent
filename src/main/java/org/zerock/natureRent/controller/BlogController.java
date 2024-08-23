@@ -59,15 +59,15 @@ public class BlogController {
     }
 
 ////    @PreAuthorize("hasRole('ROLE_USER')")
-//    @PostMapping("blog-write")
-//    public String writeBlog(Blog blog, @AuthenticationPrincipal MemberDTO memberDTO) {
-//        if (memberDTO == null || memberDTO.getEmail() == null) {
-//            throw new IllegalArgumentException("User is not authenticated or email is null");
-//        }
-//
-//        // 이메일을 이용해 Member를 데이터베이스에서 찾기
-//        Member member = memberRepository.findById(memberDTO.getEmail())
-//                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+////    @PostMapping("blog-write")
+////    public String writeBlog(Blog blog, @AuthenticationPrincipal MemberDTO memberDTO) {
+////        if (memberDTO == null || memberDTO.getEmail() == null) {
+////            throw new IllegalArgumentException("User is not authenticated or email is null");
+////        }
+////
+////        // 이메일을 이용해 Member를 데이터베이스에서 찾기
+////        Member member = memberRepository.findById(memberDTO.getEmail())
+////                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 //
 ////        Member member = Member.builder().email(memberDTO.getEmail()).build();
 ////        // Member 저장 (DB에 저장되지 않은 경우)
@@ -82,7 +82,11 @@ public class BlogController {
 
 
     @GetMapping("blog-write2")
-    public String showBlogWriteForm2() {
+    public String showBlogWriteForm2(Model model,
+                                     @AuthenticationPrincipal MemberDTO authMember) {
+        Member member2 = authMember.getMember();
+        List<CartDTO> cartList = cartService.getCartList(member2.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+        model.addAttribute("cartList", cartList);
         return "blog/blog-write2";
     }
     @PostMapping("blog-write2")
