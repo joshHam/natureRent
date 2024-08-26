@@ -166,64 +166,75 @@
                             </h3>
                         </div>
                         <div class="navbar-cart">
-                            <div class="wishlist">
-                                <a href="javascript:void(0)">
-                                    <i class="lni lni-heart"></i>
-                                    <span class="total-items">0</span>
-                                </a>
-                            </div>
-                            <div class="cart-items">
-                                <a href="javascript:void(0)" class="main-btn">
-                                    <i class="lni lni-cart"></i>
-                                    <span class="total-items">2</span>
-                                </a>
-                                <!-- Shopping Item -->
-                                <div class="shopping-item">
-                                    <div class="dropdown-cart-header">
-                                        <span>2 Items</span>
-                                        <a href="/main/cart/items">View Cart</a>
+                                <div sec:authorize="isAuthenticated()">
+                                    <div class="wishlist">
+                                        <a href="javascript:void(0)">
+                                            <i class="lni lni-heart"></i>
+                                            <span class="total-items">0</span>
+                                        </a>
                                     </div>
-                                    <ul class="shopping-list">
-                                        <li>
-                                            <a href="javascript:void(0)" class="remove" title="Remove this item"><i
-                                                    class="lni lni-close"></i></a>
-                                            <div class="cart-img-head">
-                                                <a class="cart-img" href="../product/product-details"><img
-                                                        src="/assets/images/header/cart-items/item1.jpg" alt="#"></a>
-                                            </div>
+                                <div class="cart-items">
+                                    <a href="javascript:void(0)" class="main-btn">
+                                        <i class="lni lni-cart"></i>
+                                        <span class="total-items" th:text="${cartList.size()}"></span>
+                                    </a>
+                                    <!-- Shopping Item -->
+                                    <div class="shopping-item">
+                                        <div class="dropdown-cart-header">
+                                            <!-- cartList의 크기를 동적으로 표시 -->
+                                            <span th:text="${cartList.size()} + ' Items'">0 Items</span>
+                                            <a href="/main/cart/items">View Cart
+                                            </a>
+                                        </div>
 
-                                            <div class="content">
-                                                <h4><a href="../product/product-details">
-                                                    Apple Watch Series 6</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$99.00</span></p>
+                                        <ul class="shopping-list">
+                                            <!-- cartList의 각 항목을 반복 -->
+                                            <li th:each="cart : ${cartList}">
+                                                <a href="javascript:void(0)" class="remove" title="Remove this item">
+                                                    <i class="lni lni-close"></i>
+                                                </a>
+                                                <div class="cart-img-head">
+                                                    <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}" class="cart-img">
+                                                        <img th:src="@{|/display?fileName=${cart.productDTO.imageDTOList[0].getThumbnailURL()}|}"
+                                                             alt="#"
+                                                             th:if="${cart.productDTO.imageDTOList != null and cart.productDTO.imageDTOList.size() > 0}" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h4>
+                                                        <a th:href="@{/product/product-details(mno=${cart.productDTO.mno})}">
+                                                            [[${cart.productDTO.title}]]
+                                                        </a>
+                                                    </h4>
+                                                    <p class="quantity">
+                                                        <span th:text="${cart.quantity}"></span> x -
+<!--                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
+<!--                                                    <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
+                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="bottom">
+                                            <div class="total">
+                                                <span>Total</span>
+                                                <span id="you-pay"></span>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" class="remove" title="Remove this item"><i
-                                                    class="lni lni-close"></i></a>
-                                            <div class="cart-img-head">
-                                                <a class="cart-img" href="../product/product-details"><img
-                                                        src="/assets/images/header/cart-items/item2.jpg" alt="#"></a>
+                                            <div class="button">
+                                                <a href="checkout" class="btn animate">Checkout</a>
                                             </div>
-                                            <div class="content">
-                                                <h4><a href="../product/product-details">Wi-Fi Smart Camera</a></h4>
-                                                <p class="quantity">1x - <span class="amount">20000₩</span></p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="bottom">
-                                        <div class="total">
-                                            <span>Total</span>
-                                            <span class="total-amount">$134.00</span>
                                         </div>
-                                        <div class="button">
-                                            <a href="checkout" class="btn animate">Checkout</a>
-                                        </div>
+                                    </div>
+                                    <!--/ End Shopping Item -->
+                                </div>
+                                </div>
+                                <div sec:authorize="!isAuthenticated()">
+                                    <!-- 로그인이 안된 상태에서 보여줄 내용 -->
+                                    <div class="login">
+                                        <a href="../login" class="btn btn-primary">로그인</a>
                                     </div>
                                 </div>
-                                <!--/ End Shopping Item -->
-                            </div>
-                        </div>
+                                </div>
                     </div>
                 </div>
             </div>
@@ -278,50 +289,54 @@
                         </button>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
-                                <li class="nav-item">
-                                    <a href="all" class="active" aria-label="Toggle navigation">홈</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
-                                       data-bs-target="#submenu-1-2" aria-controls="navbarSupportedContent"
-                                       aria-expanded="false" aria-label="Toggle navigation">사이트</a>
-                                    <ul class="sub-menu collapse" id="submenu-1-2">
-                                        <li class="nav-item"><a href="/main/about-us">사이트소개</a></li>
-                                        <li class="nav-item"><a href="faq">Faq</a></li>
-                                        <li class="nav-item"><a href="../login">Login</a></li>
-                                        <li class="nav-item"><a href="/register">Register</a></li>
-                                        <li class="nav-item"><a href="/mail-success">Mail Success</a></li>
-                                        <li class="nav-item"><a href="/404">404 Error</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
-                                       data-bs-target="#submenu-1-3" aria-controls="navbarSupportedContent"
-                                       aria-expanded="false" aria-label="Toggle navigation">렌트</a>
-                                    <ul class="sub-menu collapse" id="submenu-1-3">
-                                        <li class="nav-item"><a href="/product/product-grids">상품목록</a></li>
-                                        <li class="nav-item"><a href="/product/product-list">Shop List</a></li>
-                                        <li class="nav-item"><a href="../product/product-details">shop Single</a></li>
-                                        <li class="nav-item"><a href="cart">Cart</a></li>
-                                        <li class="nav-item"><a href="checkout">Checkout</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
-                                       data-bs-target="#submenu-1-4" aria-controls="navbarSupportedContent"
-                                       aria-expanded="false" aria-label="Toggle navigation">블로그</a>
-                                    <ul class="sub-menu collapse" id="submenu-1-4">
-                                        <li class="nav-item"><a href="/blog/blog-grid-sidebar">블로그 글목록</a>
-                                        </li>
-                                        <li class="nav-item"><a href="/blog/blog-single">Blog Single</a></li>
-                                        <li class="nav-item"><a href="/blog/blog-single-sidebar">Blog Single
-                                            Sibebar</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/contact" aria-label="Toggle navigation">문의</a>
-                                </li>
-                            </ul>
+                                    <li class="nav-item">
+                                        <a href="all" class="active" aria-label="Toggle navigation">홈</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
+                                            data-bs-target="#submenu-1-2" aria-controls="navbarSupportedContent"
+                                            aria-expanded="false" aria-label="Toggle navigation">사이트</a>
+                                        <ul class="sub-menu collapse" id="submenu-1-2">
+                                            <li class="nav-item"><a href="/main/about-us">사이트소개</a></li>
+                                            <li class="nav-item"><a href="faq">문의</a></li>
+                                            <li class="nav-item"><a href="../login">로그인</a></li>
+                                            <li class="nav-item"><a href="/register">회원가입</a></li>
+                                            <li class="nav-item"><a href="/mail-success">Mail Success</a></li>
+                                            <li class="nav-item"><a href="/404">404 Error</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
+                                            data-bs-target="#submenu-1-3" aria-controls="navbarSupportedContent"
+                                            aria-expanded="false" aria-label="Toggle navigation">렌트</a>
+                                        <ul class="sub-menu collapse" id="submenu-1-3">
+                                            <li class="nav-item"><a href="/product/product-grids">상품목록</a></li>
+<!--                                           <li class="nav-item"><a href="/product/product-list">Shop List</a></li>-->
+<!--                                            <li class="nav-item"><a href="../product/product-details">shop Single</a></li>-->
+                                            <li class="nav-item"><a href="cart">장바구니</a></li>
+                                            <li class="nav-item"><a href="checkout">결제</a></li>
+                                            <li class="nav-item"><a href="../product/register">상품등록</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
+                                            data-bs-target="#submenu-1-4" aria-controls="navbarSupportedContent"
+                                            aria-expanded="false" aria-label="Toggle navigation">블로그</a>
+                                        <ul class="sub-menu collapse" id="submenu-1-4">
+                                            <li class="nav-item"><a href="/blog/blog-grid-sidebar">블로그 글목록</a>
+                                            </li>
+                                            <!--<li class="nav-item"><a href="/blog/blog-single">Blog Single</a></li>
+                                            <li class="nav-item"><a href="/blog/blog-single-sidebar">Blog Single
+                                                    Sibebar</a></li>-->
+                                            <li class="nav-item"><a href="/blog/blog-write2">블로그글쓰기</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/contact" aria-label="Toggle navigation">문의</a>
+                                    </li>
+
+
+                                </ul>
                         </div> <!-- navbar collapse -->
                     </nav>
                     <!-- End Navbar -->

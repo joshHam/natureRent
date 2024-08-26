@@ -91,9 +91,14 @@ public class ProductController {
                      Model model,
                      @AuthenticationPrincipal MemberDTO authMember ){
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
 
         log.info("mno: " + mno);
 
@@ -134,9 +139,14 @@ public class ProductController {
 
         model.addAttribute("result", productService.getList(pageRequestDTO));
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "/product/product-list"; // 명시적으로 뷰 이름을 반환
     }
 
@@ -153,9 +163,14 @@ public class ProductController {
 
         model.addAttribute("result", productService.getList(pageRequestDTO));
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "/product/product-grids"; // 명시적으로 뷰 이름을 반환
     }
 

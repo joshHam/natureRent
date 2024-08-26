@@ -195,6 +195,7 @@
                                             <!-- cartList의 크기를 동적으로 표시 -->
                                             <span th:text="${cartList.size()} + ' Items'">0 Items</span>
                                             <a href="/main/cart/items">View Cart
+                                            </a>
                                         </div>
                                         <ul class="shopping-list">
                                             <!-- cartList의 각 항목을 반복 -->
@@ -220,7 +221,7 @@
 <!--                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
                                                     <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>
                                                     </p>
-                                                    <div class="td_wrap" th:data-order-product-id="${cart.productDTO.mno}">
+                                                    <div class="td_wrap" th:data-order-product-id="${cart.productDTO.mno}" hidden>
                                                         <!-- 상품 정보 -->
                                                         <span class="orderProductPrice" th:text="${cart.totalPrice}"></span>
                                                         <span class="orderProductDiscount">10</span>
@@ -234,7 +235,7 @@
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Total</span>
-                                                <span id="you-pay"></span>
+                                                <span id="you-pay">$134.00</span>
                                             </div>
                                             <div class="button">
                                                 <a href="checkout" class="btn animate">Checkout</a>
@@ -259,31 +260,34 @@
                     <div class="mega-category-menu">
                         <span class="cat-button"><i class="lni lni-menu"></i>전체 카테고리</span>
                         <ul class="sub-category">
-                            <li><a href="/product/product-grids">Electronics <i class="lni lni-chevron-right"></i></a>
+                            <li><a href="/product/product-grids">캠핑카 <i class="lni lni-chevron-right"></i></a>
                                 <ul class="inner-sub-category">
-                                    <li><a href="/product/product-grids">Digital Cameras</a></li>
-                                    <li><a href="/product/product-grids">Camcorders</a></li>
-                                    <li><a href="/product/product-grids">Camera Drones</a></li>
-                                    <li><a href="/product/product-grids">Smart Watches</a></li>
-                                    <li><a href="/product/product-grids">Headphones</a></li>
-                                    <li><a href="/product/product-grids">MP3 Players</a></li>
-                                    <li><a href="/product/product-grids">Microphones</a></li>
-                                    <li><a href="/product/product-grids">Chargers</a></li>
-                                    <li><a href="/product/product-grids">Batteries</a></li>
-                                    <li><a href="/product/product-grids">Cables & Adapters</a></li>
+                                    <li><a href="/product/product-grids">Class A</a></li>
+                                    <li><a href="/product/product-grids">Class B</a></li>
+                                    <li><a href="/product/product-grids">Class C</a></li>
+                                    <li><a href="/product/product-grids">Class D</a></li>
+                                    <li><a href="/product/product-grids">Class E</a></li>
+                                    <li><a href="/product/product-grids">Class F</a></li>
+                                    <li><a href="/product/product-grids">Class G</a></li>
+                                    <li><a href="/product/product-grids">Class H</a></li>
+                                    <li><a href="/product/product-grids">Class I</a></li>
+                                    <li><a href="/product/product-grids">Class J</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/product/product-grids">accessories</a></li>
-                            <li><a href="/product/product-grids">Televisions</a></li>
-                            <li><a href="/product/product-grids">best selling</a></li>
-                            <li><a href="/product/product-grids">top 100 offer</a></li>
-                            <li><a href="/product/product-grids">sunglass</a></li>
-                            <li><a href="/product/product-grids">watch</a></li>
-                            <li><a href="/product/product-grids">man’s product</a></li>
-                            <li><a href="/product/product-grids">Home Audio & Theater</a></li>
-                            <li><a href="/product/product-grids">Computers & Tablets </a></li>
-                            <li><a href="/product/product-grids">Video Games </a></li>
-                            <li><a href="/product/product-grids">Home Appliances </a></li>
+                            <li><a href="/product/product-grids">미니멀캠핑</a></li>
+                            <li><a href="/product/product-grids">오토캠핑</a></li>
+                            <li><a href="/product/product-grids">먹거리</a></li>
+                            <li><a href="/product/product-grids">텐트</a></li>
+                            <li><a href="/product/product-grids">타프/그늘막</a></li>
+                            <li><a href="/product/product-grids">텐트/타프 부품</a></li>
+                            <li><a href="/product/product-grids">의자/테이블</a></li>
+                            <li><a href="/product/product-grids">침낭/매트/해먹</a></li>
+                            <li><a href="/product/product-grids">캠핑주방용품 </a></li>
+                            <li><a href="/product/product-grids">수납/정리소품 </a></li>
+                            <li><a href="/product/product-grids">랜턴/조명 </a></li>
+                            <li><a href="/product/product-grids">캠핑공구 </a></li>
+                            <li><a href="/product/product-grids">응급/안전용품 </a></li>
+                            <li><a href="/product/product-grids">화장실/샤워용품 </a></li>
                         </ul>
                     </div>
                     <!-- End Mega Category Menu -->
@@ -299,7 +303,7 @@
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
                                 <li class="nav-item">
-                                    <a href="/main/all" aria-label="Toggle navigation">홈</a>
+                                    <a href="all" class="active" aria-label="Toggle navigation">홈</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
@@ -307,24 +311,24 @@
                                        aria-expanded="false" aria-label="Toggle navigation">사이트</a>
                                     <ul class="sub-menu collapse" id="submenu-1-2">
                                         <li class="nav-item"><a href="/main/about-us">사이트소개</a></li>
-                                        <li class="nav-item"><a href="faq">Faq</a></li>
-                                        <li class="nav-item"><a href="/login">Login</a></li>
-                                        <li class="nav-item"><a href="/register">Register</a></li>
+                                        <li class="nav-item"><a href="faq">문의</a></li>
+                                        <li class="nav-item"><a href="../login">로그인</a></li>
+                                        <li class="nav-item"><a href="/register">회원가입</a></li>
                                         <li class="nav-item"><a href="/mail-success">Mail Success</a></li>
                                         <li class="nav-item"><a href="/404">404 Error</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="dd-menu active collapsed" href="javascript:void(0)"
-                                       data-bs-toggle="collapse" data-bs-target="#submenu-1-3"
-                                       aria-controls="navbarSupportedContent" aria-expanded="false"
-                                       aria-label="Toggle navigation">렌트</a>
+                                    <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
+                                       data-bs-target="#submenu-1-3" aria-controls="navbarSupportedContent"
+                                       aria-expanded="false" aria-label="Toggle navigation">렌트</a>
                                     <ul class="sub-menu collapse" id="submenu-1-3">
                                         <li class="nav-item"><a href="/product/product-grids">상품목록</a></li>
-                                        <li class="nav-item"><a href="/product/product-list">Shop List</a></li>
-                                        <li class="nav-item"><a href="/product/product-details">shop Single</a></li>
-                                        <li class="nav-item"><a href="cart">Cart</a></li>
-                                        <li class="nav-item active"><a href="checkout">Checkout</a></li>
+                                        <!--                                           <li class="nav-item"><a href="/product/product-list">Shop List</a></li>-->
+                                        <!--                                            <li class="nav-item"><a href="../product/product-details">shop Single</a></li>-->
+                                        <li class="nav-item"><a href="cart">장바구니</a></li>
+                                        <li class="nav-item"><a href="checkout">결제</a></li>
+                                        <li class="nav-item"><a href="../product/register">상품등록</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
@@ -334,14 +338,17 @@
                                     <ul class="sub-menu collapse" id="submenu-1-4">
                                         <li class="nav-item"><a href="/blog/blog-grid-sidebar">블로그 글목록</a>
                                         </li>
-                                        <li class="nav-item"><a href="/blog/blog-single">Blog Single</a></li>
+                                        <!--<li class="nav-item"><a href="/blog/blog-single">Blog Single</a></li>
                                         <li class="nav-item"><a href="/blog/blog-single-sidebar">Blog Single
-                                            Sibebar</a></li>
+                                                Sibebar</a></li>-->
+                                        <li class="nav-item"><a href="/blog/blog-write2">블로그글쓰기</a></li>
                                     </ul>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/contact" aria-label="Toggle navigation">문의</a>
                                 </li>
+
+
                             </ul>
                         </div> <!-- navbar collapse -->
                     </nav>
@@ -398,25 +405,27 @@
 
 
 
-<div>
-    <button id="cartPay">카드 결제</button>
-    <button id="phonePay">휴대폰 결제</button>
-    <button id="kakaoPay">카카오페이 결제</button>
-</div>
+<!--<div>-->
+<!--    <button id="cartPay">카드 결제</button>-->
+<!--    <button id="phonePay">휴대폰 결제</button>-->
+<!--    <button id="kakaoPay">카카오페이 결제</button>-->
+<!--</div>-->
 
 <div>
     <!-- 결제 정보 입력란 (예: 수취인, 주소 등) -->
+<!--
     <input type="text" id="name" placeholder="수취인 이름">
     <input type="text" id="phone1" placeholder="전화번호">
     <input type="text" id="add" placeholder="우편번호">
     <input type="text" id="add2" placeholder="주소">
     <input type="text" id="ask" placeholder="요청사항">
+-->
 
     <!-- 결제 금액 (예시) -->
     <input type="hidden" id="paymentPrice" value="1">
 </div>
 
-<button id="pay__do">결제하기</button>
+<!--<button id="pay__do">결제하기</button>-->
 
 
 <!--====== Checkout Form Steps Part Start ======-->
@@ -428,73 +437,95 @@
                 <div class="checkout-steps-form-style-1">
                     <ul id="accordionExample">
                         <li>
-                            <h6 class="title" data-bs-toggle="collapse" data-bs-target="#collapseThree"
-                                aria-expanded="true" aria-controls="collapseThree">Your Personal Details </h6>
+                            <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                aria-expanded="false" aria-controls="collapsefive">결제방법 선택</h6>
                             <section class="checkout-steps-form-content collapse show" id="collapseThree"
+                                     aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="checkout-payment-form">
+                                            <button id="cartPay">카드 결제</button>
+                                            <button id="phonePay">휴대폰 결제</button>
+                                            <button id="kakaoPay">카카오페이 결제</button>
+                                        </div>
+                                        <!-- <div class="single-form form-default button">-->
+                                        <div class="single-form button">
+                                            <button class="btn" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseFour" aria-expanded="false"
+                                                    aria-controls="collapseFour">next step</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </li>
+                        <li>
+                            <h6 class="title" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                aria-expanded="true" aria-controls="collapseFour">배송받으실 주소</h6>
+                            <section class="checkout-steps-form-content collapse" id="collapseFour"
                                      aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="single-form form-default">
-                                            <label>User Name</label>
+                                            <label>수취인 이름</label>
                                             <div class="row">
                                                 <div class="col-md-6 form-input form">
-                                                    <input type="text" placeholder="First Name">
+                                                    <input type="text" id="name" placeholder="이름">
                                                 </div>
-                                                <div class="col-md-6 form-input form">
+                                                <!--<div class="col-md-6 form-input form">
                                                     <input type="text" placeholder="Last Name">
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="single-form form-default">
-                                            <label>Email Address</label>
+                                            <label>전화번호</label>
                                             <div class="form-input form">
-                                                <input type="text" placeholder="Email Address">
+                                                <input type="text" id="phone1" placeholder="전화번호">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <!--<div class="col-md-6">
                                         <div class="single-form form-default">
-                                            <label>Phone Number</label>
+                                            <label>전화번호</label>
                                             <div class="form-input form">
-                                                <input type="text" placeholder="Phone Number">
+                                                <input type="text" placeholder="전화번호">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="col-md-12">
                                         <div class="single-form form-default">
-                                            <label>Mailing Address</label>
+                                            <label>주소</label>
                                             <div class="form-input form">
-                                                <input type="text" placeholder="Mailing Address">
+                                                <input type="text" id="add2" placeholder="주소">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="single-form form-default">
-                                            <label>City</label>
+                                            <label>우편 번호</label>
                                             <div class="form-input form">
-                                                <input type="text" placeholder="City">
+                                                <input type="text" id="add" placeholder="우편 번호">
                                             </div>
                                         </div>
                                     </div>
+                                    <!--<div class="col-md-6">
+                                        <div class="single-form form-default">
+                                            <label>우편 번호</label>
+                                            <div class="form-input form">
+                                                <input type="text" placeholder="우편번호">
+                                            </div>
+                                        </div>
+                                    </div>-->
                                     <div class="col-md-6">
                                         <div class="single-form form-default">
-                                            <label>Post Code</label>
+                                            <label>요청사항</label>
                                             <div class="form-input form">
-                                                <input type="text" placeholder="Post Code">
+                                                <input type="text" id="ask" placeholder="요청사항">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="single-form form-default">
-                                            <label>Country</label>
-                                            <div class="form-input form">
-                                                <input type="text" placeholder="Country">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    <!--<div class="col-md-6">
                                         <div class="single-form form-default">
                                             <label>Region/State</label>
                                             <div class="select-items">
@@ -515,19 +546,16 @@
                                             <label for="checkbox-3"><span></span></label>
                                             <p>My delivery and mailing addresses are the same.</p>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="col-md-12">
                                         <div class="single-form button">
-                                            <button class="btn" data-bs-toggle="collapse"
-                                                    data-bs-target="#collapseFour" aria-expanded="false"
-                                                    aria-controls="collapseFour">next
-                                                step</button>
+                                            <button class="btn" id="pay__do" >결제 하기</button>
                                         </div>
                                     </div>
                                 </div>
                             </section>
                         </li>
-                        <li>
+                        <!--<li>
                             <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour"
                                 aria-expanded="false" aria-controls="collapseFour">Shipping Address</h6>
                             <section class="checkout-steps-form-content collapse" id="collapseFour"
@@ -663,97 +691,48 @@
                                     </div>
                                 </div>
                             </section>
-                        </li>
-                        <li>
-                            <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapsefive"
-                                aria-expanded="false" aria-controls="collapsefive">Payment Info</h6>
-                            <section class="checkout-steps-form-content collapse" id="collapsefive"
-                                     aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="checkout-payment-form">
-                                            <div class="single-form form-default">
-                                                <label>Cardholder Name</label>
-                                                <div class="form-input form">
-                                                    <input type="text" placeholder="Cardholder Name">
-                                                </div>
-                                            </div>
-                                            <div class="single-form form-default">
-                                                <label>Card Number</label>
-                                                <div class="form-input form">
-                                                    <input id="credit-input" type="text"
-                                                           placeholder="0000 0000 0000 0000">
-                                                    <img src="/assets/images/payment/card.png" alt="card">
-                                                </div>
-                                            </div>
-                                            <div class="payment-card-info">
-                                                <div class="single-form form-default mm-yy">
-                                                    <label>Expiration</label>
-                                                    <div class="expiration d-flex">
-                                                        <div class="form-input form">
-                                                            <input type="text" placeholder="MM">
-                                                        </div>
-                                                        <div class="form-input form">
-                                                            <input type="text" placeholder="YYYY">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-form form-default">
-                                                    <label>CVC/CVV <span><i
-                                                            class="mdi mdi-alert-circle"></i></span></label>
-                                                    <div class="form-input form">
-                                                        <input type="text" placeholder="***">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="single-form form-default button">
-                                                <button class="btn">pay now</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </li>
+                        </li>-->
+
                     </ul>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="checkout-sidebar">
                     <div class="checkout-sidebar-coupon">
-                        <p>Appy Coupon to get discount!</p>
+                        <p>쿠폰사용하고 할인 받으세요!</p>
                         <form action="#">
                             <div class="single-form form-default">
                                 <div class="form-input form">
                                     <input type="text" placeholder="Coupon Code">
                                 </div>
                                 <div class="button">
-                                    <button class="btn">apply</button>
+                                    <button class="btn">사용</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="checkout-sidebar-price-table mt-30">
-                        <h5 class="title">Pricing Table</h5>
+                        <h5 class="title">결제 금액</h5>
 
                         <div class="sub-total-price">
                             <div class="total-price">
-                                <p class="value">Subotal Price:</p>
-                                <p class="price">$144.00</p>
+                                <p class="value">Cart Subtotal:</p>
+                                <span id="cart-subtotal"></span>
                             </div>
                             <div class="total-price shipping">
-                                <p class="value">Subotal Price:</p>
-                                <p class="price">$10.50</p>
+                                <p class="value">Shipping:</p>
+                                <span>Free</span>
                             </div>
                             <div class="total-price discount">
-                                <p class="value">Subotal Price:</p>
-                                <p class="price">$10.00</p>
+                                <p class="value">You Save:</p>
+                                <span>₩50,000</span>
                             </div>
                         </div>
 
                         <div class="total-payable">
                             <div class="payable-price">
-                                <p class="value">Subotal Price:</p>
-                                <p class="price">$164.50</p>
+                                <p class="value">You Pay:</p>
+                                <span  id="you-pay2"></span>
                             </div>
                         </div>
                         <div class="price-table-btn button">
@@ -936,6 +915,37 @@
 <script src="/assets/js/tiny-slider.js"></script>
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
+
+<!--<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(function(element) {
+
+              let priceText = element.innerText; // 표시된 텍스트를 가져옴
+                          console.log('priceText:', priceText); // 로그로 data-price 확인
+             // ₩ 및 , 제거하고 숫자로 변환
+            let price = parseFloat(priceText.replace(/₩|,/g, ''));
+            console.log('Parsed price:', price); // 로그로 파싱된 값 확인
+            // price가 NaN인지 확인하여 0으로 대체
+            if (isNaN(price)) {
+                price = 0;
+            }
+            total += price;
+        });
+        console.log('Total:', total); // 로그로 합산된 total 확인
+
+        // Cart Subtotal과 You Pay에 합산된 값 표시
+        document.getElementById('cart-subtotal').innerText = new Intl.NumberFormat('ko-KR', {
+            style: 'currency',
+            currency: 'KRW'
+        }).format(total);
+
+        document.getElementById('you-pay', 'you-pay2').innerText = new Intl.NumberFormat('ko-KR', {
+            style: 'currency',
+            currency: 'KRW'
+        }).format(total - 50000); // You Save 금액을 뺀 후 금액 (예제에서 임의로 50,000원을 뺌)
+    });
+</script>-->
 <script type="text/javascript">
 
 
@@ -1052,6 +1062,7 @@
                     alert(rsp.error_msg);
                 }
             });
+
         });
 
     // 주문번호 생성 함수
@@ -1085,36 +1096,62 @@
         ///////////////////////////////////////
 
 
-            document.addEventListener('DOMContentLoaded', function() {
-                  let total = 0;
-                  document.querySelectorAll('.subtotal').forEach(function(element) {
-          console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
-                        let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
-                                    console.log('priceText:', priceText); // 로그로 data-price 확인
-                       // ₩ 및 , 제거하고 숫자로 변환
-                      let price = parseFloat(priceText.replace(/₩|,/g, ''));
-                      console.log('Parsed price:', price); // 로그로 파싱된 값 확인
-                      // price가 NaN인지 확인하여 0으로 대체
-                      if (isNaN(price)) {
-                          price = 0;
-                      }
-                      total += price;
-                  });
-                  console.log('Total:', total); // 로그로 합산된 total 확인
+        // 추가된 JavaScript 코드
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(function(element) {
+            console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
+            let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
+            console.log('priceText:', priceText); // 로그로 data-price 확인
+            // ₩ 및 , 제거하고 숫자로 변환
+            let price = parseFloat(priceText.replace(/₩|,/g, ''));
+            console.log('Parsed price:', price); // 로그로 파싱된 값 확인
+            // price가 NaN인지 확인하여 0으로 대체
+            if (isNaN(price)) {
+                price = 0;
+            }
+            total += price;
+        });
+        console.log('Total:', total); // 로그로 합산된 total 확인
+
+  // 합산된 결과를 cart-subtotal 요소에 출력합니다.
+    document.getElementById('cart-subtotal').textContent = new Intl.NumberFormat('ko-KR', {
+        style: 'currency',
+        currency: 'KRW'
+    }).format(total);
 
 
-      let youPayElement = document.getElementById('you-pay');
+        // 요소가 로드될 때까지 반복적으로 체크
+        const intervalId = setInterval(function() {
+            let youPayElement = document.getElementById('you-pay');
+            let youPayElement2 = document.getElementById('you-pay2');
+            let elementsFound = 0; // 요소를 찾았는지 확인하는 변수
+
             if (youPayElement) {
                 youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
                     style: 'currency',
                     currency: 'KRW'
                 }).format(total - 50000);
+                elementsFound++; // 요소를 찾았을 때 카운트 증가
             } else {
                 console.error("Element with id 'you-pay' not found.");
             }
-        }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에
-                 //you-pay 요소를 제대로 찾을 수 있게
-});
+
+            if (youPayElement2) {
+                youPayElement2.textContent = new Intl.NumberFormat('ko-KR', {
+                    style: 'currency',
+                    currency: 'KRW'
+                }).format(total - 50000);
+                elementsFound++; // 요소를 찾았을 때 카운트 증가
+            } else {
+                console.error("Element with id 'you-pay2' not found.");
+            }
+
+            // 두 요소가 모두 처리되었을 때 interval 해제
+            if (elementsFound === 2) {
+                clearInterval(intervalId);
+            }
+        }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에 you-pay 요소를 제대로 찾을 수 있게
+    });
 
     </script></body>
 

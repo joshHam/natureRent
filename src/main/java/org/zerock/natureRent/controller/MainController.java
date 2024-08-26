@@ -58,9 +58,14 @@ public class MainController {
         PageResultDTO<ProductDTO, Object[]> result = productService.getList(pageRequestDTO);
         model.addAttribute("result", result);
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+        if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
 
         return "main/all";
     }
@@ -80,8 +85,16 @@ public class MainController {
 
 
     @GetMapping("cart")
-    public String exCart(){
+    public String exCart(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exCart..........");
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "/main/cart"; // 명시적으로 뷰 이름을 반환
 
     }
@@ -89,27 +102,42 @@ public class MainController {
     @GetMapping("about-us")
     public String exAboutUs(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exAboutUs..........");
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "/main/about-us"; // 명시적으로 뷰 이름을 반환
     }
 
     @GetMapping("checkout")
     public String exCheckOut(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exCheckOut..........");
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "/main/checkout"; // 명시적으로 뷰 이름을 반환
     }
 
     @GetMapping("faq")
     public String exFaq(Model model, @AuthenticationPrincipal MemberDTO authMember){
         log.info("exFaq..........");
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "/main/faq"; // 명시적으로 뷰 이름을 반환
     }
 

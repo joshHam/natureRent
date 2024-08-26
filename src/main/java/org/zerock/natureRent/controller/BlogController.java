@@ -94,6 +94,7 @@ public class BlogController {
                              @AuthenticationPrincipal MemberDTO memberDTO,
                              @RequestParam("uploadFiles") MultipartFile[] uploadFiles,
                              Model model,
+                             RedirectAttributes redirectAttributes, // RedirectAttributes 추가
                              @AuthenticationPrincipal MemberDTO authMember) {
 
         // 업로드된 파일 처리
@@ -128,12 +129,37 @@ public class BlogController {
 //        blog.setMember(Member.builder().email(memberDTO.getEmail()).build());
         blogService.saveBlog(blog, memberDTO, imageDTOList);
 
+        // 페이징 처리를 위한 데이터 준비 (예시로 가정)
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+        pageRequestDTO.setSize(6);
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("bno").descending());
+
+        // Page 객체로 Blog 엔티티를 가져오는 서비스 메서드 호출
+        Page<Blog> result = blogService.findAllBlogs(pageable);
+
+        // PageResultDTO로 변환
+        PageResultDTO<BlogDTO, Blog> pageResultDTO = new PageResultDTO<>(result,
+                blogEntity -> BlogDTO.builder()
+                        .bno(blogEntity.getBno())
+                        .title(blogEntity.getTitle())
+                        .detail(blogEntity.getDetail())
+                        .likes(blogEntity.getLikes())
+                        .views(blogEntity.getViews())
+                        .tags(blogEntity.getTags())
+                        .member_email(blogEntity.getMember().getEmail())
+                        .build()
+        );
+
+        // 데이터를 RedirectAttributes에 추가
+        redirectAttributes.addFlashAttribute("result", pageResultDTO);
 
         Member member2 = authMember.getMember();
         List<CartDTO> cartList = cartService.getCartList(member2.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
         model.addAttribute("cartList", cartList);
 
-        return "blog/blog-single-sidebar";
+//        return "blog/blog-single-sidebar";
+//        return "blog/blog-grid-sidebar";
+        return "redirect:/blog/blog-grid-sidebar"; // 리다이렉트
     }
 
 
@@ -247,9 +273,14 @@ public String getBlogById(@PathVariable Long id, Model model, @AuthenticationPri
 
         model.addAttribute("result", pageResultDTO);
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
 
         return "blog/blog-grid-sidebar"; // 명시적으로 뷰 이름을 반환
     }
@@ -277,9 +308,14 @@ public String getBlogById(@PathVariable Long id, Model model, @AuthenticationPri
             model.addAttribute("formattedRegDate", formattedRegDate);
         }
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
 
         return "blog/blog-single";
     }
@@ -290,9 +326,14 @@ public String getBlogById(@PathVariable Long id, Model model, @AuthenticationPri
                                       @AuthenticationPrincipal MemberDTO authMember) {
         log.info("exBlogSingleSidebar..........");
 
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-        model.addAttribute("cartList", cartList);
+       if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
 
         return "blog/blog-single-sidebar"; // 명시적으로 뷰 이름을 반환
     }

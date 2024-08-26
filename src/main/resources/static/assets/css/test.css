@@ -1593,6 +1593,7 @@ ol {
 
 .header .topbar .top-end .user-login li:first-child {
   padding-right: 12px;
+  white-space: nowrap;
 }
 
 .header .topbar .top-end .user-login li:last-child {
