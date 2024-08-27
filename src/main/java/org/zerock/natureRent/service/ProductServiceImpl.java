@@ -70,48 +70,6 @@ public class ProductServiceImpl implements ProductService{
     }
 
 
-//    @Override
-//    public PageResultDTO<ProductDTO, Object[]> getList(PageRequestDTO requestDTO) {
-//
-//        Pageable pageable = requestDTO.getPageable(Sort.by("mno").descending());
-//
-//        Page<Object[]> result = productRepository.getListPage(pageable);
-//
-//        log.info("==============================================");
-//        result.getContent().forEach(arr -> {
-//            log.info(Arrays.toString(arr));
-//        });
-//
-//
-//        Function<Object[], ProductDTO> fn = (arr -> entitiesToDTO(
-//                (Product)arr[0] ,
-//                (List<ProductImageDTO>)(Arrays.asList((ProductImage)arr[1])),
-//                (Double) arr[2],
-//                (Long)arr[3])
-//        );
-//
-//        return new PageResultDTO<>(result, fn);
-//    }
-
-//    @Override
-//    public ProductDTO getProduct(Long mno) {
-//
-//        List<Object[]> result = productRepository.getProductWithAll(mno);
-//
-//        Product product = (Product) result.get(0)[0];
-//
-//        List<ProductImage> productImageList = new ArrayList<>();
-//
-//        result.forEach(arr -> {
-//            ProductImage  productImage = (ProductImage)arr[1];
-//            productImageList.add(productImage);
-//        });
-//
-//        Double avg = (Double) result.get(0)[2];
-//        Long reviewCnt = (Long) result.get(0)[3];
-//
-//        return entitiesToDTO(product, productImageList, avg, reviewCnt);
-//    }
 
     @Override
     public ProductDTO getProduct(Long mno) {
