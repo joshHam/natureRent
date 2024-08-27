@@ -38,7 +38,15 @@ public class ProductController {
 
 
     @GetMapping("/register")
-    public void register(){
+    public void register(Model model, @AuthenticationPrincipal MemberDTO authMember){
+        if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
 
     }
     @GetMapping("/test")
@@ -48,18 +56,26 @@ public class ProductController {
 
 
     @PostMapping("/register")
-    public String register(@ModelAttribute ProductDTO productDTO, RedirectAttributes redirectAttributes){
+    public String register(Model model, @AuthenticationPrincipal MemberDTO authMember, @ModelAttribute ProductDTO productDTO, RedirectAttributes redirectAttributes){
+        log.info("register() method started");
         log.info("productDTO: " + productDTO);
 
         // Price 값이 제대로 설정되었는지 확인
         if (productDTO.getPrice() == null) {
             // 오류 처리 로직 추가
         }
-
         Long mno = productService.register(productDTO);
-
         redirectAttributes.addFlashAttribute("msg", mno);
 
+        if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
+        log.info("register() method ended");
         return "redirect:/product/register";
     }
 

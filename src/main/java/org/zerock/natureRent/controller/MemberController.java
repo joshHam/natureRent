@@ -1,6 +1,7 @@
 package org.zerock.natureRent.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,8 @@ import org.zerock.natureRent.service.CartService;
 
 import java.util.List;
 
+
+@Log4j2
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -32,6 +35,9 @@ public String register(@AuthenticationPrincipal MemberDTO authMember, Model mode
         Member member = authMember.getMember();
         List<CartDTO> cartList = cartService.getCartList(member.getEmail());
         model.addAttribute("cartList", cartList);
+    }else {
+        log.warn("User is not authenticated.");
+        // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
     }
     return "register";
 }
@@ -44,10 +50,14 @@ public String register(@AuthenticationPrincipal MemberDTO authMember, Model mode
                            @AuthenticationPrincipal MemberDTO authMember,
                            Model model) {
         memberService.register(memberDTO);
-        Member member = authMember.getMember();
-        List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
-
-        model.addAttribute("cartList", cartList);
+        if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail());
+            model.addAttribute("cartList", cartList);
+        }else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
         return "redirect:/login"; // 회원가입 후 로그인 페이지로 리다이렉트
     }
 }

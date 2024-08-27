@@ -1,268 +1,183 @@
 <!DOCTYPE html>
-<head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
-</head>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Product Register Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/LineIcons.3.0.css" />
+    <link rel="stylesheet" href="/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+</head>
+
 <body>
-<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+<!-- 페이지 내용들... -->
+<form th:action="@{/product/register}" th:method="post">
+    <!-- 로그인한 사용자의 이메일을 히든 필드로 추가 -->
+    <input type="hidden" name="email" th:value="${#authentication.principal.email}" />
 
-    <th:block th:fragment="content">
+    <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-control" name="title" placeholder="Enter Title">
+    </div>
 
-        <h1 class="mt-4">Product Register Page</h1>
-
-        <form th:action="@{/product/register}" th:method="post">
-            <!-- 로그인한 사용자의 이메일을 히든 필드로 추가 -->
-            <input type="hidden" name="email" th:value="${#authentication.principal.email}"/>
-
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" class="form-control" name="title" placeholder="Enter Title">
+    <div class="form-group">
+        <label>Price</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
             </div>
+            <input type="text" class="form-control" name="price" placeholder="Enter Price (e.g., 1000)" pattern="\d+(\.\d{2})?" title="Please enter a valid price">
+        </div>
+    </div>
 
-            <div class="form-group">
-                <label>Price</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                    </div>
-                    <input type="text" class="form-control" name="price" placeholder="Enter Price (e.g., 1000)" pattern="\d+(\.\d{2})?" title="Please enter a valid price">
-                </div>
-            </div>
+    <div class="form-group">
+        <label>Rental Start Date</label>
+        <input type="datetime-local" class="form-control" name="rentalStartDate">
+    </div>
 
-            <div class="form-group">
-                <label>Rental Start Date</label>
-                <input type="datetime-local" class="form-control" name="rentalStartDate">
-            </div>
+    <div class="form-group">
+        <label>Rental End Date</label>
+        <input type="datetime-local" class="form-control" name="rentalEndDate">
+    </div>
 
-            <div class="form-group">
-                <label>Rental End Date</label>
-                <input type="datetime-local" class="form-control" name="rentalEndDate">
-            </div>
+    <div class="form-group">
+        <label>Is Available</label>
+        <select class="form-control" name="isAvailable">
+            <option value="true" selected>Yes</option>
+            <option value="false">No</option>
+        </select>
+    </div>
 
-            <div class="form-group">
-                <label>Is Available</label>
-                <select class="form-control" name="isAvailable">
-                    <option value="true" selected>Yes</option>
-                    <option value="false">No</option>
-                </select>
-            </div>
+    <div class="form-group fileForm">
+        <label>Image Files</label>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input files" id="fileInput" multiple>
+            <label class="custom-file-label" data-browse="Browse"></label>
+        </div>
+    </div>
 
-            <div class="form-group fileForm">
-                <label>Image Files</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input files" id="fileInput" multiple>
-                    <label class="custom-file-label" data-browse="Browse"></label>
-                </div>
-            </div>
+    <div class="box"></div>
 
-            <div class="box"></div>
+    <div class="uploadResult">
+        <ul></ul>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-            <style>
-                .uploadResult {
-                    width: 100%;
-                    background-color: gray;
-                    margin-top: 10px;
-                }
+<!-- JavaScript 로드 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var $j = jQuery.noConflict();
 
-                .uploadResult ul {
-                    display: flex;
-                    flex-flow: row;
-                    justify-content: center;
-                    align-items: center;
-                    vertical-align: top;
-                    overflow: auto;
-                }
+    $j(document).ready(function () {
+        console.log("Document is ready!");  // 확인용 로그
 
-                .uploadResult ul li {
-                    list-style: none;
-                    padding: 10px;
-                    margin-left: 2em;
-                }
+        var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
+        var maxSize = 10485760; //10MB
 
-                .uploadResult ul li img {
-                    width: 100px;
-                }
-            </style>
+        function checkExtension(fileName, fileSize) {
+            if (fileSize >= maxSize) {
+                alert("파일 사이즈 초과");
+                return false;
+            }
 
-            <div class="uploadResult">
-                <ul></ul>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-
-        <script>
-            var $j = jQuery.noConflict();
-            $j(document).ready(function() {
-
-                var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
-                var maxSize = 10485760; //10MB
-
-                function checkExtension(fileName, fileSize){
-
-                    if(fileSize >= maxSize){
-                        alert("파일 사이즈 초과");
-                        return false;
-                    }
-
-                    if(regex.test(fileName)){
-                        alert("해당 종류의 파일은 업로드할 수 없습니다.");
-                        return false;
-                    }
-                    return true;
-                }
-
-                $j(".custom-file-input").on("change", function() {
-
-                    var fileName = $j(this).val().split("\\").pop();
-
-                    $j(this).siblings(".custom-file-label").addClass("selected").text(fileName);
-                    var formData = new FormData();
-
-                    var inputFile = $j(this);
-
-                    var files = inputFile[0].files;
-
-                    var appended = false;
-
-                    for (var i = 0; i < files.length; i++) {
-
-                        if(!checkExtension(files[i].name, files[i].size) ){
-                            return false;
-                        }
-
-                          console.log("Selected file:", files[i]); // 파일 정보 출력
-                        formData.append("uploadFiles", files[i]);
-                        appended = true;
-                    }
-
-                    // 업로드를 하지 않는다.
-                    if (!appended) {
-                        return;
-                    }
-
-                    for (var value of formData.values()) {
-                console.log("FormData contains:", value); // FormData 내용 출력
-                    }
-
-                    // Ajax 호출 전 로그 추가
-            console.log("Uploading files...");
-
-                    //실제 업로드 부분
-                    //upload ajax
-                    $j.ajax({
-                        url: '/uploadAjax',
-                        processData: false,
-                        contentType: false,
-                        data: formData,
-                        type: 'POST',
-                        dataType:'json',
-                        success: function(result){
-                    console.log("Upload success, server response:", result); // 응답 결과 출력
-                            showResult(result);
-                        },
-                        error: function(jqXHR, textStatus, errorThrown){
-                    console.log("Upload failed:", textStatus, errorThrown); // 오류 발생 시 로그 출력
-                        }
-                    }); //$j.ajax
-                }); //end change event
-
-                function showResult(uploadResultArr) {
-                    var uploadUL = $j(".uploadResult ul");
-                    var str = "";
-
-                    $j(uploadResultArr).each(function(i, obj) {
-                        str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
-                        str += " <div>";
-                        str += "<button type='button' data-file='" + obj.imageURL + "' "
-                        str += "class='btn-warning btn-sm'>X</button><br>";
-                        str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
-                        str += "</div>";
-                        str += "</li>";
-                    });
-
-                    uploadUL.append(str);
-                }
-
-                $j(".uploadResult").on("click", "li button", function(e) {
-                    console.log("delete file");
-
-                    var targetFile = $j(this).data("file");
-
-                    var targetLi = $j(this).closest("li");
-
-                    $j.ajax({
-                        url: '/removeFile',
-                        data: {fileName: targetFile},
-                        dataType:'text',
-                        type: 'POST',
-                        success: function(result){
-                            alert(result);
-
-                            targetLi.remove();
-                        }
-                    }); //$j.ajax
-                });
-
-                //prevent submit
-                $j(".btn-primary").on("click", function(e) {
-                    e.preventDefault();
-
-                    var str = "";
-
-                    $j(".uploadResult li").each(function(i,obj){
-                        var target = $j(obj);
-
-                        str += "<input type='hidden' name='imageDTOList["+i+"].imgName' value='"+target.data('name') +"'>";
-
-                        str += "<input type='hidden' name='imageDTOList["+i+"].path' value='"+target.data('path')+"'>";
-
-                        str += "<input type='hidden' name='imageDTOList["+i+"].uuid' value='"+target.data('uuid')+"'>";
-
-                    });
-
-                    // 태그들이 추가된 것을 확인한 후에 comment를 제거
-                    $j(".box").html(str);
-                    $j("form").submit();
-                });
-            }); // document ready
-        </script>
-    </th:block>
-
-</th:block>
-
-<script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-              let total = 0;
-              document.querySelectorAll('.subtotal').forEach(function(element) {
-      console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
-                    let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
-                                console.log('priceText:', priceText); // 로그로 data-price 확인
-                   // ₩ 및 , 제거하고 숫자로 변환
-                  let price = parseFloat(priceText.replace(/₩|,/g, ''));
-                  console.log('Parsed price:', price); // 로그로 파싱된 값 확인
-                  // price가 NaN인지 확인하여 0으로 대체
-                  if (isNaN(price)) {
-                      price = 0;
-                  }
-                  total += price;
-              });
-              console.log('Total:', total); // 로그로 합산된 total 확인
-
-
-  let youPayElement = document.getElementById('you-pay');
-        if (youPayElement) {
-            youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
-                style: 'currency',
-                currency: 'KRW'
-            }).format(total - 50000);
-        } else {
-            console.error("Element with id 'you-pay' not found.");
+            if (regex.test(fileName)) {
+                alert("해당 종류의 파일은 업로드할 수 없습니다.");
+                return false;
+            }
+            return true;
         }
-    }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에
-             //you-pay 요소를 제대로 찾을 수 있게
 
+        $j(".custom-file-input").on("change", function () {
+            var fileName = $j(this).val().split("\\").pop();
+            $j(this).siblings(".custom-file-label").addClass("selected").text(fileName);
+            var formData = new FormData();
 
-    </script></body>
+            var inputFile = $j(this);
+            var files = inputFile[0].files;
+            var appended = false;
+
+            for (var i = 0; i < files.length; i++) {
+                if (!checkExtension(files[i].name, files[i].size)) {
+                    return false;
+                }
+                formData.append("uploadFiles", files[i]);
+                appended = true;
+            }
+
+            if (!appended) {
+                return;
+            }
+
+            $j.ajax({
+                url: '/uploadAjax',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    console.log("Upload success:", result);  // 확인용 로그
+                    showResult(result);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Upload failed:", textStatus, errorThrown);
+                }
+            });
+        });
+
+        function showResult(uploadResultArr) {
+            var uploadUL = $j(".uploadResult ul");
+            var str = "";
+
+            $j(uploadResultArr).each(function (i, obj) {
+                str += "<li data-name='" + obj.fileName + "' data-path='" + obj.folderPath + "' data-uuid='" + obj.uuid + "'>";
+                str += " <div>";
+                str += "<button type='button' data-file='" + obj.imageURL + "' class='btn-warning btn-sm'>X</button><br>";
+                str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+                str += "</div>";
+                str += "</li>";
+            });
+
+            uploadUL.append(str);
+        }
+
+        $j(".uploadResult").on("click", "li button", function (e) {
+            var targetFile = $j(this).data("file");
+            var targetLi = $j(this).closest("li");
+
+            $j.ajax({
+                url: '/removeFile',
+                data: { fileName: targetFile },
+                dataType: 'text',
+                type: 'POST',
+                success: function (result) {
+                    alert(result);
+                    targetLi.remove();
+                }
+            });
+        });
+
+        $j(".btn-primary").on("click", function (e) {
+            e.preventDefault();
+
+            var str = "";
+            $j(".uploadResult li").each(function (i, obj) {
+                var target = $j(obj);
+                str += "<input type='hidden' name='imageDTOList[" + i + "].imgName' value='" + target.data('name') + "'>";
+                str += "<input type='hidden' name='imageDTOList[" + i + "].path' value='" + target.data('path') + "'>";
+                str += "<input type='hidden' name='imageDTOList[" + i + "].uuid' value='" + target.data('uuid') + "'>";
+            });
+
+            $j(".box").html(str);
+            $j("form").submit();
+        });
+    });
+</script>
+</body>
+
 </html>

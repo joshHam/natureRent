@@ -173,13 +173,14 @@
                             </h3>
                         </div>
                         <div class="navbar-cart">
-                            <div class="wishlist">
-                                <a href="javascript:void(0)">
-                                    <i class="lni lni-heart"></i>
-                                    <span class="total-items">0</span>
-                                </a>
-                            </div>
-                            <div class="cart-items">
+                            <div sec:authorize="isAuthenticated()">
+                                <div class="wishlist">
+                                    <a href="javascript:void(0)">
+                                        <i class="lni lni-heart"></i>
+                                        <span class="total-items">0</span>
+                                    </a>
+                                </div>
+                                <div class="cart-items">
                                     <a href="javascript:void(0)" class="main-btn">
                                         <i class="lni lni-cart"></i>
                                         <span class="total-items" th:text="${cartList.size()}"></span>
@@ -190,7 +191,9 @@
                                             <!-- cartList의 크기를 동적으로 표시 -->
                                             <span th:text="${cartList.size()} + ' Items'">0 Items</span>
                                             <a href="/main/cart/items">View Cart
+                                            </a>
                                         </div>
+
                                         <ul class="shopping-list">
                                             <!-- cartList의 각 항목을 반복 -->
                                             <li th:each="cart : ${cartList}">
@@ -212,8 +215,9 @@
                                                     </h4>
                                                     <p class="quantity">
                                                         <span th:text="${cart.quantity}"></span> x -
-<!--                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
-                                                    <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>
+                                                        <!--                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
+                                                        <!--                                                    <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>-->
+                                                        <span class="subtotal">[[${#numbers.formatCurrency(cart.totalPrice)}]]</span>
                                                     </p>
                                                 </div>
                                             </li>
@@ -230,6 +234,13 @@
                                     </div>
                                     <!--/ End Shopping Item -->
                                 </div>
+                            </div>
+                            <div sec:authorize="!isAuthenticated()">
+                                <!-- 로그인이 안된 상태에서 보여줄 내용 -->
+                                <div class="login">
+                                    <a href="../login" class="btn btn-primary">로그인</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
