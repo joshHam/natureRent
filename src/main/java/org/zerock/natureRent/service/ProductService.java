@@ -33,7 +33,8 @@ final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     // Entity to DTO 변환 메서드
     ProductDTO entitiesToDTO(Product product, List<ProductImage> productImages, Double avg, Long reviewCnt);
-
+    // 검색어와 페이지 정보를 받아서 상품 목록을 가져오는 메서드
+    PageResultDTO<ProductDTO ,Product> searchProducts(String keyword, int page);
 
 
 

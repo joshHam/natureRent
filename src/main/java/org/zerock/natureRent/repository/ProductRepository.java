@@ -41,7 +41,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.imageList WHERE p.mno = :mno")
     Optional<Product> findByIdWithImages(@Param("mno") Long mno);
 
-//    @Query("SELECT p.rentalStartDate, p.rentalEndDate FROM Product p WHERE p.mno = :mno")
-//    List<Object[]> findRentalPeriodsByProductId(@Param("mno") Long mno);
+    // 제목이나 상세 설명에 검색어가 포함된 상품을 검색하는 쿼리
+    Page<Product> findByTitleContainingOrDetailContaining(String title, String detail, Pageable pageable);
+
 
 }

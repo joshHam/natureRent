@@ -190,4 +190,27 @@ public class ProductController {
         return "/product/product-grids"; // 명시적으로 뷰 이름을 반환
     }
 
+
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam(value = "keyword", required = false) String keyword,
+                                 @RequestParam(value = "page", defaultValue = "1") int page,
+                                 Model model,
+                                 @AuthenticationPrincipal MemberDTO authMember) {
+        // 검색 결과 가져오기
+        PageResultDTO<ProductDTO, Product> result = productService.searchProducts(keyword, page);
+
+        if (authMember != null) {
+            Member member = authMember.getMember();
+            List<CartDTO> cartList = cartService.getCartList(member.getEmail()); // cartService를 사용해 CartDTO 리스트를 가져옴
+            model.addAttribute("cartList", cartList);
+        } else {
+            log.warn("User is not authenticated.");
+            // 인증되지 않은 경우에 대해 별도로 처리할 수 있습니다.
+        }
+
+        model.addAttribute("result", result);
+        model.addAttribute("keyword", keyword);
+        return "product/product-grids"; // 검색 결과를 보여줄 뷰 이름
+    }
+
 }

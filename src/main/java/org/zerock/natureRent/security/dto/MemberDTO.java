@@ -37,30 +37,15 @@ public class MemberDTO extends User  implements OAuth2User {
     @Getter
     private Member member; // Member 엔티티
     private Map<String, Object> attr;
+//    private Collection<? extends GrantedAuthority> authorities;
+
+    // 기본 생성자
+    public MemberDTO() {
+        super("default", "default", Collections.emptyList());
+    }
 
 
-//    // 새 생성자 추가
-//    public MemberDTO(String username, String password, boolean fromSocial,
-//                     Collection<? extends GrantedAuthority> authorities) {
-//        super(username, password, authorities);
-//        this.email = username;
-//        this.password = password;
-//        this.fromSocial = fromSocial;
-//        this.attr = Collections.emptyMap(); // 속성 초기화
-//    }
 
-//    public MemberDTO() {
-//        super("defaultUsername", "defaultPassword", new ArrayList<>());
-//    }
-//
-//    // 이 생성자는 아래 생성자를 호출하는데, 시그니처가 정확해야 함
-//    public MemberDTO(String username, String password, boolean fromSocial,
-//                     Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
-//        this(username,password, fromSocial, authorities);
-////        this.attr = attr;
-//        this.attr = attr != null ? attr : Collections.emptyMap(); // 속성 초기화
-//
-//    }
 
 // Member 엔티티를 사용하는 기존 생성자
 public MemberDTO(Member member, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
@@ -73,16 +58,6 @@ public MemberDTO(Member member, Collection<? extends GrantedAuthority> authoriti
     this.fromSocial = member.isFromSocial();
     this.attr = attr != null ? attr : Collections.emptyMap(); // 속성 초기화
 }
-//
-//    public MemberDTO(String username, String password, boolean fromSocial,
-//                     Collection<? extends GrantedAuthority> authorities) {
-//        super(username, password, authorities);
-//        this.email = username;
-//        this.password = password;
-//        this.fromSocial = fromSocial;
-//        this.attr = Collections.emptyMap(); // 속성 초기화
-//
-//    }
 public MemberDTO(Member member, Collection<? extends GrantedAuthority> authorities) {
     this(member, authorities, null); // attr을 null로 전달
 }

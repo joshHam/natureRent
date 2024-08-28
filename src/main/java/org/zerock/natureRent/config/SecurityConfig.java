@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.zerock.natureRent.security.filter.ApiCheckFilter;
 import org.zerock.natureRent.security.filter.ApiLoginFilter;
 import org.zerock.natureRent.security.handler.ClubLoginSuccessHandler;
+import org.zerock.natureRent.security.service.ClubUserDetailsService;
 import org.zerock.natureRent.security.util.JWTUtil;
 
 @Configuration
@@ -30,6 +31,12 @@ import org.zerock.natureRent.security.util.JWTUtil;
 
 public class SecurityConfig {
 
+//    private final ClubUserDetailsService clubUserDetailsService;
+//
+//    public SecurityConfig(ClubUserDetailsService clubUserDetailsService) {
+//        this.clubUserDetailsService = clubUserDetailsService;
+//    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
 
@@ -37,7 +44,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(final HttpSecurity http, ClubUserDetailsService clubUserDetailsService) throws Exception {
 
         log.info("----------------------filterChain-------------------------");
 
@@ -56,7 +63,7 @@ public class SecurityConfig {
         // 권한 설정
         http.authorizeHttpRequests(authz -> authz
 
-                .requestMatchers("/main/all", "/login", "/register",
+                .requestMatchers("/api/check-email","/main/all", "/login", "/register",
                         "/assets/**","/uploadAjax", "/display/**",
                         "/product/product-grids", "/blog/blog-grid-sidebar"
                         , "/css/**", "/js/**", "/images/**","/webjars/**").permitAll()
@@ -94,7 +101,13 @@ public class SecurityConfig {
 
         // RememberMe 설정
 //        http.rememberMe().tokenValiditySeconds(60*60*24*7);
-        http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7);
+//        http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7);
+// RememberMe 설정 (새로운 방식)
+        http.rememberMe(rememberMe -> rememberMe
+                .key("uniqueAndSecret") // RememberMe 기능을 위한 key 설정
+                .tokenValiditySeconds(60 * 60 * 24 * 7) // 7일간 유효한 토큰
+                .userDetailsService(clubUserDetailsService) // UserDetailsService 설정
+        );
 
 
         //// Custom Filter 설정

@@ -26,6 +26,12 @@ public class ClubUserDetailsService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
+    public boolean isEmailExists(String email) {
+        // 이메일 중복 확인 로직 추가 (DB 조회 등)
+        return memberRepository.existsByEmail(email); // 예시로 작성했으니 실제 구현에 맞게 수정해
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -64,6 +70,9 @@ public class ClubUserDetailsService implements UserDetailsService {
 
     //회원가입
     public void register(MemberDTO memberDTO) {
+        if (isEmailExists(memberDTO.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+        }
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(memberDTO.getPassword());
 

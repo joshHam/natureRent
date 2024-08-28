@@ -93,13 +93,13 @@
 <!--                                    <i class="lni lni-user"></i>-->
                                     <ul class="user-login">
 <!--                                        <li><div sec:authentication="name"></div></li>-->
-                                        <li><i class="lni lni-user"></i>회원님 반갑습니다!</li>
+                                        <li><i class="lni lni-user"></i><div sec:authentication="name" style="display: inline-block;"></div></li>
                                         <li> <!-- ADMIN, MANAGER, USER 역할을 모두 가진 경우 -->
                                     <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
                                     <!-- MANAGER, USER 역할을 가진 경우 -->
                                     <div sec:authorize="hasRole('MANAGER') and !hasRole('ADMIN') and hasRole('USER')">메니저 모드 On</div>
                                     <!-- USER 역할만 가진 경우 -->
-                                    <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">오늘은 어디로 떠날 준비를 할까요?</div>
+                                    <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">회원님 반갑습니다</div>
                                         </li>
                                         <li><a href="../logout">Sign Out</a></li>
                                     </ul>
@@ -400,7 +400,7 @@
 <!-- End Breadcrumbs -->
 
 <!-- Start Account Register Area -->
-<div class="account-login section">
+<!--<div class="account-login section">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
@@ -409,49 +409,7 @@
                         <h3>처음이신가요? ★회원가입★</h3>
                         <p>네이쳐렌트의 회원이 되셔서 저희 사이트의 다양한 대여상품들을 둘러보세요.</p>
                     </div>
-                    <!--<form class="row" method="post">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="reg-fn">First Name</label>
-                                <input class="form-control" type="text" id="reg-fn" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="reg-ln">Last Name</label>
-                                <input class="form-control" type="text" id="reg-ln" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="reg-email">E-mail Address</label>
-                                <input class="form-control" type="email" id="reg-email" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="reg-phone">Phone Number</label>
-                                <input class="form-control" type="text" id="reg-phone" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="reg-pass">Password</label>
-                                <input class="form-control" type="password" id="reg-pass" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="reg-pass-confirm">Confirm Password</label>
-                                <input class="form-control" type="password" id="reg-pass-confirm" required>
-                            </div>
-                        </div>
-                        <div class="button">
-                            <button class="btn" type="submit">Register</button>
-                        </div>
-                        <p class="outer-link">Already have an account? <a href="/login">Login Now</a>
-                        </p>
-                    </form>-->
+
                     <form action="/register" method="post">
                         <div class="form-group">
                             <label for="email">이메일</label>
@@ -473,6 +431,46 @@
                     </form>
 
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div class="account-login section" style="background-color: #f3f4f6; padding: 40px 20px; border-radius: 10px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                <div class="register-form" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; background-color: white;">
+                    <div class="title">
+                        <h3 style="color: #2c3e50;">처음이신가요? </h3>
+                        <p style="color: #7f8c8d;">네이쳐렌트의 회원이 되셔서 저희 사이트의 다양한 대여상품들을 둘러보세요.</p>
+                    </div>
+
+                    <form action="/register" method="post" id="registerForm">
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <small id="emailFeedback" style="color: red; display: none;">이미 사용 중인 이메일입니다.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nickname">별명</label>
+                            <input type="text" class="form-control" id="nickname" name="nickname">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">비밀번호</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">비밀번호 확인</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                            <small id="passwordFeedback" style="color: red; display: none;">비밀번호가 일치하지 않습니다.</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">가입</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -638,6 +636,54 @@
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
 <script type="text/javascript">
+    document.getElementById('registerForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const emailFeedback = document.getElementById('emailFeedback');
+        const passwordFeedback = document.getElementById('passwordFeedback');
+
+        // 비밀번호 일치 확인
+        if (password !== confirmPassword) {
+            passwordFeedback.style.display = 'block';
+            return;
+        } else {
+            passwordFeedback.style.display = 'none';
+        }
+
+        // 이메일 중복 검사
+        fetch('/api/check-email', { // 서버의 이메일 중복 검사 엔드포인트에 맞게 수정
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email }),
+        })
+         .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+        .then(data => {
+            if (data.exists) { // 이메일이 이미 사용 중인 경우
+                emailFeedback.style.display = 'block';
+            } else { // 이메일 사용 가능하면 폼 제출
+                emailFeedback.style.display = 'none';
+                document.getElementById('registerForm').submit(); // 실제 폼 제출
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('서버와의 통신 중 오류가 발생했습니다. 다시 시도해주세요.');
+        });
+    });
+
+
+
+    //////////////////////////////////
         document.addEventListener('DOMContentLoaded', function() {
               let total = 0;
               document.querySelectorAll('.subtotal').forEach(function(element) {

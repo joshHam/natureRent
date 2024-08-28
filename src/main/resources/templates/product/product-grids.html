@@ -92,13 +92,13 @@
 <!--                                    <i class="lni lni-user"></i>-->
                                     <ul class="user-login">
 <!--                                        <li><div sec:authentication="name"></div></li>-->
-                                        <li><i class="lni lni-user"></i>회원님 반갑습니다!</li>
+                                        <li><i class="lni lni-user"></i><div sec:authentication="name" style="display: inline-block;"></div></li>
                                         <li> <!-- ADMIN, MANAGER, USER 역할을 모두 가진 경우 -->
                                     <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
                                     <!-- MANAGER, USER 역할을 가진 경우 -->
                                     <div sec:authorize="hasRole('MANAGER') and !hasRole('ADMIN') and hasRole('USER')">메니저 모드 On</div>
                                     <!-- USER 역할만 가진 경우 -->
-                                    <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">오늘은 어디로 떠날 준비를 할까요?</div>
+                                    <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">회원님 반갑습니다</div>
                                         </li>
                                         <li><a href="../logout">Sign Out</a></li>
                                     </ul>
@@ -153,7 +153,8 @@
                                 </div>
                             </div>
                             <div class="search-input">
-                                <input type="text" placeholder="Search">
+                                <input type="text" id="product-search" placeholder="Search" oninput="filterProducts()">
+                                <!--                                <input type="text" placeholder="Search">-->
                             </div>
                             <div class="search-btn">
                                 <button><i class="lni lni-search-alt"></i></button>
@@ -409,10 +410,10 @@
                     <!-- Start Single Widget -->
                     <div class="single-widget search">
                         <h3>Search Product</h3>
-                        <form action="#">
-                            <input type="text" placeholder="Search Here...">
+                            <form id="search-form2">
+                            <input type="text" id="product-search2" placeholder="Search Here...">
                             <button type="submit"><i class="lni lni-search-alt"></i></button>
-                        </form>
+                            </form>
                     </div>
                     <!-- End Single Widget -->
                     <!-- Start Single Widget -->
@@ -1027,37 +1028,60 @@
 <script src="/assets/js/glightbox.min.js"></script>
 <script src="/assets/js/main.js"></script>
 <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-              let total = 0;
-              document.querySelectorAll('.subtotal').forEach(function(element) {
-      console.log('Element:', element); // 여기서 각 element가 올바르게 선택되고 있는지 확인
-                    let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백을 제거
-                                console.log('priceText:', priceText); // 로그로 data-price 확인
-                   // ₩ 및 , 제거하고 숫자로 변환
-                  let price = parseFloat(priceText.replace(/₩|,/g, ''));
-                  console.log('Parsed price:', price); // 로그로 파싱된 값 확인
-                  // price가 NaN인지 확인하여 0으로 대체
-                  if (isNaN(price)) {
-                      price = 0;
-                  }
-                  total += price;
-              });
-              console.log('Total:', total); // 로그로 합산된 total 확인
-
-
-  let youPayElement = document.getElementById('you-pay');
-        if (youPayElement) {
-            youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
-                style: 'currency',
-                currency: 'KRW'
-            }).format(total - 50000);
-        } else {
-            console.error("Element with id 'you-pay' not found.");
+    document.addEventListener('DOMContentLoaded', function() {
+setTimeout(function() { // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에 요소를 찾기 위한 setTimeout
+    let total = 0;
+    document.querySelectorAll('.subtotal').forEach(function(element) {
+        console.log('Element:', element); // 각 element가 올바르게 선택되고 있는지 확인
+        let priceText = element.textContent.trim(); // 텍스트의 앞뒤 공백 제거
+        console.log('priceText:', priceText); // 로그로 가격 텍스트 확인
+        // ₩ 및 , 제거하고 숫자로 변환
+        let price = parseFloat(priceText.replace(/₩|,/g, ''));
+        console.log('Parsed price:', price); // 파싱된 값 확인
+        // NaN 검사하여 0으로 대체
+        if (isNaN(price)) {
+            price = 0;
         }
-    }, 100); // 100ms 지연을 주어서 DOMContentLoaded 이벤트 이후에
-             //you-pay 요소를 제대로 찾을 수 있게
+        total += price;
+    });
+    console.log('Total:', total); // 합산된 total 확인
+
+    let youPayElement = document.getElementById('you-pay');
+    if (youPayElement) {
+        youPayElement.textContent = new Intl.NumberFormat('ko-KR', {
+            style: 'currency',
+            currency: 'KRW'
+        }).format(total - 50000);
+    } else {
+        console.error("Element with id 'you-pay' not found.");
+    }
+
+    // 검색 폼의 submit 이벤트 감지 및 검색 처리
+    const searchForm = document.getElementById('search-form2');
+    if (searchForm) { // 요소가 존재하는지 확인
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const keyword = document.getElementById('product-search2').value; // 검색어 입력 필드 선택
+            const url = `/product/search?keyword=${encodeURIComponent(keyword)}`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('nav-grid').innerHTML = html;
+                })
+                .catch(error => console.error('Error fetching search results:', error));
+        });
+    } else {
+        console.error("Element with id 'search-form' not found.");
+    }
+}, 100); // 100ms 지연
+});
 
 
-    </script></body>
+
+
+
+</script></body>
 
 </html>

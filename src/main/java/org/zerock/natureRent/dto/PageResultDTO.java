@@ -42,6 +42,9 @@ public class PageResultDTO<DTO, EN> {
         totalPage = result.getTotalPages();
 
         makePageList(result.getPageable());
+
+        page = result.getNumber() + 1;
+        size = result.getSize();
     }
 
 

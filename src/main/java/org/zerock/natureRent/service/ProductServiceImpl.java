@@ -3,6 +3,7 @@ package org.zerock.natureRent.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -171,6 +172,22 @@ public class ProductServiceImpl implements ProductService{
         return entityMap;
     }
 
+    @Override
+    public PageResultDTO<ProductDTO, Product> searchProducts(String keyword, int page) {
+        Pageable pageable = PageRequest.of(page - 1, 10); // 한 페이지에 10개씩 보여주기
+
+        Page<Product> result;
+        // 검색어가 없을 때는 전체 목록 반환
+        if (keyword == null || keyword.isEmpty()) {
+            result = productRepository.findAll(pageable); // 전체 제품 목록
+        } else {
+            // 제목이나 상세에 검색어가 포함된 항목 검색
+            result = productRepository.findByTitleContainingOrDetailContaining(keyword, keyword, pageable);
+        }
+
+        // PageResultDTO로 변환하여 반환, Product 엔티티를 DTO로 변환
+        return new PageResultDTO<>(result, ProductDTO::fromEntity);
+    }
 }
 
 

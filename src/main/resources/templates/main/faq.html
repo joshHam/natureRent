@@ -92,13 +92,13 @@
 <!--                                    <i class="lni lni-user"></i>-->
                                     <ul class="user-login">
 <!--                                        <li><div sec:authentication="name"></div></li>-->
-                                        <li><i class="lni lni-user"></i>회원님 반갑습니다!</li>
+                                        <li><i class="lni lni-user"></i><div sec:authentication="name" style="display: inline-block;"></div></li>
                                         <li> <!-- ADMIN, MANAGER, USER 역할을 모두 가진 경우 -->
                                     <div sec:authorize="hasRole('ADMIN') and hasRole('MANAGER') and hasRole('USER')">관리자 모드 On</div>
                                     <!-- MANAGER, USER 역할을 가진 경우 -->
                                     <div sec:authorize="hasRole('MANAGER') and !hasRole('ADMIN') and hasRole('USER')">메니저 모드 On</div>
                                     <!-- USER 역할만 가진 경우 -->
-                                    <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">오늘은 어디로 떠날 준비를 할까요?</div>
+                                    <div sec:authorize="hasRole('USER') and !hasRole('ADMIN') and !hasRole('MANAGER')">회원님 반갑습니다</div>
                                         </li>
                                         <li><a href="../logout">Sign Out</a></li>
                                     </ul>
