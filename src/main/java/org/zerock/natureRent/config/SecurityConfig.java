@@ -36,6 +36,11 @@ public class SecurityConfig {
 //    public SecurityConfig(ClubUserDetailsService clubUserDetailsService) {
 //        this.clubUserDetailsService = clubUserDetailsService;
 //    }
+//private final JWTUtil jwtUtil;
+//
+//    public SecurityConfig(JWTUtil jwtUtil) {
+//        this.jwtUtil = jwtUtil;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

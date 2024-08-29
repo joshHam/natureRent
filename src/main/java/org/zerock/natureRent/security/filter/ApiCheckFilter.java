@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 
 
 @Log4j2
+//JwtAuthorizationFilter
 public class ApiCheckFilter extends OncePerRequestFilter {
 
     private AntPathMatcher antPathMatcher;
@@ -67,6 +68,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
         boolean checkResult = false;
 
+        //헤더의 Authorization 필드의 값 가져오기
         String authHeader = request.getHeader("Authorization");
 
         if(StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")){

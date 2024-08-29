@@ -37,13 +37,15 @@ public class ProductServiceImpl implements ProductService{
 
         Map<String, Object> entityMap = dtoToEntity(productDTO);
         Product product = (Product) entityMap.get("product");
+
         List<ProductImage> productImageList = (List<ProductImage>) entityMap.get("imgList");
 
         productRepository.save(product);
 
-        productImageList.forEach(productImage -> {
+        productImageList.forEach(imageRepository::save);
+        /*productImageList.forEach(productImage -> {
             imageRepository.save(productImage);
-        });
+        });*/
 
         return product.getMno();
     }
