@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.zerock.natureRent.security.filter.ApiCheckFilter;
 import org.zerock.natureRent.security.filter.ApiLoginFilter;
@@ -64,11 +65,15 @@ public class SecurityConfig {
         http.csrf().disable();
 //        http.csrf();
 
+        http
+                .requestCache(requestCacheConfigurer ->
+                        requestCacheConfigurer.requestCache(new HttpSessionRequestCache()));
+
 
         // 권한 설정
         http.authorizeHttpRequests(authz -> authz
 
-                .requestMatchers("/api/check-email","/main/all", "/login", "/register",
+                .requestMatchers("/product/search","/api/check-email","/main/all", "/login", "/register",
                         "/assets/**","/uploadAjax", "/display/**",
                         "/product/product-grids", "/blog/blog-grid-sidebar"
                         , "/css/**", "/js/**", "/images/**","/webjars/**").permitAll()

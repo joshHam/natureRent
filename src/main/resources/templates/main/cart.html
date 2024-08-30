@@ -462,10 +462,15 @@
                         <button class="lni lni-close" type="submit">Remove</button>
                     </form>
                     </div>
+                    <div class="col-lg-1 col-md-1 col-12">
+                    <td th:switch="${cartStat.index}">
+                        <span th:case="0">₩50,000</span>
+                        <span th:case="*"> </span>
+                    </td>
+                    </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-12">
                 <!-- Total Amount -->

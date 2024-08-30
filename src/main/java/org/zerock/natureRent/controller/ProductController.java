@@ -194,10 +194,18 @@ public class ProductController {
     @GetMapping("/search")
     public String searchProducts(@RequestParam(value = "keyword", required = false) String keyword,
                                  @RequestParam(value = "page", defaultValue = "1") int page,
+                                 PageRequestDTO pageRequestDTO, // PageRequestDTO 사용 추가
                                  Model model,
                                  @AuthenticationPrincipal MemberDTO authMember) {
+        // 페이지 사이즈 설정
+        pageRequestDTO.setPage(page); // 받은 페이지 번호 설정
+        pageRequestDTO.setSize(9);    // 페이지 사이즈 설정, 필요 시 조정
+
         // 검색 결과 가져오기
         PageResultDTO<ProductDTO, Product> result = productService.searchProducts(keyword, page);
+        log.info("Search result: " + result);
+        log.info("Search keyword: " + keyword + ", Page: " + page);
+
 
         if (authMember != null) {
             Member member = authMember.getMember();
@@ -210,6 +218,8 @@ public class ProductController {
 
         model.addAttribute("result", result);
         model.addAttribute("keyword", keyword);
+
+
         return "product/product-grids"; // 검색 결과를 보여줄 뷰 이름
     }
 
