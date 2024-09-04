@@ -31,11 +31,15 @@ Page<Object[]> getListPage(Pageable pageable);
 
 
 
+
+
+
 //    @Query("select m, mi ,avg(coalesce(r.grade,0)),  count(r)" +
 //            " from Product m left outer join ProductImage mi on mi.product = m " +
 //            " left outer join Review  r on r.product = m "+
 //            " where m.mno = :mno group by mi")
 //    List<Object[]> getProductWithAll(Long mno);
+/*
 @Query("select m, mi, avg(coalesce(r.grade,0)), count(DISTINCT r) " +
         "from Product m " +
         "left outer join ProductImage mi on mi.product = m " +
@@ -43,6 +47,19 @@ Page<Object[]> getListPage(Pageable pageable);
         "where m.mno = :mno " +
         "group by m")
 List<Object[]> getProductWithAll(@Param("mno") Long mno);
+*/
+@Query("select m, mi, avg(coalesce(r.grade,0)), count(DISTINCT r) " +
+        "from Product m " +
+        "left outer join ProductImage mi on mi.product = m " +
+        "left outer join Review r on r.product = m " +
+        "where m.mno = :mno " +
+        "group by m, mi")
+List<Object[]> getProductWithAll(@Param("mno") Long mno);
+
+
+
+
+
 
 
 //    @Query("select m, mi, avg(coalesce(r.grade,0)), count(r) " +
