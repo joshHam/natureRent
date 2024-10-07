@@ -24,4 +24,27 @@
 리뷰작성모달)
 <br><br>
 
+---------------------------------------------
+<p align="center">
+  <img width="550" src="https://github.com/user-attachments/assets/4c82d631-880d-4bd4-9709-105f2b21cc4f">
+</p>
+(-렌탈예약
+달력모달)
+<br><br>
 
+
+<p align="center">
+  <img width="550" src="https://github.com/user-attachments/assets/cd772f80-9a11-46cb-9d10-df01996c793e">
+</p>
+(-결제페이지)
+<br><br>
+
+
+<p align="center">
+  <img width="550" src="https://github.com/user-attachments/assets/ab0a0ef0-873f-4410-ad91-aeb7d00695c0">
+</p>
+(-아임포트휴대폰결제)
+<br><br>
+
+
+감사합니다
