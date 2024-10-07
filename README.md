@@ -10,7 +10,8 @@
 
 프로젝트 내용 :
 <p align="center">
-  <img width="500" src="https://github.com/user-attachments/assets/4bf24a20-075a-4edd-9d1d-585ab26e1ba9">
+  <img width="500" src="https://github.com/user-attachments/assets/a5f60335-adcd-47ce-82c9-33a7080d80ce"><br>
+ <img width="500" src="https://github.com/user-attachments/assets/72621fc7-4350-4a4c-9548-271dacebd93b">
 </p>
 (-메인페이지)<br>
 <br><br>
