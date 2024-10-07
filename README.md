@@ -1,6 +1,7 @@
 ▪ 주제 : 스포츠 및 야외 활동장비 렌탈플렛폼<br>
 ▪ 사용 프로그램 :  JAVA17, MariaDB, SpringHibernate, Thymeleaf, IntelliJ<br>
 ▪ URL : joshHam/natureRent (github.com)<br>
+  ★시연 영상 : https://youtu.be/1y0sEXsN5F0?si=b8WgdRwCG5qbqFhG<br>
 ▪ 제작시기 및 참여도 : 2024년 8월 - 2024년 9월 (1.5개월), 개인프로젝트<br>
 ▪ 기획의도 : <br>
  - NatureRent는 스포츠 및 야외 활동 장비를 손쉽게 대여할 수 있는 종합 플랫폼 으로서 사용자들이 필요한 장비를 간편하게 찾고, 대여하고, 반납할 수 있게 기획하였습니다.<br> 
